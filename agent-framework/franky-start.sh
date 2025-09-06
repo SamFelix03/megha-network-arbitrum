@@ -3,8 +3,13 @@
 # Constants
 BASE_URL="https://franky-arbitrum.vercel.app"
 DEVICE_DETAILS_FILE="device_details.json"
+WALLET_FILE="wallet.txt"
 METADATA_FILE="device_metadata.json"
 API_PORT=8080
+REGISTRY_CONTRACT="0xE25e41F820d4AA90Ad0C49001ecb143DD5B46Ea7"
+RPC_URL="https://sepolia-rollup.arbitrum.io/rpc"
+MAX_POLL_ATTEMPTS=60
+POLL_INTERVAL=30
 
 # Colors for better visibility
 RED='\033[0;31m'
@@ -179,7 +184,7 @@ create_evm_wallet() {
         
         console.log('Generated EVM wallet address:', wallet.address);
         
-        // Save wallet details
+        // Save wallet details to JSON (for metadata)
         const walletDetails = {
           address: wallet.address,
           privateKey: wallet.privateKey,
@@ -188,7 +193,18 @@ create_evm_wallet() {
         };
         
         fs.writeFileSync('$DEVICE_DETAILS_FILE', JSON.stringify(walletDetails, null, 2));
-        console.log('SUCCESS: Wallet details saved to $DEVICE_DETAILS_FILE');
+        
+        // Save wallet info to text file (simple format for device storage)
+        const walletText = [
+          '=== FRANKY DEVICE WALLET ===',
+          \`Address: \${wallet.address}\`,
+          \`Private Key: \${wallet.privateKey}\`,
+          \`Created: \${new Date().toISOString()}\`,
+          '==============================='
+        ].join('\\n');
+        
+        fs.writeFileSync('$WALLET_FILE', walletText);
+        console.log('SUCCESS: Wallet details saved to $DEVICE_DETAILS_FILE and $WALLET_FILE');
         
       } catch (error) {
         console.error('ERROR creating wallet:', error.message);
@@ -352,6 +368,121 @@ create_and_display_qr_code() {
   log_success "QR code displayed successfully with device metadata"
 }
 
+# Function to check device registration in registry contract
+check_registry_registration() {
+  log_status "Checking device registration in registry contract..."
+  log_status "Registry Contract: $REGISTRY_CONTRACT"
+  log_status "Device Address: $WALLET_ADDRESS"
+  
+  # Create a Node.js script to poll the registry contract
+  node -e "
+    const { ethers } = require('ethers');
+    
+    const REGISTRY_ABI = [
+      {
+        'inputs': [],
+        'name': 'getAllDevices',
+        'outputs': [
+          {
+            'components': [
+              { 'internalType': 'string', 'name': 'deviceModel', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'ram', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'cpu', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'storageCapacity', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'os', 'type': 'string' },
+              { 'internalType': 'address', 'name': 'walletAddress', 'type': 'address' },
+              { 'internalType': 'address', 'name': 'ownerAddress', 'type': 'address' },
+              { 'internalType': 'string', 'name': 'timestamp', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'ngrokLink', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'hostingFee', 'type': 'string' }
+            ],
+            'internalType': 'struct Registry.Device[]',
+            'name': '',
+            'type': 'tuple[]'
+          }
+        ],
+        'stateMutability': 'view',
+        'type': 'function'
+      }
+    ];
+    
+    async function checkRegistration() {
+      try {
+        console.log('Connecting to Arbitrum Sepolia...');
+        const provider = new ethers.providers.JsonRpcProvider('$RPC_URL');
+        
+        const contract = new ethers.Contract('$REGISTRY_CONTRACT', REGISTRY_ABI, provider);
+        
+        console.log('Calling getAllDevices...');
+        const devices = await contract.getAllDevices();
+        
+        console.log(\`Found \${devices.length} registered devices\`);
+        
+        // Check if our device is registered
+        const ourAddress = '$WALLET_ADDRESS'.toLowerCase();
+        const isRegistered = devices.some(device => 
+          device.walletAddress.toLowerCase() === ourAddress
+        );
+        
+        if (isRegistered) {
+          console.log('SUCCESS: Device is registered in contract!');
+          const ourDevice = devices.find(device => 
+            device.walletAddress.toLowerCase() === ourAddress
+          );
+          console.log('Device details:', {
+            model: ourDevice.deviceModel,
+            owner: ourDevice.ownerAddress,
+            ngrokLink: ourDevice.ngrokLink
+          });
+          process.exit(0);
+        } else {
+          console.log('PENDING: Device not yet registered in contract');
+          process.exit(1);
+        }
+        
+      } catch (error) {
+        console.error('ERROR checking registration:', error.message);
+        process.exit(1);
+      }
+    }
+    
+    checkRegistration();
+  "
+  
+  return $?
+}
+
+# Function to wait for device registration
+wait_for_registration() {
+  log_status "Waiting for device registration in registry contract..."
+  log_status "Will check every $POLL_INTERVAL seconds for up to 30 minutes..."
+  log_status "Please scan the QR code above to register your device!"
+  
+  local attempt=0
+  
+  while [ $attempt -lt $MAX_POLL_ATTEMPTS ]; do
+    log_status "Checking registration attempt $((attempt + 1))/$MAX_POLL_ATTEMPTS..."
+    
+    if check_registry_registration; then
+      log_success "Device registration confirmed in contract!"
+      return 0
+    fi
+    
+    attempt=$((attempt + 1))
+    
+    if [ $attempt -lt $MAX_POLL_ATTEMPTS ]; then
+      log_status "Device not registered yet. Retrying in $POLL_INTERVAL seconds..."
+      sleep $POLL_INTERVAL
+    else
+      log_error "Device registration timeout after 30 minutes."
+      log_error "Please make sure you've scanned the QR code and completed registration."
+      exit 1
+    fi
+  done
+  
+  return 1
+}
+
 # Function to start the main server
 start_main_server() {
   log_status "Starting the Franky Agent main server..."
@@ -419,7 +550,8 @@ main() {
   echo "1. Create an EVM wallet for your device"
   echo "2. Gather device metadata"
   echo "3. Generate registration QR code"
-  echo "4. Start the main server"
+  echo "4. Wait for device registration in contract"
+  echo "5. Start the main server only after registration"
   echo -e "${NC}"
   
   # Step 1: Install dependencies
@@ -437,7 +569,10 @@ main() {
   # Step 5: Create and display QR code
   create_and_display_qr_code
   
-  # Step 6: Start the main server
+  # Step 6: Wait for device registration in registry contract
+  wait_for_registration
+  
+  # Step 7: Start the main server only after confirmed registration
   start_main_server
 }
 
