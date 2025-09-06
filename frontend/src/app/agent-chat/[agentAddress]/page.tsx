@@ -1,9 +1,9 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiSend, FiX, FiUser, FiCpu, FiUserCheck, FiCopy, FiChevronDown } from "react-icons/fi";
+import { FiSend, FiX, FiUser, FiCpu, FiUserCheck, FiCopy, FiChevronDown, FiArrowDown } from "react-icons/fi";
 import { useWallet } from "@/providers/WalletProvider";
 import { createPublicClient, http } from "viem";
 import { arbitrumSepolia } from "viem/chains";
@@ -362,9 +362,42 @@ export default function AgentChatPage() {
   const [agentLoading, setAgentLoading] = useState(true);
   const [device, setDevice] = useState<DeviceDetails | null>(null);
   const [showDeviceModal, setShowDeviceModal] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const agentUuid = params?.agentAddress as string; // This is actually the UUID
   const deviceNgrok = searchParams?.get('deviceNgrok');
+  
+  // Ref for auto-scrolling to bottom of chat
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll to bottom of chat
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Check if user has scrolled up to show scroll-to-bottom button
+  const handleScroll = () => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+      const isScrolledUp = scrollHeight - scrollTop - clientHeight > 100;
+      setShowScrollButton(isScrolledUp);
+    }
+  };
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.addEventListener('scroll', handleScroll);
+      return () => chatContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   // Function to parse device details from URL parameters
   const parseDeviceDetails = () => {
@@ -591,8 +624,12 @@ export default function AgentChatPage() {
   }
 
   return (
-    <div className="h-screen bg-cyber pt-20 flex flex-col">
-      <div className="container mx-auto px-4 flex-1 flex flex-col">
+    <>
+      {/* Fixed Background Layer */}
+      <div className="fixed inset-0 bg-cyber -z-10"></div>
+      
+      <div className="h-screen pt-20 flex flex-col relative">
+        <div className="container mx-auto px-4 flex-1 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between py-4 border-b border-franky-cyan-20 flex-shrink-0">
           <div 
@@ -659,58 +696,98 @@ export default function AgentChatPage() {
           </div>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto py-4 space-y-4 min-h-0">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
-            >
-              {!message.isUser && (
-                <div className="w-8 h-8 bg-franky-cyan-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <FiCpu className="text-franky-cyan text-sm" />
-                </div>
+        {/* Messages Container */}
+        <div className="flex-1 relative min-h-0">
+          {/* Messages */}
+          <div 
+            ref={chatContainerRef}
+            className="h-full overflow-y-auto py-4 px-2"
+            style={{ 
+              scrollBehavior: 'smooth',
+              overflowAnchor: 'none' // Prevents scroll jumping
+            }}
+          >
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                >
+                  {!message.isUser && (
+                    <div className="w-8 h-8 bg-franky-cyan-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <FiCpu className="text-franky-cyan text-sm" />
+                    </div>
+                  )}
+                  
+                  <div className={`max-w-[70%] ${message.isUser ? 'order-first' : ''}`}>
+                    <div
+                      className={`p-3 rounded-lg ${
+                        message.isUser
+                          ? 'bg-franky-cyan text-black'
+                          : 'bg-gray-800 text-white border border-gray-700'
+                      }`}
+                    >
+                      <p className="text-sm font-sen leading-relaxed break-words">{message.content}</p>
+                      {message.toolResponse && renderToolResponse(message.toolResponse)}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 font-sen">
+                      {message.timestamp.toLocaleTimeString()}
+                    </p>
+                  </div>
+
+                  {message.isUser && (
+                    <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <FiUser className="text-gray-300 text-sm" />
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+              
+              {loading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex gap-3 justify-start"
+                >
+                  <div className="w-8 h-8 bg-franky-cyan-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <FiCpu className="text-franky-cyan text-sm" />
+                  </div>
+                  <div className="bg-gray-800 border border-gray-700 rounded-lg p-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                      <span className="text-gray-400 text-sm font-sen ml-2">AI is thinking...</span>
+                    </div>
+                  </div>
+                </motion.div>
               )}
               
-              <div className={`max-w-[70%] ${message.isUser ? 'order-first' : ''}`}>
-                <div
-                  className={`p-3 rounded-lg ${
-                    message.isUser
-                      ? 'bg-franky-cyan text-black'
-                      : 'bg-gray-800 text-white border border-gray-700'
-                  }`}
-                >
-                  <p className="text-sm font-sen leading-relaxed">{message.content}</p>
-                  {message.toolResponse && renderToolResponse(message.toolResponse)}
-                </div>
-                <p className="text-xs text-gray-500 mt-1 font-sen">
-                  {message.timestamp.toLocaleTimeString()}
-                </p>
-              </div>
+              {/* Invisible element for scrolling reference */}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
 
-              {message.isUser && (
-                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <FiUser className="text-gray-300 text-sm" />
-                </div>
-              )}
-            </div>
-          ))}
-          
-          {loading && (
-            <div className="flex gap-3 justify-start">
-              <div className="w-8 h-8 bg-franky-cyan-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <FiCpu className="text-franky-cyan text-sm" />
-              </div>
-              <div className="bg-gray-800 border border-gray-700 rounded-lg p-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                  <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                  <span className="text-gray-400 text-sm font-sen ml-2">AI is thinking...</span>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Scroll to Bottom Button */}
+          <AnimatePresence>
+            {showScrollButton && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.2 }}
+                onClick={scrollToBottom}
+                className="absolute bottom-4 right-4 w-10 h-10 bg-franky-cyan text-black rounded-full flex items-center justify-center shadow-lg hover:bg-franky-cyan/90 transition-colors z-10"
+                title="Scroll to bottom"
+              >
+                <FiArrowDown className="w-5 h-5" />
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Input */}
@@ -734,6 +811,7 @@ export default function AgentChatPage() {
             </button>
           </div>
         </div>
+        </div>
       </div>
 
       {/* Agent Profile Modal */}
@@ -749,6 +827,6 @@ export default function AgentChatPage() {
         isOpen={showDeviceModal}
         onClose={() => setShowDeviceModal(false)}
       />
-    </div>
+    </>
   );
 } 

@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
+const { ethers } = require('ethers');
 
 // Configuration
 const OLLAMA_BASE_URL = 'http://127.0.0.1:11434';
@@ -8,19 +9,111 @@ const MODEL_NAME = 'nemotron-mini:latest';
 const COVALENT_API_KEY = 'cqt_rQ74pJpygBVcWprTpbDrr6GrwPG9';
 const PORT = 8080;
 
-// Load character data
+// Registry contract configuration
+const REGISTRY_CONTRACT = "0xE25e41F820d4AA90Ad0C49001ecb143DD5B46Ea7";
+const RPC_URL = "https://sepolia-rollup.arbitrum.io/rpc";
+const REGISTRY_ABI = [{"inputs":[{"internalType":"string","name":"_uuid","type":"string"}],"name":"getAgentByUUID","outputs":[{"components":[{"internalType":"string","name":"uuid","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"description","type":"string"},{"internalType":"string","name":"personality","type":"string"},{"internalType":"string","name":"scenario","type":"string"},{"internalType":"string","name":"messageExample","type":"string"},{"internalType":"string[]","name":"tools","type":"string[]"},{"internalType":"string","name":"imageUrl","type":"string"},{"internalType":"address","name":"ownerAddress","type":"address"}],"internalType":"struct Registry.Agent","name":"","type":"tuple"}],"stateMutability":"view","type":"function"}];
+
+// Load character data (fallback)
 let characterData = null;
 try {
   characterData = JSON.parse(fs.readFileSync('./agent.json', 'utf8'));
-  console.log('✅ Character data loaded:', characterData.name);
+  console.log('✅ Fallback character data loaded:', characterData.name);
 } catch (error) {
-  console.log('⚠️ No character data found, using default system prompt');
+  console.log('⚠️ No fallback character data found, will use registry or default system prompt');
+}
+
+// Function to fetch character data from registry contract with caching
+async function fetchCharacterByUUID(uuid) {
+  // First, check cache
+  const cachedCharacter = getCachedCharacter(uuid);
+  if (cachedCharacter) {
+    return cachedCharacter;
+  }
+  
+  try {
+    console.log('🔍 Fetching character data from contract for UUID:', uuid);
+    
+    const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+    const contract = new ethers.Contract(REGISTRY_CONTRACT, REGISTRY_ABI, provider);
+    
+    const agentData = await contract.getAgentByUUID(uuid);
+    
+    // Convert contract response to expected format
+    const characterData = {
+      uuid: agentData.uuid,
+      name: agentData.name,
+      description: agentData.description,
+      personality: agentData.personality,
+      scenario: agentData.scenario,
+      messageExample: agentData.messageExample,
+      tools: agentData.tools,
+      imageUrl: agentData.imageUrl,
+      ownerAddress: agentData.ownerAddress
+    };
+    
+    // Cache the fetched data
+    setCachedCharacter(uuid, characterData);
+    
+    return characterData;
+  } catch (error) {
+    console.error('❌ Error fetching character from registry:', error.message);
+    throw error;
+  }
 }
 
 // Conversation history storage
 const conversationHistory = new Map(); // Map to store conversation history per session
 const MAX_HISTORY_LENGTH = 3; // Keep last 3 exchanges (reduced from 5 to prevent issues)
 const ENABLE_CONVERSATION_HISTORY = true; // Set to false to disable conversation history
+
+// Character data caching
+const characterCache = new Map(); // Map to store cached character data by UUID
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes in milliseconds
+const MAX_CACHE_SIZE = 50; // Maximum number of characters to cache
+
+// Character cache management functions
+function getCachedCharacter(uuid) {
+  const cached = characterCache.get(uuid);
+  if (!cached) return null;
+  
+  // Check if cache entry has expired
+  if (Date.now() - cached.timestamp > CACHE_TTL) {
+    characterCache.delete(uuid);
+    console.log('🗑️ Cache expired for UUID:', uuid);
+    return null;
+  }
+  
+  console.log('📦 Using cached character data for UUID:', uuid);
+  return cached.data;
+}
+
+function setCachedCharacter(uuid, characterData) {
+  // Implement LRU-style cache eviction if we're at max size
+  if (characterCache.size >= MAX_CACHE_SIZE) {
+    // Remove the oldest entry
+    const firstKey = characterCache.keys().next().value;
+    characterCache.delete(firstKey);
+    console.log('🗑️ Cache full, evicted oldest entry:', firstKey);
+  }
+  
+  characterCache.set(uuid, {
+    data: characterData,
+    timestamp: Date.now()
+  });
+  
+  console.log('💾 Cached character data for UUID:', uuid, '- Cache size:', characterCache.size);
+}
+
+function clearExpiredCache() {
+  const now = Date.now();
+  for (const [uuid, cached] of characterCache.entries()) {
+    if (now - cached.timestamp > CACHE_TTL) {
+      characterCache.delete(uuid);
+      console.log('🗑️ Cleared expired cache for UUID:', uuid);
+    }
+  }
+}
 
 // Helper functions for conversation history
 function getOrCreateHistory(sessionId) {
@@ -578,19 +671,22 @@ function isWalletRelatedMessage(message) {
 }
 
 // Main chat function - returns raw responses without parsing
-async function chatWithFunctionCalling(userMessage, sessionId = 'default') {
+async function chatWithFunctionCalling(userMessage, sessionId = 'default', dynamicCharacterData = null) {
   // Check if this is a wallet-related query
   const isWalletQuery = isWalletRelatedMessage(userMessage);
   
+  // Use dynamic character data if provided, otherwise fall back to global character data
+  const activeCharacterData = dynamicCharacterData || characterData;
+  
   // Create character-based system prompt for general conversations
-  const characterSystemPrompt = characterData ? 
-    `You are ${characterData.name}. ${characterData.description}
+  const characterSystemPrompt = activeCharacterData ? 
+    `You are ${activeCharacterData.name}. ${activeCharacterData.description}
 
-Personality: ${characterData.personality}
+Personality: ${activeCharacterData.personality}
 
-Scenario: ${characterData.scenario}
+Scenario: ${activeCharacterData.scenario}
 
-Example message: ${characterData.messageExample}
+Example message: ${activeCharacterData.messageExample}
 
 Respond as this character would, staying in character while being helpful and friendly.` :
     `You are a helpful AI assistant.`;
@@ -797,13 +893,24 @@ app.get('/health', (req, res) => {
 // Chat endpoint
 app.post('/chat', async (req, res) => {
   try {
-    const { message, sessionId = 'default' } = req.body;
+    const { message, sessionId = 'default', uuid } = req.body;
     
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
     
-    const result = await chatWithFunctionCalling(message, sessionId);
+    // Fetch character data if UUID is provided
+    let dynamicCharacterData = null;
+    if (uuid) {
+      try {
+        dynamicCharacterData = await fetchCharacterByUUID(uuid);
+        console.log('✅ Fetched character data for UUID:', uuid, '- Name:', dynamicCharacterData?.name);
+      } catch (error) {
+        console.error('❌ Failed to fetch character data for UUID:', uuid, error.message);
+      }
+    }
+    
+    const result = await chatWithFunctionCalling(message, sessionId, dynamicCharacterData);
     res.json(result);
     
   } catch (error) {
@@ -1289,6 +1396,41 @@ app.get('/examples', (req, res) => {
   });
 });
 
+// Cache statistics endpoint
+app.get('/cache-stats', (req, res) => {
+  const now = Date.now();
+  const stats = {
+    cacheSize: characterCache.size,
+    maxCacheSize: MAX_CACHE_SIZE,
+    cacheTTL: CACHE_TTL,
+    entries: []
+  };
+  
+  for (const [uuid, cached] of characterCache.entries()) {
+    const ageMs = now - cached.timestamp;
+    const expiresInMs = CACHE_TTL - ageMs;
+    stats.entries.push({
+      uuid,
+      characterName: cached.data.name,
+      ageMs,
+      expiresInMs: Math.max(0, expiresInMs),
+      expired: expiresInMs <= 0
+    });
+  }
+  
+  res.json(stats);
+});
+
+// Clear cache endpoint (for debugging/admin)
+app.delete('/cache', (req, res) => {
+  const sizeBefore = characterCache.size;
+  characterCache.clear();
+  res.json({ 
+    message: 'Cache cleared', 
+    entriesCleared: sizeBefore 
+  });
+});
+
 // Start the server
 async function startServer() {
   try {
@@ -1296,11 +1438,18 @@ async function startServer() {
     await axios.get(`${OLLAMA_BASE_URL}/api/tags`);
     console.log('✅ Ollama is running');
     
+    // Set up periodic cache cleanup (every 5 minutes)
+    setInterval(() => {
+      console.log('🧹 Running periodic cache cleanup...');
+      clearExpiredCache();
+    }, 5 * 60 * 1000); // 5 minutes
+    
     app.listen(PORT, () => {
       console.log(`🚀 Wallet AI API server running on http://localhost:${PORT}`);
       console.log(`💬 Test chat: POST http://localhost:${PORT}/chat`);
       console.log(`📊 Check status: GET http://localhost:${PORT}/status`);
       console.log(`💚 Health check: GET http://localhost:${PORT}/health`);
+      console.log(`📦 Cache stats: GET http://localhost:${PORT}/cache-stats`);
     });
   } catch (error) {
     console.error('❌ Ollama is not running. Please start Ollama first.');

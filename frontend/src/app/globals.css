@@ -273,6 +273,14 @@ body {
     background-size: 50px 50px;
   }
 
+  .bg-cyber {
+    background: radial-gradient(ellipse at top left, rgba(236, 70, 24, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(3, 143, 168, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(243, 213, 53, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+    background-attachment: fixed;
+  }
+
   /* Text balance utility */
   .text-balance {
     text-wrap: balance;
