@@ -628,7 +628,7 @@ export default function AgentChatPage() {
       {/* Fixed Background Layer */}
       <div className="fixed inset-0 bg-cyber -z-10"></div>
       
-      <div className="h-screen pt-20 flex flex-col relative">
+      <div className="h-screen pt-20 flex flex-col relative overflow-hidden">
         <div className="container mx-auto px-4 flex-1 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between py-4 border-b border-franky-cyan-20 flex-shrink-0">
@@ -697,11 +697,11 @@ export default function AgentChatPage() {
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 relative min-h-0">
+        <div className="flex-1 relative min-h-0 overflow-hidden">
           {/* Messages */}
           <div 
             ref={chatContainerRef}
-            className="h-full overflow-y-auto py-4 px-2"
+            className="absolute inset-0 overflow-y-auto py-4 px-2"
             style={{ 
               scrollBehavior: 'smooth',
               overflowAnchor: 'none' // Prevents scroll jumping
