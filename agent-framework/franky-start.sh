@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-BASE_URL="https://franky-arbitrum.vercel.app"
+BASE_URL="http://localhost:3000"
 DEVICE_DETAILS_FILE="device_details.json"
 WALLET_FILE="wallet.txt"
 METADATA_FILE="device_metadata.json"
@@ -112,6 +112,55 @@ install_dependencies() {
   log_success "All dependencies are installed and ready!"
 }
 
+# Function to check and install Ollama model
+check_ollama_model() {
+  log_status "Checking Ollama installation and required model..."
+  
+  # Check if Ollama is installed
+  if ! command_exists ollama; then
+    log_error "Ollama is not installed. Please install Ollama first:"
+    log_error "Visit: https://ollama.ai/download"
+    exit 1
+  fi
+  
+  # Check if Ollama service is running
+  if ! curl -s http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
+    log_error "Ollama service is not running. Please start Ollama first."
+    log_error "Run: ollama serve"
+    exit 1
+  fi
+  
+  log_success "Ollama service is running"
+  
+  # Check if nemotron-mini model is installed
+  log_status "Checking for nemotron-mini:latest model..."
+  
+  if curl -s http://127.0.0.1:11434/api/tags | grep -q "nemotron-mini:latest"; then
+    log_success "nemotron-mini:latest model is already installed"
+    return 0
+  fi
+  
+  log_warning "nemotron-mini:latest model not found. Installing..."
+  log_status "This may take several minutes depending on your internet connection..."
+  
+  # Pull the model
+  if ollama pull nemotron-mini:latest; then
+    log_success "Successfully installed nemotron-mini:latest model"
+  else
+    log_error "Failed to install nemotron-mini:latest model"
+    log_error "Please try running manually: ollama pull nemotron-mini:latest"
+    exit 1
+  fi
+  
+  # Verify installation
+  if curl -s http://127.0.0.1:11434/api/tags | grep -q "nemotron-mini:latest"; then
+    log_success "Model installation verified"
+  else
+    log_error "Model installation verification failed"
+    exit 1
+  fi
+}
+
 # Function to start ngrok early
 start_ngrok() {
   log_status "Starting ngrok to create a public URL for your API..."
@@ -147,9 +196,34 @@ start_ngrok() {
   export NGROK_PID
 }
 
-# Function to create EVM wallet with deterministic salt
+# Function to create or load existing EVM wallet
 create_evm_wallet() {
-  log_status "Creating EVM wallet with deterministic salt from device details..."
+  # Check if wallet files already exist
+  if [[ -f "$WALLET_FILE" && -f "$DEVICE_DETAILS_FILE" ]]; then
+    log_status "Found existing wallet files, loading existing wallet..."
+    
+    # Extract wallet address from existing files
+    if command_exists jq && [ -f "$DEVICE_DETAILS_FILE" ]; then
+      WALLET_ADDRESS=$(jq -r '.address' "$DEVICE_DETAILS_FILE" 2>/dev/null)
+    fi
+    
+    # If jq failed or file doesn't have proper JSON, try text file
+    if [[ -z "$WALLET_ADDRESS" || "$WALLET_ADDRESS" == "null" ]]; then
+      WALLET_ADDRESS=$(grep "Address:" "$WALLET_FILE" 2>/dev/null | cut -d' ' -f2)
+    fi
+    
+    if [[ -n "$WALLET_ADDRESS" && "$WALLET_ADDRESS" != "null" ]]; then
+      log_success "Loaded existing wallet with address: $WALLET_ADDRESS"
+      export WALLET_ADDRESS
+      return 0
+    else
+      log_warning "Existing wallet files found but address could not be extracted. Creating new wallet..."
+      # Remove corrupted files
+      rm -f "$WALLET_FILE" "$DEVICE_DETAILS_FILE"
+    fi
+  fi
+  
+  log_status "Creating new EVM wallet with deterministic salt from device details..."
   
   # Create a Node.js script to generate EVM wallet
   node -e "
@@ -204,7 +278,7 @@ create_evm_wallet() {
         ].join('\\n');
         
         fs.writeFileSync('$WALLET_FILE', walletText);
-        console.log('SUCCESS: Wallet details saved to $DEVICE_DETAILS_FILE and $WALLET_FILE');
+        console.log('SUCCESS: New wallet created and saved to $DEVICE_DETAILS_FILE and $WALLET_FILE');
         
       } catch (error) {
         console.error('ERROR creating wallet:', error.message);
@@ -228,7 +302,7 @@ create_evm_wallet() {
     WALLET_ADDRESS=$(grep -o '"address":"[^"]*' "$DEVICE_DETAILS_FILE" | sed 's/"address":"//g')
   fi
   
-  log_success "Created EVM wallet with address: $WALLET_ADDRESS"
+  log_success "EVM wallet ready with address: $WALLET_ADDRESS"
   export WALLET_ADDRESS
 }
 
@@ -536,7 +610,6 @@ start_main_server() {
   echo "-----------------------------------------"
   
   log_success "Franky Agent is now running! Press Ctrl+C to stop."
-  log_status "Please scan the QR code above to register your device on the web interface."
   
   # Wait for the server process
   wait $SERVER_PID
@@ -547,32 +620,36 @@ main() {
   echo -e "${GREEN}"
   echo "Starting Franky Agent Setup..."
   echo "This script will:"
-  echo "1. Create an EVM wallet for your device"
-  echo "2. Gather device metadata"
-  echo "3. Generate registration QR code"
-  echo "4. Wait for device registration in contract"
-  echo "5. Start the main server only after registration"
+  echo "1. Install dependencies and check Ollama"
+  echo "2. Create an EVM wallet for your device"
+  echo "3. Gather device metadata"
+  echo "4. Generate registration QR code"
+  echo "5. Wait for device registration in contract"
+  echo "6. Start the main server only after registration"
   echo -e "${NC}"
   
   # Step 1: Install dependencies
   install_dependencies
   
-  # Step 2: Start ngrok early in the process
+  # Step 2: Check and install Ollama model
+  check_ollama_model
+  
+  # Step 3: Start ngrok early in the process
   start_ngrok
   
-  # Step 3: Create EVM wallet
+  # Step 4: Create EVM wallet
   create_evm_wallet
   
-  # Step 4: Gather device metadata (now includes ngrok URL and wallet address)
+  # Step 5: Gather device metadata (now includes ngrok URL and wallet address)
   gather_device_metadata
   
-  # Step 5: Create and display QR code
+  # Step 6: Create and display QR code
   create_and_display_qr_code
   
-  # Step 6: Wait for device registration in registry contract
+  # Step 7: Wait for device registration in registry contract
   wait_for_registration
   
-  # Step 7: Start the main server only after confirmed registration
+  # Step 8: Start the main server only after confirmed registration
   start_main_server
 }
 
