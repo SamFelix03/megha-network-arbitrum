@@ -2,6 +2,14 @@
 
 *The world's first DePIN (Decentralized Physical Infrastructure Network) for AI agent hosting using consumer devices*
 
+## 🌟 Turn Your Old Phone Into a Crypto-Earning AI Server
+
+**Megha Network** transforms idle smartphones, laptops, and tablets into profitable AI infrastructure. While **OpenAI charges $60+ per million tokens** and Big Tech monopolizes AI compute, our decentralized network lets **device owners earn passive USDC income** and **users access AI services at 90%+ lower costs**.
+
+**🚀 The Innovation**: Instead of expensive centralized servers, AI agents run on a **distributed network of consumer devices**, each earning USDC for hosting intelligent blockchain-native agents. From DeFi analysis to NFT discovery, users get enterprise-grade AI capabilities powered by the device sitting in your drawer.
+
+**⚡ Coming Soon**: Device Swarm technology will enable **parallel processing across multiple devices**, reducing complex query times from minutes to seconds while maximizing earnings for contributors.
+
 ## 🔗 Quick Links to Core Components
 
 | Component | Description | Link |
@@ -14,17 +22,19 @@
 
 ## 📋 Table of Contents
 
-1. [The Problem We're Solving](https://github.com/SamFelix03/megha-network-arbitrum?tab=readme-ov-file#the-problem-were-solving)
+1. [The Problem We're Solving](#-the-problem-were-solving)
 2. [Business Model & Value Proposition](#-business-model--value-proposition)
 3. [Why Arbitrum?](#-why-arbitrum)
 4. [The Role of Blockchain](#-the-role-of-blockchain)
 5. [Technical Implementation](#-technical-implementation)
-6. [How to Use Megha Network](#-how-to-use-megha-network)
-7. [Getting Started](#-getting-started)
-8. [Architecture Overview](#-architecture-overview)
-9. [Smart Contracts](#-smart-contracts)
-10. [Roadmap](#-roadmap)
-11. [Future Scope: Device Swarm Technology](https://github.com/SamFelix03/megha-network-arbitrum?tab=readme-ov-file#future-scope-device-swarm-technology)
+6. [AI Agent Tools & Capabilities](#-ai-agent-tools--capabilities)
+7. [How to Use Megha Network](#-how-to-use-megha-network)
+8. [Getting Started](#-getting-started)
+9. [Architecture Overview](#-architecture-overview)
+10. [Smart Contracts](#-smart-contracts)
+11. [Contributing](#-contributing)
+12. [Roadmap](#-roadmap)
+13. [Future Scope: Device Swarm Technology](#-future-scope-device-swarm-technology)
 
 ---
 
@@ -324,6 +334,87 @@ struct Agent {
 - **Health Monitoring**: Regular device availability checks
 - **Load Balancing**: Distribute users across available devices
 - **Self-Healing URLs**: Devices automatically update network endpoints
+
+---
+
+## 🛠 AI Agent Tools & Capabilities
+
+### **Built-in Blockchain Analysis Tools**
+Every AI agent on Megha Network has access to powerful blockchain analysis tools powered by **Covalent API integration**. These tools transform agents into **crypto-native assistants** capable of real-time blockchain data analysis.
+
+| Tool | Function | Description | Supported Chains |
+|------|----------|-------------|------------------|
+| **🔍 Wallet Activity** | `getWalletActivity` | Discovers all blockchains where a wallet is active | All supported chains |
+| **💰 Native Balance** | `getNativeBalance` | Gets native token balance (ETH, MATIC, BNB, etc.) with USD values | Ethereum, Polygon, BSC, Avalanche, Fantom |
+| **📊 Transaction Summary** | `getTransactionSummary` | Provides transaction count, latest & earliest transactions | All EVM chains |
+| **🖼️ NFT Collections** | `getNftBalances` | Lists all NFTs (ERC721/ERC1155) owned by a wallet | Ethereum, Polygon, BSC |
+| **✅ Token Approvals** | `getApprovals` | Shows all token approvals categorized by spender | All EVM chains |
+| **₿ Bitcoin HD Wallets** | `getBtcHdWalletBalances` | Analyzes Bitcoin HD wallet child address balances | Bitcoin mainnet/testnet |
+
+### **How AI Agents Use These Tools**
+
+#### **🤖 Intelligent Tool Selection**
+```javascript
+// Example: User asks about wallet analysis
+User: "Analyze wallet 0x742d35Cc6634C0532925a3b8D17ce9a6f30c6f9e"
+
+Agent: *automatically detects wallet-related query*
+→ Calls getWalletActivity() 
+→ Calls getNativeBalance() for discovered chains
+→ Calls getTransactionSummary() for activity analysis
+→ Provides comprehensive wallet report in natural language
+```
+
+#### **⚡ Real-Time Data Processing**
+- **Live API Integration**: Direct connection to Covalent's real-time blockchain data
+- **Multi-Chain Analysis**: Automatically detects and analyzes across multiple blockchains
+- **USD Value Conversion**: All balances displayed with current USD pricing
+- **Transaction History**: Access to complete on-chain transaction records
+
+### **Agent Conversation Examples**
+
+**🔍 Wallet Discovery**:
+```
+User: "What chains is 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 active on?"
+Tony Stark: "FRIDAY, run a full spectrum analysis... *analyzes data* 
+This wallet is active on Ethereum mainnet, Polygon, and Arbitrum. 
+Quite the multi-chain portfolio - diversification at its finest!"
+```
+
+**💎 NFT Analysis**:
+```
+User: "Show me the NFTs in wallet 0x123..."
+Agent: "Scanning NFT collections... Found 12 unique collections including 
+3 CryptoPunks, 5 BAYC, and several rare art pieces. Total estimated value: $47,230"
+```
+
+**⚠️ Security Analysis**:
+```
+User: "Check token approvals for my wallet"
+Agent: "Security scan complete. Found 7 active approvals including unlimited 
+USDC approval to Uniswap V3. Consider revoking the 2-year-old approval 
+to that unknown DeFi protocol for better security."
+```
+
+### **Enterprise-Grade Capabilities**
+- **Rate Limiting**: Built-in API rate limiting for reliable performance
+- **Error Handling**: Graceful handling of network issues and invalid inputs
+- **Caching**: Intelligent caching for frequently requested data
+- **Multi-Format Support**: Supports various address formats (ENS, checksummed addresses)
+
+### **Developer Integration**
+Access these tools directly via REST API endpoints:
+```bash
+# Direct API access (no AI agent required)
+GET /wallet/{address}/activity
+GET /wallet/{address}/balance/{chainId}
+GET /wallet/{address}/transactions/{chainId}
+GET /wallet/{address}/nfts/{chainId}
+GET /wallet/{address}/approvals/{chainId}
+GET /wallet/btc/{xpub}/hd_wallets/{chainId}
+```
+
+*See full API documentation in [`main.js`](./agent-server/main.js) lines 1184-1597*
 
 ---
 
