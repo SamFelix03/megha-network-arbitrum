@@ -6,7 +6,7 @@ DEVICE_DETAILS_FILE="device_details.json"
 WALLET_FILE="wallet.txt"
 METADATA_FILE="device_metadata.json"
 API_PORT=8080
-REGISTRY_CONTRACT="0xE25e41F820d4AA90Ad0C49001ecb143DD5B46Ea7"
+REGISTRY_CONTRACT="0xe6692b5e9a229E66569f3d94092ad301D1fE6B43"
 RPC_URL="https://sepolia-rollup.arbitrum.io/rpc"
 MAX_POLL_ATTEMPTS=60
 POLL_INTERVAL=30
@@ -470,7 +470,7 @@ check_registry_registration() {
               { 'internalType': 'string', 'name': 'ngrokLink', 'type': 'string' },
               { 'internalType': 'string', 'name': 'hostingFee', 'type': 'string' }
             ],
-            'internalType': 'struct Registry.Device[]',
+            'internalType': 'struct meghanetwork.Device[]',
             'name': '',
             'type': 'tuple[]'
           }
@@ -553,7 +553,7 @@ update_device_ngrok_link() {
               { 'internalType': 'string', 'name': 'ngrokLink', 'type': 'string' },
               { 'internalType': 'string', 'name': 'hostingFee', 'type': 'string' }
             ],
-            'internalType': 'struct Registry.Device[]',
+            'internalType': 'struct meghanetwork.Device[]',
             'name': '',
             'type': 'tuple[]'
           }

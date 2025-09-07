@@ -10,7 +10,7 @@ const COVALENT_API_KEY = 'cqt_rQ74pJpygBVcWprTpbDrr6GrwPG9';
 const PORT = 8080;
 
 // Registry contract configuration
-const REGISTRY_CONTRACT = "0xE25e41F820d4AA90Ad0C49001ecb143DD5B46Ea7";
+const REGISTRY_CONTRACT = "0xe6692b5e9a229E66569f3d94092ad301D1fE6B43";
 const RPC_URL = "https://sepolia-rollup.arbitrum.io/rpc";
 const REGISTRY_ABI = [{"inputs":[{"internalType":"string","name":"_uuid","type":"string"}],"name":"getAgentByUUID","outputs":[{"components":[{"internalType":"string","name":"uuid","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"description","type":"string"},{"internalType":"string","name":"personality","type":"string"},{"internalType":"string","name":"scenario","type":"string"},{"internalType":"string","name":"messageExample","type":"string"},{"internalType":"string[]","name":"tools","type":"string[]"},{"internalType":"string","name":"imageUrl","type":"string"},{"internalType":"address","name":"ownerAddress","type":"address"}],"internalType":"struct Registry.Agent","name":"","type":"tuple"}],"stateMutability":"view","type":"function"}];
 
