@@ -20,7 +20,7 @@ const HeroAnimation = () => {
         {Array.from({ length: 30 }).map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-franky-cyan rounded-full opacity-60 animate-float"
+            className="absolute w-1 h-1 bg-franky-blue rounded-full opacity-60 animate-float"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -32,17 +32,17 @@ const HeroAnimation = () => {
       </div>
 
       {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl bg-franky-orange animate-pulse-slow" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl bg-franky-purple animate-pulse-slow" />
       <div
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-15 blur-3xl bg-franky-cyan animate-pulse-slow"
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-15 blur-3xl bg-franky-blue animate-pulse-slow"
         style={{ animationDelay: "1s" }}
       />
 
       {/* Cyberpunk scanning lines */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-franky-orange to-transparent opacity-50 animate-glow" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-franky-purple to-transparent opacity-50 animate-glow" />
         <div
-          className="absolute bottom-0 right-0 w-px h-full bg-gradient-to-t from-transparent via-franky-cyan to-transparent opacity-50 animate-glow"
+          className="absolute bottom-0 right-0 w-px h-full bg-gradient-to-t from-transparent via-franky-blue to-transparent opacity-50 animate-glow"
           style={{ animationDelay: "1s" }}
         />
       </div>

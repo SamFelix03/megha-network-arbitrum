@@ -62,7 +62,7 @@ export default function DashboardPage() {
             transition={{ duration: 0.5 }}
           >
             <div className="mb-2 text-center">
-              <div className="inline-block p-4 bg-franky-cyan/10 rounded-full mb-4">
+              <div className="inline-block p-4 bg-franky-blue/10 rounded-full mb-4">
                 <svg
                   width="48"
                   height="48"
@@ -86,16 +86,16 @@ export default function DashboardPage() {
 
               <div className="flex justify-center">
                 {accountId ? (
-                  <div className="mb-6 p-3 rounded-lg bg-franky-cyan/10 border border-stone-800">
+                  <div className="mb-6 p-3 rounded-lg bg-franky-blue/10 border border-stone-800">
                     <div className="flex items-center">
-                      <div className="flex justify-center items-center h-8 w-8 rounded-full bg-franky-cyan/20 mr-3">
+                      <div className="flex justify-center items-center h-8 w-8 rounded-full bg-franky-blue/20 mr-3">
                         <svg
                           width="16"
                           height="16"
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
-                          className="text-franky-cyan"
+                          className="text-franky-blue"
                         >
                           <path
                             d="M5 13l4 4L19 7"
@@ -107,7 +107,7 @@ export default function DashboardPage() {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-franky-cyan font-medium font-sen">
+                        <p className="text-franky-blue font-medium font-sen">
                           Wallet connected
                         </p>
                         <p className="text-xs text-gray-400 font-sen">
@@ -146,10 +146,10 @@ export default function DashboardPage() {
                     height={20}
                     className="rounded-full"
                   />
-                  <span className="text-franky-cyan text-xl font-medium font-sen">
+                  <span className="text-franky-blue text-xl font-medium font-sen">
                     {parseFloat(balance).toFixed(3)}
                   </span>
-                  <span className="text-franky-cyan/70 text-xl font-sen">
+                  <span className="text-franky-blue/70 text-xl font-sen">
                     ETH
                   </span>
                 </div>
@@ -160,11 +160,11 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
                 <Link href="/profile/agents">
                   <motion.div
-                    className="flex flex-col items-center justify-center p-6 bg-franky-cyan/5 border border-stone-800 rounded-lg hover:bg-franky-cyan/10 transition-colors cursor-pointer"
+                    className="flex flex-col items-center justify-center p-6 bg-franky-purple/5 border border-stone-800 rounded-lg hover:bg-franky-purple/10 transition-colors cursor-pointer"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    <div className="w-14 h-14 flex items-center justify-center bg-franky-cyan/10 rounded-full mb-3">
+                    <div className="w-14 h-14 flex items-center justify-center bg-franky-blue/10 rounded-full mb-3">
                       <svg
                         width="28"
                         height="28"
@@ -197,11 +197,11 @@ export default function DashboardPage() {
 
                 <Link href="/profile/devices">
                   <motion.div
-                    className="flex flex-col items-center justify-center p-6 bg-franky-cyan/5 border border-stone-800 rounded-lg hover:bg-franky-cyan/10 transition-colors cursor-pointer"
+                    className="flex flex-col items-center justify-center p-6 bg-franky-purple/5 border border-stone-800 rounded-lg hover:bg-franky-purple/10 transition-colors cursor-pointer"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    <div className="w-14 h-14 flex items-center justify-center bg-franky-cyan/10 rounded-full mb-3">
+                    <div className="w-14 h-14 flex items-center justify-center bg-franky-blue/10 rounded-full mb-3">
                       <svg
                         width="28"
                         height="28"

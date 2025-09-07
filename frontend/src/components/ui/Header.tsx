@@ -98,12 +98,12 @@ export default function Header() {
                 className="rounded-full"
               />
               <span
-                className="ml-4 text-2xl font-bold gradient-franky-text font-desc "
+                className="ml-4 text-2xl font-bold gradient-franky-text font-space-grotesk"
                 style={{
-                  letterSpacing: "0.2em",
+                  letterSpacing: "0.1em",
                 }}
               >
-                frankyagent.xyz
+                megha network
               </span>
             </motion.div>
           </Link>
@@ -127,10 +127,10 @@ export default function Header() {
                       height={20}
                       className="mr-1"
                     />
-                    <span className="text-franky-cyan font-medium font-sen">
+                    <span className="text-franky-blue font-medium font-sen">
                       {parseFloat(usdcBalance).toFixed(2)}
                     </span>
-                    <span className="text-franky-cyan/70 font-sen text-sm">
+                    <span className="text-franky-blue/70 font-sen text-sm">
                       USDC
                     </span>
                   </div>
@@ -141,7 +141,7 @@ export default function Header() {
                 {accountId && (
                   <div
                     ref={userProfileRef}
-                    className="flex space-x-3 items-center cursor-pointer text-gray-300 hover:text-franky-cyan transition-colors font-sen"
+                    className="flex space-x-3 items-center cursor-pointer text-gray-300 hover:text-franky-blue transition-colors font-sen"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
@@ -165,19 +165,19 @@ export default function Header() {
                           <div className="card-cyber overflow-hidden flex flex-col min-w-[160px] !p-2">
                             {/* Profile option */}
                             <Link href="/profile">
-                              <div className="cursor-pointer flex space-x-2 items-center hover:bg-franky-cyan/10 p-2 text-gray-300 hover:text-franky-cyan transition-all font-sen w-full">
+                              <div className="cursor-pointer flex space-x-2 items-center hover:bg-franky-blue/10 p-2 text-gray-300 hover:text-franky-blue transition-all font-sen w-full">
                                 <UserCircle size={20} />
                                 <p className="text-sm">Profile</p>
                               </div>
                             </Link>
 
-                            <div className="h-px bg-franky-cyan/20"></div>
+                            <div className="h-px bg-franky-blue/20"></div>
 
                             <div
                               onClick={() => {
                                 disconnect();
                               }}
-                              className="cursor-pointer flex space-x-2 items-center hover:bg-franky-orange/10 p-2 text-gray-300 hover:text-franky-orange transition-all font-sen w-full"
+                              className="cursor-pointer flex space-x-2 items-center hover:bg-franky-purple/10 p-2 text-gray-300 hover:text-franky-purple transition-all font-sen w-full"
                             >
                               <LogOut size={20} />
                               <p className="text-sm">Log out</p>

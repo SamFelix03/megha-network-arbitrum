@@ -35,11 +35,11 @@ const CodeBlock = ({ code }: { code: string }) => {
   return (
     <div className="relative mt-3 mb-6 rounded-lg overflow-hidden w-full">
       <div className="card-cyber p-5 font-mono text-sm md:text-base overflow-x-auto">
-        <code className="text-franky-cyan font-sen">{code}</code>
+        <code className="text-franky-blue font-sen">{code}</code>
       </div>
       <button
         onClick={copyToClipboard}
-        className="absolute top-3 right-3 p-2 rounded-md bg-black/50 hover:bg-black/80 text-franky-cyan transition-colors glow-cyan"
+        className="absolute top-3 right-3 p-2 rounded-md bg-black/50 hover:bg-black/80 text-franky-blue transition-colors glow-blue"
         aria-label="Copy to clipboard"
       >
         {copied ? <FiCheck /> : <FiCopy />}
@@ -68,7 +68,7 @@ const InstructionStep = ({
       className="mb-6 card-cyber"
     >
       <div className="flex items-center mb-3">
-        <div className="flex justify-center items-center h-10 w-10 rounded-full bg-franky-cyan-20 text-franky-cyan mr-3 animate-glow">
+        <div className="flex justify-center items-center h-10 w-10 rounded-full bg-franky-blue-20 text-franky-blue mr-3 animate-glow">
           {icon}
         </div>
         <h3 className="text-lg font-bold gradient-franky-text font-sen">
@@ -99,7 +99,7 @@ const DeployDeviceInfo = () => {
           terminal emulator that allows you to run Linux commands:
         </p>
         <div
-          className="mt-3 relative w-full border border-franky-cyan-30 rounded-lg overflow-hidden"
+          className="mt-3 relative w-full border border-franky-blue-30 rounded-lg overflow-hidden"
           style={{ paddingBottom: "56.25%" }}
         >
           <iframe
@@ -110,8 +110,8 @@ const DeployDeviceInfo = () => {
             allowFullScreen
           ></iframe>
         </div>
-        <div className="mt-4 p-4 bg-franky-yellow-20 border border-franky-yellow-30 rounded-lg">
-          <p className="text-franky-yellow font-sen">
+        <div className="mt-4 p-4 bg-franky-indigo-20 border border-franky-indigo-30 rounded-lg">
+          <p className="text-franky-indigo font-sen">
             <strong>Important:</strong> Make sure the qwen2.5:3b model is
             installed on your device before proceeding. This is required for
             Franky to function properly.
@@ -304,7 +304,7 @@ export default function ChatInterface({
     >
       {isOpen && (
         <>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-franky-cyan-10 blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-franky-blue-10 blur-3xl" />
 
           <div className="relative z-10 max-w-4xl mx-auto p-6">
             <div className="flex flex-col justify-center w-full h-[80vh] max-w-3xl px-4 pt-20 pb-8 mx-auto">
@@ -387,7 +387,7 @@ export default function ChatInterface({
                                   {[0, 1, 2].map((dot) => (
                                     <motion.div
                                       key={dot}
-                                      className="w-2 h-2 rounded-full bg-franky-cyan animate-glow"
+                                      className="w-2 h-2 rounded-full bg-franky-blue animate-glow"
                                       animate={{
                                         opacity: [0.3, 1, 0.3],
                                         scale: [0.8, 1.2, 0.8],
@@ -434,7 +434,7 @@ export default function ChatInterface({
                       <button
                         onClick={handleSend}
                         disabled={!input.trim() || isLoading}
-                        className={`p-1.5 rounded-md bg-franky-cyan hover:bg-franky-cyan/80 transition-colors ${
+                        className={`p-1.5 rounded-md bg-franky-purple hover:bg-franky-indigo transition-colors ${
                           !input.trim() || isLoading
                             ? "opacity-40 cursor-not-allowed"
                             : "opacity-100"
@@ -556,7 +556,7 @@ export default function ChatInterface({
 
             <div className="flex flex-col md:flex-row justify-center gap-6">
               <motion.button
-                className="py-2 px-4 text-franky-cyan hover:text-white border border-franky-cyan-30 rounded-lg transition-colors duration-300 font-sen"
+                className="py-2 px-4 text-franky-purple hover:text-white border border-franky-purple-30 rounded-lg transition-colors duration-300 font-sen"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onClose}

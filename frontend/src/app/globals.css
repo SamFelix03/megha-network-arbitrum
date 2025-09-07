@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Sen:wght@400..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Sen:wght@400..800&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,42 +19,42 @@
 }
 
 :root {
-  /* Brand colors */
-  --franky-orange: #ec4618;
-  --franky-cyan: #038fa8;
-  --franky-yellow: #f3d535;
-  --franky-green: #00ff88;
+  /* Brand colors - Dark Blue/Purple Theme */
+  --franky-purple: #8b5cf6;
+  --franky-blue: #60a5fa;
+  --franky-indigo: #4f46e5;
+  --franky-violet: #7c3aed;
 
   /* Brand colors with opacity */
-  --franky-orange-50: rgba(236, 70, 24, 0.5);
-  --franky-orange-30: rgba(236, 70, 24, 0.3);
-  --franky-orange-20: rgba(236, 70, 24, 0.2);
-  --franky-orange-10: rgba(236, 70, 24, 0.1);
+  --franky-purple-50: rgba(139, 92, 246, 0.5);
+  --franky-purple-30: rgba(139, 92, 246, 0.3);
+  --franky-purple-20: rgba(139, 92, 246, 0.2);
+  --franky-purple-10: rgba(139, 92, 246, 0.1);
 
-  --franky-cyan-50: rgba(3, 143, 168, 0.5);
-  --franky-cyan-30: rgba(3, 143, 168, 0.3);
-  --franky-cyan-20: rgba(3, 143, 168, 0.2);
-  --franky-cyan-10: rgba(3, 143, 168, 0.1);
+  --franky-blue-50: rgba(96, 165, 250, 0.5);
+  --franky-blue-30: rgba(96, 165, 250, 0.3);
+  --franky-blue-20: rgba(96, 165, 250, 0.2);
+  --franky-blue-10: rgba(96, 165, 250, 0.1);
 
-  --franky-yellow-50: rgba(243, 213, 53, 0.5);
-  --franky-yellow-30: rgba(243, 213, 53, 0.3);
-  --franky-yellow-20: rgba(243, 213, 53, 0.2);
-  --franky-yellow-10: rgba(243, 213, 53, 0.1);
+  --franky-indigo-50: rgba(79, 70, 229, 0.5);
+  --franky-indigo-30: rgba(79, 70, 229, 0.3);
+  --franky-indigo-20: rgba(79, 70, 229, 0.2);
+  --franky-indigo-10: rgba(79, 70, 229, 0.1);
 
-  --franky-green-50: rgba(0, 255, 136, 0.5);
-  --franky-green-30: rgba(0, 255, 136, 0.3);
-  --franky-green-20: rgba(0, 255, 136, 0.2);
-  --franky-green-10: rgba(0, 255, 136, 0.1);
+  --franky-violet-50: rgba(124, 58, 237, 0.5);
+  --franky-violet-30: rgba(124, 58, 237, 0.3);
+  --franky-violet-20: rgba(124, 58, 237, 0.2);
+  --franky-violet-10: rgba(124, 58, 237, 0.1);
 
   /* Background */
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
 
-  /* Legacy green theme support */
-  --primary-green: #00ff88;
+  /* Legacy purple theme support */
+  --primary-purple: #8b5cf6;
   --dark-bg: #0a0a0a;
-  --accent-green: #0f9d58;
+  --accent-purple: #7c3aed;
   --text-primary: #ffffff;
   --text-secondary: #aaaaaa;
 }
@@ -95,114 +95,132 @@ body {
     font-family: "Londrina Solid", serif;
   }
 
+  .font-orbitron {
+    font-family: "Orbitron", monospace;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .font-space-grotesk {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .font-jetbrains {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
   /* Brand color utilities */
-  .text-franky-orange {
-    color: var(--franky-orange);
+  .text-franky-purple {
+    color: var(--franky-purple);
   }
 
-  .text-franky-cyan {
-    color: var(--franky-cyan);
+  .text-franky-blue {
+    color: var(--franky-blue);
   }
 
-  .text-franky-yellow {
-    color: var(--franky-yellow);
+  .text-franky-indigo {
+    color: var(--franky-indigo);
   }
 
-  .text-franky-green {
-    color: var(--franky-green);
+  .text-franky-violet {
+    color: var(--franky-violet);
   }
 
-  .bg-franky-orange {
-    background-color: var(--franky-orange);
+  .bg-franky-purple {
+    background-color: var(--franky-purple);
   }
 
-  .bg-franky-cyan {
-    background-color: var(--franky-cyan);
+  .bg-franky-blue {
+    background-color: var(--franky-blue);
   }
 
-  .bg-franky-yellow {
-    background-color: var(--franky-yellow);
+  .bg-franky-indigo {
+    background-color: var(--franky-indigo);
   }
 
-  .bg-franky-green {
-    background-color: var(--franky-green);
+  .bg-franky-violet {
+    background-color: var(--franky-violet);
   }
 
-  .border-franky-orange {
-    border-color: var(--franky-orange);
+  .border-franky-purple {
+    border-color: var(--franky-purple);
   }
 
-  .border-franky-cyan {
-    border-color: var(--franky-cyan);
+  .border-franky-blue {
+    border-color: var(--franky-blue);
   }
 
-  .border-franky-yellow {
-    border-color: var(--franky-yellow);
+  .border-franky-indigo {
+    border-color: var(--franky-indigo);
   }
 
-  .border-franky-green {
-    border-color: var(--franky-green);
+  .border-franky-violet {
+    border-color: var(--franky-violet);
   }
 
   /* Opacity variants */
-  .text-franky-orange-50 {
-    color: var(--franky-orange-50);
+  .text-franky-purple-50 {
+    color: var(--franky-purple-50);
   }
 
-  .text-franky-cyan-50 {
-    color: var(--franky-cyan-50);
+  .text-franky-blue-50 {
+    color: var(--franky-blue-50);
   }
 
-  .bg-franky-orange-20 {
-    background-color: var(--franky-orange-20);
+  .bg-franky-purple-20 {
+    background-color: var(--franky-purple-20);
   }
 
-  .bg-franky-cyan-20 {
-    background-color: var(--franky-cyan-20);
+  .bg-franky-blue-20 {
+    background-color: var(--franky-blue-20);
   }
 
-  .bg-franky-orange-10 {
-    background-color: var(--franky-orange-10);
+  .bg-franky-purple-10 {
+    background-color: var(--franky-purple-10);
   }
 
-  .bg-franky-cyan-10 {
-    background-color: var(--franky-cyan-10);
+  .bg-franky-blue-10 {
+    background-color: var(--franky-blue-10);
   }
 
-  .border-franky-orange-50 {
-    border-color: var(--franky-orange-50);
+  .border-franky-purple-50 {
+    border-color: var(--franky-purple-50);
   }
 
-  .border-franky-cyan-50 {
-    border-color: var(--franky-cyan-50);
+  .border-franky-blue-50 {
+    border-color: var(--franky-blue-50);
   }
 
-  .border-franky-orange-30 {
-    border-color: var(--franky-orange-30);
+  .border-franky-purple-30 {
+    border-color: var(--franky-purple-30);
   }
 
-  .border-franky-cyan-30 {
-    border-color: var(--franky-cyan-30);
+  .border-franky-blue-30 {
+    border-color: var(--franky-blue-30);
   }
 
-  .border-franky-cyan-20 {
-    border-color: var(--franky-cyan-20);
+  .border-franky-blue-20 {
+    border-color: var(--franky-blue-20);
   }
 
   /* Gradient utilities */
   .gradient-franky {
     background: linear-gradient(
       45deg,
-      var(--franky-orange),
-      var(--franky-cyan)
+      var(--franky-purple),
+      var(--franky-blue)
     );
   }
 
   .gradient-franky-text {
     background: linear-gradient(
       45deg,
-      var(--franky-orange),
-      var(--franky-cyan)
+      var(--franky-purple),
+      var(--franky-blue)
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -212,18 +230,18 @@ body {
   .gradient-franky-full {
     background: linear-gradient(
       135deg,
-      var(--franky-orange) 0%,
-      var(--franky-cyan) 50%,
-      var(--franky-yellow) 100%
+      var(--franky-purple) 0%,
+      var(--franky-blue) 50%,
+      var(--franky-indigo) 100%
     );
   }
 
-  .gradient-green {
-    background: linear-gradient(45deg, var(--franky-green), #0f9d58);
+  .gradient-purple {
+    background: linear-gradient(45deg, var(--franky-purple), var(--franky-violet));
   }
 
-  .gradient-green-text {
-    background: linear-gradient(45deg, var(--franky-green), #0f9d58);
+  .gradient-purple-text {
+    background: linear-gradient(45deg, var(--franky-purple), var(--franky-violet));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -248,15 +266,15 @@ body {
 
   /* Effect utilities */
   .glow-franky {
-    box-shadow: 0 0 20px var(--franky-orange-30);
+    box-shadow: 0 0 20px var(--franky-purple-30);
   }
 
-  .glow-cyan {
-    box-shadow: 0 0 20px var(--franky-cyan-30);
+  .glow-blue {
+    box-shadow: 0 0 20px var(--franky-blue-30);
   }
 
-  .glow-green {
-    box-shadow: 0 0 20px var(--franky-green-30);
+  .glow-purple {
+    box-shadow: 0 0 20px var(--franky-purple-30);
   }
 
   .backdrop-cyber {
@@ -266,17 +284,17 @@ body {
 
   .grid-cyber {
     background-image: linear-gradient(
-        var(--franky-cyan-10) 1px,
+        var(--franky-blue-10) 1px,
         transparent 1px
       ),
-      linear-gradient(90deg, var(--franky-cyan-10) 1px, transparent 1px);
+      linear-gradient(90deg, var(--franky-blue-10) 1px, transparent 1px);
     background-size: 50px 50px;
   }
 
   .bg-cyber {
-    background: radial-gradient(ellipse at top left, rgba(236, 70, 24, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at top right, rgba(3, 143, 168, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom left, rgba(243, 213, 53, 0.08) 0%, transparent 50%),
+    background: radial-gradient(ellipse at top left, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
                 linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
     background-attachment: fixed;
   }
@@ -290,41 +308,56 @@ body {
 @layer components {
   /* Button components */
   .btn-franky {
-    @apply bg-gradient-to-r from-franky-orange to-red-600 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl;
-    border: 1px solid var(--franky-orange-30);
+    @apply bg-gradient-to-r from-franky-purple to-franky-blue text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl;
+    border: 1px solid var(--franky-purple-30);
+  }
+
+  .btn-franky:hover {
+    background: linear-gradient(45deg, var(--franky-purple), var(--franky-indigo));
+    color: white;
   }
 
   .btn-franky-outline {
-    @apply bg-transparent text-franky-orange font-bold px-6 py-3 rounded-lg transition-all duration-300 hover:bg-franky-orange hover:text-white;
-    border: 2px solid var(--franky-orange);
+    @apply bg-transparent text-franky-purple font-bold px-6 py-3 rounded-lg transition-all duration-300 hover:text-white;
+    border: 2px solid var(--franky-purple);
+  }
+
+  .btn-franky-outline:hover {
+    background-color: var(--franky-purple);
+    color: white;
   }
 
   .btn-cyber {
     @apply bg-black text-white font-bold px-8 py-4 rounded-md transition-all duration-300 hover:scale-105 relative overflow-hidden;
-    border: 1px solid var(--franky-cyan-50);
+    border: 1px solid var(--franky-blue-50);
+  }
+
+  .btn-cyber:hover {
+    background-color: var(--franky-blue-20);
+    color: white;
   }
 
   /* Card components */
   .card-cyber {
     @apply bg-black/50 backdrop-blur-md rounded-xl p-6;
-    border: 1px solid var(--franky-cyan-30);
+    border: 1px solid var(--franky-blue-30);
     backdrop-filter: blur(12px);
   }
 
   .card-glow {
     @apply bg-black/70 rounded-lg p-6;
-    border: 1px solid var(--franky-orange-30);
-    box-shadow: 0 0 20px var(--franky-orange-30);
+    border: 1px solid var(--franky-purple-30);
+    box-shadow: 0 0 20px var(--franky-purple-30);
   }
 
   /* Input components */
   .input-cyber {
     @apply bg-black/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none transition-colors;
-    border: 1px solid var(--franky-cyan-30);
+    border: 1px solid var(--franky-blue-30);
   }
 
   .input-cyber:focus {
-    border-color: var(--franky-cyan);
+    border-color: var(--franky-blue);
   }
 }
 
@@ -389,38 +422,38 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--franky-orange), var(--franky-cyan));
+  background: linear-gradient(180deg, var(--franky-purple), var(--franky-blue));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
-    var(--franky-yellow),
-    var(--franky-green)
+    var(--franky-indigo),
+    var(--franky-violet)
   );
 }
 
 /* Selection styling */
 ::selection {
-  background: var(--franky-cyan-30);
+  background: var(--franky-blue-30);
   color: white;
 }
 
 ::-moz-selection {
-  background: var(--franky-cyan-30);
+  background: var(--franky-blue-30);
   color: white;
 }
 
-/* Legacy support for existing green theme */
+/* Legacy support for existing purple theme */
 .cyberpunk-border {
   @apply rounded-lg;
-  border: 1px solid var(--franky-green-30);
-  box-shadow: 0 0 20px var(--franky-green-30);
+  border: 1px solid var(--franky-purple-30);
+  box-shadow: 0 0 20px var(--franky-purple-30);
 }
 
 .gradient-text {
-  @apply gradient-green-text;
+  @apply gradient-purple-text;
 }
 
 .grid-bg {

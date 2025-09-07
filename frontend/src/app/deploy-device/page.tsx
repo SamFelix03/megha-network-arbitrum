@@ -29,11 +29,11 @@ const CodeBlock = ({ code }: { code: string }) => {
   return (
     <div className="relative mt-3 mb-6 !rounded-none overflow-hidden w-full">
       <div className="card-cyber p-5 font-mono text-sm md:text-base overflow-x-auto rounded-none">
-        <code className="text-franky-cyan font-sen">{code}</code>
+        <code className="text-franky-blue font-sen">{code}</code>
       </div>
       <button
         onClick={copyToClipboard}
-        className="absolute top-3 right-3 p-2 rounded-md bg-black/50 hover:bg-black/80 text-franky-cyan transition-colors glow-cyan"
+        className="absolute top-3 right-3 p-2 rounded-md bg-black/50 hover:bg-black/80 text-franky-blue transition-colors glow-cyan"
         aria-label="Copy to clipboard"
       >
         {copied ? <FiCheck /> : <FiCopy />}
@@ -63,7 +63,7 @@ const InstructionStep = ({
       className="mb-12 card-cyber rounded-none"
     >
       <div className="flex items-center mb-5">
-        <div className="flex justify-center items-center h-12 w-12 rounded-full bg-franky-cyan-20 text-franky-cyan mr-4 animate-glow">
+        <div className="flex justify-center items-center h-12 w-12 rounded-full bg-franky-blue-20 text-franky-blue mr-4 animate-glow">
           {icon}
         </div>
         <h3 className="text-2xl font-bold gradient-franky-text font-sen">
@@ -102,7 +102,7 @@ const Background = () => {
               fill="none"
               stroke="currentColor"
               strokeWidth="1"
-              className="text-franky-cyan"
+              className="text-franky-blue"
             />
           </pattern>
         </defs>
@@ -111,7 +111,7 @@ const Background = () => {
 
       {/* Animated glow spots */}
       <motion.div
-        className="absolute w-96 h-96 rounded-full bg-franky-cyan-20 blur-3xl"
+        className="absolute w-96 h-96 rounded-full bg-franky-blue-20 blur-3xl"
         style={{ top: "30%", left: "60%" }}
         animate={{
           scale: [1, 1.2, 1],
@@ -125,7 +125,7 @@ const Background = () => {
       />
 
       <motion.div
-        className="absolute w-64 h-64 rounded-full bg-franky-orange-20 blur-3xl"
+        className="absolute w-64 h-64 rounded-full bg-franky-purple-20 blur-3xl"
         style={{ bottom: "20%", left: "30%" }}
         animate={{
           scale: [1, 1.3, 1],
@@ -159,7 +159,7 @@ export default function DeployDevice() {
             </h1>
             <p className="text-xl mb-12 text-gray-400 max-w-4xl mx-auto font-desc">
               Transform your old mobile device into an{" "}
-              <span className="text-franky-cyan">AI agent</span> in ten minutes.
+              <span className="text-franky-blue">AI agent</span> in ten minutes.
               Follow the instructions below to get started.
             </p>
           </motion.div>
@@ -179,7 +179,7 @@ export default function DeployDevice() {
               Android terminal emulator that allows you to run Linux commands:
             </p>
 
-            <div className="relative pb-[56.25%] h-0 rounded-lg overflow-hidden mb-4 border border-franky-cyan-30">
+            <div className="relative pb-[56.25%] h-0 rounded-lg overflow-hidden mb-4 border border-franky-blue-30">
               <iframe
                 className="absolute top-0 left-0 w-full h-full border-0"
                 src="https://www.youtube.com/embed/s3TXc-jiQ40"
@@ -188,8 +188,8 @@ export default function DeployDevice() {
                 allowFullScreen
               ></iframe>
             </div>
-            <div className="mt-4 p-4 bg-franky-yellow-20 border border-stone-800 rounded-lg">
-              <p className="text-franky-yellow font-sen">
+            <div className="mt-4 p-4 bg-franky-indigo-20 border border-stone-800 rounded-lg">
+              <p className="text-franky-indigo font-sen">
                 <strong>Important:</strong> Make sure the qwen2.5:3b model is
                 installed on your device before proceeding. This is required for
                 Franky to function properly.
@@ -213,7 +213,7 @@ export default function DeployDevice() {
 
       <Suspense
         fallback={
-          <div className="p-6 text-center text-franky-cyan font-sen">
+          <div className="p-6 text-center text-franky-blue font-sen">
             Loading device verification...
           </div>
         }

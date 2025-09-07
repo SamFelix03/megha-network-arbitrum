@@ -109,14 +109,14 @@ function ConstructionZone({
             onClick={() => onToolToggle(tool.id)}
             className={`p-4 rounded-lg border cursor-pointer transition-all duration-300 font-sen ${
               isSelected
-                ? "bg-franky-cyan-20 border-franky-cyan glow-cyan"
-                : "card-cyber hover:bg-franky-cyan-10"
+                ? "bg-franky-blue-20 border-franky-blue glow-cyan"
+                : "card-cyber hover:bg-franky-blue-10"
             }`}
           >
             <div className="flex items-center">
               <span className="text-2xl mr-3">{tool.icon}</span>
               <div>
-                <h3 className="text-franky-cyan font-medium">{tool.name}</h3>
+                <h3 className="text-franky-blue font-medium">{tool.name}</h3>
                 <p className="text-sm text-gray-400">{tool.description}</p>
               </div>
             </div>
@@ -171,7 +171,7 @@ function CharacterBuilder({
 
   return (
     <div className="card-cyber">
-      <h2 className="text-xl font-semibold text-franky-cyan mb-4 font-sen">
+      <h2 className="text-xl font-semibold text-franky-blue mb-4 font-sen">
         Character Builder
       </h2>
 
@@ -185,7 +185,7 @@ function CharacterBuilder({
             name="name"
             value={characterData.name}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             placeholder="Agent name"
           />
         </div>
@@ -198,7 +198,7 @@ function CharacterBuilder({
             name="description"
             value={characterData.description}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             rows={3}
             placeholder="Describe your agent"
           />
@@ -213,7 +213,7 @@ function CharacterBuilder({
             name="personality"
             value={characterData.personality}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             placeholder="Personality traits"
           />
         </div>
@@ -226,7 +226,7 @@ function CharacterBuilder({
             name="scenario"
             value={characterData.scenario}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             rows={3}
             placeholder="Usage scenario"
           />
@@ -240,7 +240,7 @@ function CharacterBuilder({
             name="first_mes"
             value={characterData.first_mes}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             rows={2}
             placeholder="First message from agent"
           />
@@ -254,7 +254,7 @@ function CharacterBuilder({
             name="mes_example"
             value={characterData.mes_example}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             rows={2}
             placeholder="Example message"
           />
@@ -268,7 +268,7 @@ function CharacterBuilder({
             name="creatorcomment"
             value={characterData.creatorcomment}
             onChange={handleChange}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             rows={2}
             placeholder="Notes about your agent"
           />
@@ -282,7 +282,7 @@ function CharacterBuilder({
             type="text"
             value={characterData.tags.join(", ")}
             onChange={handleTags}
-            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-cyan font-sen"
+            className="w-full p-2 rounded-lg card-cyber text-white focus:outline-none focus:ring-2 focus:ring-franky-blue font-sen"
             placeholder="helpful, trading, defi"
           />
         </div>
@@ -300,7 +300,7 @@ function CharacterBuilder({
             onChange={handleTalkativeness}
             className="w-full"
           />
-          <span className="text-franky-cyan text-sm">
+          <span className="text-franky-blue text-sm">
             {characterData.talkativeness}
           </span>
         </div>
@@ -350,36 +350,36 @@ function AgentCreationSuccessModal({
         </h3>
 
         {/* Success status card */}
-        <div className="p-3 rounded-lg bg-franky-cyan-10 border border-franky-cyan-30 mb-4">
+        <div className="p-3 rounded-lg bg-franky-blue-10 border border-franky-blue-30 mb-4">
           <div className="flex items-center mb-1">
-            <div className="flex justify-center items-center h-6 w-6 rounded-full bg-franky-cyan-20 mr-2">
-              <FiCheck className="text-franky-cyan text-sm" />
+            <div className="flex justify-center items-center h-6 w-6 rounded-full bg-franky-blue-20 mr-2">
+              <FiCheck className="text-franky-blue text-sm" />
             </div>
-            <span className="text-franky-cyan text-sm font-medium font-sen">Deployment Status</span>
-            <span className="ml-auto text-xs bg-franky-cyan-20 px-2 py-0.5 rounded-full text-franky-cyan">
+            <span className="text-franky-blue text-sm font-medium font-sen">Deployment Status</span>
+            <span className="ml-auto text-xs bg-franky-blue-20 px-2 py-0.5 rounded-full text-franky-blue">
               Complete
             </span>
           </div>
           <div className="text-xs text-gray-400 ml-8">
             <p className="flex justify-between">
               <span className="text-gray-300 font-sen">Agent ID:</span>
-              <span className="text-franky-cyan font-sen font-mono text-xs">
+              <span className="text-franky-blue font-sen font-mono text-xs">
                 {agentResult.uuid.substring(0, 8)}...{agentResult.uuid.substring(agentResult.uuid.length - 4)}
               </span>
             </p>
             <p className="flex justify-between mt-1">
               <span className="text-gray-300 font-sen">Name:</span>
-              <span className="text-franky-cyan font-sen">{agentResult.name}</span>
+              <span className="text-franky-blue font-sen">{agentResult.name}</span>
             </p>
           </div>
         </div>
 
         {/* Agent capabilities in accordion style */}
         <div className="space-y-2 mb-4">
-          <details className="group rounded-lg bg-black/50 border border-franky-cyan-20 overflow-hidden">
+          <details className="group rounded-lg bg-black/50 border border-franky-blue-20 overflow-hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between p-2 font-medium font-sen">
               <div className="flex items-center">
-                <span className="text-franky-cyan mr-2">🤖</span>
+                <span className="text-franky-blue mr-2">🤖</span>
                 <span>Agent Profile</span>
               </div>
               <span className="transition group-open:rotate-180">
@@ -389,31 +389,31 @@ function AgentCreationSuccessModal({
               </span>
             </summary>
             <div className="p-2 pt-0 text-xs space-y-1">
-              <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+              <div className="flex justify-between py-1 border-t border-franky-blue-20">
                 <span className="text-gray-400 font-sen">Name</span>
-                <span className="text-franky-cyan font-sen">{agentResult.name}</span>
+                <span className="text-franky-blue font-sen">{agentResult.name}</span>
               </div>
-              <div className="py-1 border-t border-franky-cyan-20">
+              <div className="py-1 border-t border-franky-blue-20">
                 <span className="text-gray-400 font-sen block mb-1">Description</span>
-                <span className="text-franky-cyan font-sen text-xs leading-relaxed">{agentResult.description}</span>
+                <span className="text-franky-blue font-sen text-xs leading-relaxed">{agentResult.description}</span>
               </div>
               {agentResult.imageUrl && (
-                <div className="flex justify-between py-1 border-t border-franky-cyan-20 items-center">
+                <div className="flex justify-between py-1 border-t border-franky-blue-20 items-center">
                   <span className="text-gray-400 font-sen">Avatar</span>
                   <img
                     src={agentResult.imageUrl}
                     alt="Agent avatar"
-                    className="w-6 h-6 rounded-full object-cover border border-franky-cyan"
+                    className="w-6 h-6 rounded-full object-cover border border-franky-blue"
                   />
                 </div>
               )}
             </div>
           </details>
 
-          <details className="group rounded-lg bg-black/50 border border-franky-cyan-20 overflow-hidden">
+          <details className="group rounded-lg bg-black/50 border border-franky-blue-20 overflow-hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between p-2 font-medium font-sen">
               <div className="flex items-center">
-                <span className="text-franky-cyan mr-2">⚡</span>
+                <span className="text-franky-blue mr-2">⚡</span>
                 <span>Agent Capabilities ({agentResult.tools.length})</span>
               </div>
               <span className="transition group-open:rotate-180">
@@ -425,12 +425,12 @@ function AgentCreationSuccessModal({
             <div className="p-2 pt-0 space-y-2">
               <div className="grid grid-cols-1 gap-2">
                 {agentResult.tools.map((tool, index) => (
-                  <div key={index} className="flex items-center p-2 rounded bg-franky-cyan-10 border border-franky-cyan-20">
-                    <div className="w-6 h-6 bg-franky-cyan rounded-full mr-3 flex items-center justify-center flex-shrink-0">
+                  <div key={index} className="flex items-center p-2 rounded bg-franky-blue-10 border border-franky-blue-20">
+                    <div className="w-6 h-6 bg-franky-blue rounded-full mr-3 flex items-center justify-center flex-shrink-0">
                       <span className="text-black text-xs font-bold">⚡</span>
                     </div>
                     <div className="flex-1">
-                      <span className="text-franky-cyan font-sen text-sm font-medium">{tool}</span>
+                      <span className="text-franky-blue font-sen text-sm font-medium">{tool}</span>
                       <div className="flex items-center mt-1">
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full mr-1 animate-pulse"></div>
                         <span className="text-green-300 text-xs font-sen">Active</span>
@@ -439,10 +439,10 @@ function AgentCreationSuccessModal({
                   </div>
                 ))}
               </div>
-              <div className="mt-3 p-2 rounded bg-black/30 border border-franky-cyan">
+              <div className="mt-3 p-2 rounded bg-black/30 border border-franky-blue">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-300 font-sen text-xs">Total Capabilities:</span>
-                  <span className="text-franky-cyan font-sen text-sm font-bold">{agentResult.tools.length}</span>
+                  <span className="text-franky-blue font-sen text-sm font-bold">{agentResult.tools.length}</span>
                 </div>
                 <p className="text-gray-400 font-sen text-xs mt-1 italic">
                   Ready to handle blockchain analysis requests
@@ -456,17 +456,17 @@ function AgentCreationSuccessModal({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="p-3 rounded-lg bg-franky-cyan-10 border border-franky-cyan-30 text-center mb-4"
+          className="p-3 rounded-lg bg-franky-blue-10 border border-franky-blue-30 text-center mb-4"
         >
-          <FiCheck className="text-franky-cyan mx-auto text-xl mb-1" />
-          <p className="text-franky-cyan font-medium text-sm font-sen">Agent deployment confirmed!</p>
+          <FiCheck className="text-franky-blue mx-auto text-xl mb-1" />
+          <p className="text-franky-blue font-medium text-sm font-sen">Agent deployment confirmed!</p>
           
-          <div className="mt-2 text-xs text-franky-cyan">
+          <div className="mt-2 text-xs text-franky-blue">
             <p className="font-sen">Transaction confirmed on-chain</p>
             <div className="flex items-center justify-center gap-2 mt-1">
               <button
                 onClick={() => copyToClipboard(agentResult.txHash)}
-                className="text-franky-cyan underline hover:text-white text-xs font-sen"
+                className="text-franky-blue underline hover:text-white text-xs font-sen"
               >
                 Copy Hash
               </button>
@@ -475,7 +475,7 @@ function AgentCreationSuccessModal({
                 href={`https://sepolia.arbiscan.io/tx/${agentResult.txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-franky-cyan underline hover:text-white text-xs font-sen"
+                className="text-franky-blue underline hover:text-white text-xs font-sen"
               >
                 View on Explorer
               </a>
@@ -484,10 +484,10 @@ function AgentCreationSuccessModal({
         </motion.div>
 
         {/* Action button */}
-        <div className="pt-4 border-t border-franky-cyan-20">
+        <div className="pt-4 border-t border-franky-blue-20">
           <button
             onClick={onClose}
-            className="w-full py-3 rounded-lg bg-franky-cyan text-black font-medium hover:bg-franky-cyan/90 transition-colors font-sen"
+            className="w-full py-3 rounded-lg bg-franky-purple text-white font-medium hover:bg-franky-indigo transition-colors font-sen"
           >
             Continue to Homepage
           </button>
@@ -669,12 +669,12 @@ export default function CreateAgent() {
             className="flex justify-center"
           >
             <div className="card-cyber max-w-sm">
-              <h3 className="text-lg font-semibold text-franky-cyan mb-4 font-sen text-center">
+              <h3 className="text-lg font-semibold text-franky-blue mb-4 font-sen text-center">
                 Agent Avatar
               </h3>
               
               <div className="mb-4 flex justify-center">
-                <label className="flex items-center justify-center w-32 h-32 border-2 border-dashed border-franky-cyan-30 rounded-full cursor-pointer hover:border-franky-cyan transition-colors bg-cyber relative overflow-hidden">
+                <label className="flex items-center justify-center w-32 h-32 border-2 border-dashed border-franky-purple-30 rounded-full cursor-pointer hover:border-franky-purple transition-colors bg-cyber relative overflow-hidden">
                   {imageUrl ? (
                     <img
                       src={imageUrl}
@@ -683,7 +683,7 @@ export default function CreateAgent() {
                     />
                   ) : (
                     <div className="flex flex-col items-center justify-center w-full h-full">
-                      <FiUploadCloud className="mx-auto text-3xl text-franky-cyan mb-2" />
+                      <FiUploadCloud className="mx-auto text-3xl text-franky-blue mb-2" />
                       <span className="text-xs text-gray-400 font-sen">
                         Click to upload
                       </span>
@@ -718,7 +718,7 @@ export default function CreateAgent() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="card-cyber">
-              <h3 className="text-xl font-semibold text-franky-cyan mb-6 font-sen text-center">
+              <h3 className="text-xl font-semibold text-franky-blue mb-6 font-sen text-center">
                 Available Tools ({selectedTools.length} selected)
               </h3>
               <ConstructionZone
@@ -738,7 +738,7 @@ export default function CreateAgent() {
             <motion.button
               onClick={handleCreateAgent}
               disabled={isCreating || !accountId}
-              className="w-full max-w-md py-4 bg-franky-orange text-black rounded-lg font-bold text-lg hover:bg-franky-orange/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen"
+              className="w-full max-w-md py-4 bg-franky-purple text-black rounded-lg font-bold text-lg hover:bg-franky-purple/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

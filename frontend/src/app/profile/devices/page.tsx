@@ -125,7 +125,7 @@ export default function DevicesPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Link href="/profile" className="inline-flex items-center text-franky-cyan/80 hover:text-franky-cyan transition-colors font-sen">
+            <Link href="/profile" className="inline-flex items-center text-franky-blue/80 hover:text-franky-blue transition-colors font-sen">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
                 <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -136,7 +136,7 @@ export default function DevicesPage() {
 
         {accountId && loading && (
           <div className="text-center py-20 text-white/70">
-            <div className="w-12 h-12 border-4 border-franky-cyan/20 border-t-franky-cyan rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-12 h-12 border-4 border-franky-blue/20 border-t-franky-blue rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-xl font-sen">Loading your devices...</p>
           </div>
         )}
@@ -147,7 +147,7 @@ export default function DevicesPage() {
             <p className="text-sm mt-2 font-sen">{error}</p>
             <button
               onClick={() => fetchDevices(accountId || '')}
-              className="mt-4 px-4 py-2 bg-franky-cyan-20 text-franky-cyan rounded-lg hover:bg-franky-cyan-30 transition-colors font-sen"
+              className="mt-4 px-4 py-2 bg-franky-purple-20 text-franky-purple rounded-lg hover:bg-franky-purple hover:text-white transition-colors font-sen"
             >
               Try Again
             </button>
@@ -164,7 +164,7 @@ export default function DevicesPage() {
                   </p>
                   <Link href="/deploy-device">
                     <motion.button
-                      className="px-6 py-2 rounded-none bg-franky-cyan-20 border border-franky-cyan-50 text-franky-cyan hover:bg-franky-cyan-30 transition-colors font-sen"
+                      className="px-6 py-2 rounded-none bg-franky-purple-20 border border-franky-purple-50 text-franky-purple hover:bg-franky-purple hover:text-white transition-colors font-sen"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -188,7 +188,7 @@ export default function DevicesPage() {
                       transition={{ duration: 0.5 }}
                     >
                       <div className="flex items-center mb-4">
-                        <div className="flex justify-center items-center h-12 w-12 rounded-full bg-franky-cyan-20 text-franky-cyan mr-4 animate-glow group-hover:text-franky-orange transition-colors">
+                        <div className="flex justify-center items-center h-12 w-12 rounded-full bg-franky-blue-20 text-franky-blue mr-4 animate-glow group-hover:text-franky-purple transition-colors">
                           <FiSmartphone className="text-xl" />
                         </div>
                         <div>
@@ -196,7 +196,7 @@ export default function DevicesPage() {
                             {device.deviceModel || "Unknown Device"}
                           </h3>
                           <div className="flex items-center mt-1">
-                            <span className="inline-block w-2 h-2 rounded-full bg-franky-cyan animate-glow mr-2"></span>
+                            <span className="inline-block w-2 h-2 rounded-full bg-franky-blue animate-glow mr-2"></span>
                             <span className="text-sm text-gray-400 font-sen">
                               Active • {device.os}
                             </span>
@@ -205,34 +205,34 @@ export default function DevicesPage() {
                       </div>
                       <div className="space-y-3 flex-grow">
                         <div className="flex items-center text-gray-300 font-sen">
-                          <FiCpu className="mr-2 text-franky-cyan" />
+                          <FiCpu className="mr-2 text-franky-blue" />
                           <span>
                             CPU: {device.cpu || "Unknown"}
                           </span>
                         </div>
                         <div className="flex items-center text-gray-300 font-sen">
-                          <FiServer className="mr-2 text-franky-cyan" />
+                          <FiServer className="mr-2 text-franky-blue" />
                           <span>
                             RAM: {device.ram || "Unknown"}
                           </span>
                         </div>
                         <div className="flex items-center text-gray-300 font-sen">
-                          <FiHardDrive className="mr-2 text-franky-cyan" />
+                          <FiHardDrive className="mr-2 text-franky-blue" />
                           <span>
                             Storage: {device.storageCapacity || "Unknown"}
                           </span>
                         </div>
                         <div className="flex items-start text-gray-300 font-sen">
-                          <FiLink className="mr-2 text-franky-cyan mt-1 flex-shrink-0" />
+                          <FiLink className="mr-2 text-franky-blue mt-1 flex-shrink-0" />
                           <span className="text-sm break-all">
                             {device.ngrokLink || "No link available"}
                           </span>
                         </div>
                         <div className="flex items-center text-gray-300 font-sen">
-                          <FiHash className="mr-2 text-franky-cyan" />
+                          <FiHash className="mr-2 text-franky-blue" />
                           <span>
                             Device Address:{" "}
-                            <span className="text-franky-cyan font-medium font-mono text-sm">
+                            <span className="text-franky-blue font-medium font-mono text-sm">
                               {device.walletAddress 
                                 ? `${device.walletAddress.slice(0, 6)}...${device.walletAddress.slice(-4)}`
                                 : "Unknown"}
@@ -242,7 +242,7 @@ export default function DevicesPage() {
                         <div className="flex items-center text-gray-300 font-sen">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2 text-franky-cyan"
+                            className="h-4 w-4 mr-2 text-franky-blue"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -256,7 +256,7 @@ export default function DevicesPage() {
                           </svg>
                           <span>
                             Hosting Fee:{" "}
-                            <span className="text-franky-cyan font-medium">
+                            <span className="text-franky-blue font-medium">
                               {device.hostingFee && parseFloat(device.hostingFee) > 0
                                 ? `${parseFloat(device.hostingFee).toFixed(2)} USDC`
                                 : "Free"}
@@ -264,10 +264,10 @@ export default function DevicesPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="mt-4 pt-4 border-t border-franky-cyan-20">
+                      <div className="mt-4 pt-4 border-t border-franky-blue-20">
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-gray-400 font-sen">Owner</span>
-                          <span className="text-xs text-franky-cyan font-sen font-mono">
+                          <span className="text-xs text-franky-blue font-sen font-mono">
                             {device.ownerAddress 
                               ? `${device.ownerAddress.slice(0, 6)}...${device.ownerAddress.slice(-4)}`
                               : "Unknown"}
@@ -275,7 +275,7 @@ export default function DevicesPage() {
                         </div>
                         <div className="flex items-center justify-between mt-1">
                           <span className="text-xs text-gray-400 font-sen">Registered</span>
-                          <span className="text-xs text-franky-cyan font-sen">
+                          <span className="text-xs text-franky-blue font-sen">
                             {device.timestamp 
                               ? new Date(parseInt(device.timestamp)).toLocaleDateString()
                               : "Unknown"}
@@ -283,13 +283,13 @@ export default function DevicesPage() {
                         </div>
                         <div className="flex items-center justify-between mt-1">
                           <span className="text-xs text-gray-400 font-sen">OS</span>
-                          <span className="text-xs text-franky-cyan font-sen">
+                          <span className="text-xs text-franky-blue font-sen">
                             {device.os || "Unknown"}
                           </span>
                         </div>
                       </div>
                       <motion.button
-                        className="mt-4 w-full py-2 rounded-lg bg-franky-cyan-10 text-franky-cyan hover:bg-franky-cyan-20 transition-colors font-sen font-medium"
+                        className="mt-4 w-full py-2 rounded-lg bg-franky-purple-10 text-franky-purple hover:bg-franky-purple hover:text-white transition-colors font-sen font-medium"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                       >

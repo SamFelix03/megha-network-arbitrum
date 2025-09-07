@@ -121,14 +121,14 @@ function ConstructionZone({
             onClick={() => onToolToggle(tool.id)}
             className={`p-4 rounded-lg border cursor-pointer transition-all duration-300 font-sen ${
               isSelected
-                ? "bg-franky-cyan-20 border-franky-cyan glow-cyan"
-                : "card-cyber hover:bg-franky-cyan-10"
+                ? "bg-franky-blue-20 border-franky-blue glow-cyan"
+                : "card-cyber hover:bg-franky-blue-10"
             }`}
           >
             <div className="flex items-center">
               <span className="text-2xl mr-3">{tool.icon}</span>
               <div>
-                <h3 className="text-franky-cyan font-medium">{tool.name}</h3>
+                <h3 className="text-franky-blue font-medium">{tool.name}</h3>
                 <p className="text-sm text-gray-400">{tool.description}</p>
               </div>
             </div>
@@ -183,7 +183,7 @@ function CharacterBuilder({
 
   return (
     <div className="card-cyber">
-      <h2 className="text-xl font-semibold text-franky-cyan mb-4 font-sen">
+      <h2 className="text-xl font-semibold text-franky-blue mb-4 font-sen">
         Character Builder
       </h2>
 
@@ -304,7 +304,7 @@ function CharacterBuilder({
             step="0.1"
             value={characterData.talkativeness}
             onChange={handleTalkativeness}
-            className="w-full franky-cyan"
+            className="w-full franky-blue"
           />
         </div>
 
@@ -313,7 +313,7 @@ function CharacterBuilder({
             type="checkbox"
             checked={characterData.fav}
             onChange={handleFav}
-            className="mr-2 accent-franky-cyan"
+            className="mr-2 accent-franky-blue"
           />
           <label className="text-gray-300 text-sm font-sen">Favorite</label>
         </div>
@@ -339,7 +339,7 @@ function SecretsEditor({
 }) {
   return (
     <div className="card-cyber mt-6 flex-grow">
-      <h2 className="text-xl font-semibold text-franky-cyan mb-4 font-sen">
+      <h2 className="text-xl font-semibold text-franky-blue mb-4 font-sen">
         Agent Secrets
       </h2>
       <p className="text-gray-300 text-sm mb-4 font-sen">
@@ -367,7 +367,7 @@ function SecretsEditor({
           • They will only be accessible by your agent with proper
           authentication
         </p>
-        <p className="text-franky-cyan mt-1">
+        <p className="text-franky-blue mt-1">
           • Sensitive API keys will never be stored in plaintext
         </p>
       </div>
@@ -389,13 +389,13 @@ function JsonDisplay({
 
   return (
     <div className="card-cyber mt-4">
-      <h3 className="text-lg font-semibold text-franky-cyan mb-3 font-sen">
+      <h3 className="text-lg font-semibold text-franky-blue mb-3 font-sen">
         Generated Character JSON
       </h3>
       {uploadUrl && (
-        <div className="mb-4 p-3 bg-franky-cyan-10 rounded-lg border border-franky-cyan-30">
+        <div className="mb-4 p-3 bg-franky-blue-10 rounded-lg border border-franky-blue-30">
           <div className="flex items-center">
-            <FiCheck className="text-franky-cyan mr-2" size={18} />
+            <FiCheck className="text-franky-blue mr-2" size={18} />
             <p className="text-sm text-white font-semibold font-sen">
               Successfully uploaded to IPFS
             </p>
@@ -406,21 +406,21 @@ function JsonDisplay({
               href={uploadUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-franky-cyan underline break-all flex-1 font-sen"
+              className="text-xs text-franky-blue underline break-all flex-1 font-sen"
             >
               {uploadUrl}
             </a>
             <button
               onClick={() => navigator.clipboard.writeText(uploadUrl)}
-              className="ml-2 p-1 bg-franky-cyan-20 rounded hover:bg-franky-cyan-30 transition-colors"
+              className="ml-2 p-1 bg-franky-blue-20 rounded hover:bg-franky-blue-30 transition-colors"
               title="Copy URL to clipboard"
             >
-              <FiCopy className="h-4 w-4 text-franky-cyan" />
+              <FiCopy className="h-4 w-4 text-franky-blue" />
             </button>
           </div>
 
           {uploadDetails.length > 0 && (
-            <div className="mt-3 border-t border-franky-cyan-20 pt-2">
+            <div className="mt-3 border-t border-franky-blue-20 pt-2">
               <div className="flex justify-between items-center mb-1">
                 <p className="text-xs text-gray-400 font-sen">
                   Upload Details:
@@ -429,7 +429,7 @@ function JsonDisplay({
                   onClick={() =>
                     navigator.clipboard.writeText(uploadDetails.join("\n"))
                   }
-                  className="text-xs text-franky-cyan hover:underline font-sen"
+                  className="text-xs text-franky-blue hover:underline font-sen"
                 >
                   Copy logs
                 </button>
@@ -458,7 +458,7 @@ async function checkEnsAvailability(
       transport: http(),
     });
 
-    const normalizedName = normalize(`${name}.frankyagent.xyz`);
+    const normalizedName = normalize(`${name}.megha.network`);
     const ensAddress = await publicClient.getEnsAddress({
       name: normalizedName,
     });
@@ -529,17 +529,17 @@ function ConfirmationModal({
 
         <div className="space-y-4">
           <div>
-            <h3 className="text-franky-cyan text-sm mb-1 font-sen">
+            <h3 className="text-franky-blue text-sm mb-1 font-sen">
               Agent Name
             </h3>
             <p className="text-white text-lg font-medium font-sen">
-              {agentName}.frankyagent.xyz
+              {agentName}.megha network
             </p>
           </div>
 
           {characterData && (
             <div>
-              <h3 className="text-franky-cyan text-sm mb-1 font-sen">
+              <h3 className="text-franky-blue text-sm mb-1 font-sen">
                 Character Details
               </h3>
               <div className="bg-black/50 rounded-lg p-3 space-y-2">
@@ -561,7 +561,7 @@ function ConfirmationModal({
 
           {deviceInfo && (
             <div>
-              <h3 className="text-franky-cyan text-sm mb-1 font-sen">
+              <h3 className="text-franky-blue text-sm mb-1 font-sen">
                 Selected Device
               </h3>
               <div className="bg-black/50 rounded-lg p-3 space-y-2">
@@ -582,7 +582,7 @@ function ConfirmationModal({
           )}
 
           <div>
-            <h3 className="text-franky-cyan text-sm mb-1 font-sen">
+            <h3 className="text-franky-blue text-sm mb-1 font-sen">
               Configuration
             </h3>
             <div className="bg-black/50 rounded-lg p-3 space-y-2">
@@ -602,10 +602,10 @@ function ConfirmationModal({
 
           {/* Status indicators */}
           {(isEncrypting || isUploading) && (
-            <div className="bg-franky-cyan-10 rounded-lg p-3 border border-franky-cyan-30">
+            <div className="bg-franky-blue-10 rounded-lg p-3 border border-franky-blue-30">
               <div className="flex items-center">
-                <div className="animate-spin h-4 w-4 mr-2 border-2 border-franky-cyan border-t-transparent rounded-full"></div>
-                <p className="text-franky-cyan text-sm font-sen">
+                <div className="animate-spin h-4 w-4 mr-2 border-2 border-franky-blue border-t-transparent rounded-full"></div>
+                <p className="text-franky-blue text-sm font-sen">
                   {isEncrypting
                     ? "Encrypting secrets with Lit Protocol..."
                     : "Uploading character data to Pinata..."}
@@ -619,11 +619,11 @@ function ConfirmationModal({
             </div>
           )}
 
-          <div className="pt-4 border-t border-franky-cyan-20">
+          <div className="pt-4 border-t border-franky-blue-20">
             <button
               onClick={onConfirm}
               disabled={isButtonDisabled}
-              className="w-full py-3 rounded-lg bg-franky-cyan text-black font-medium hover:bg-franky-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen"
+              className="w-full py-3 rounded-lg bg-franky-blue text-white font-medium hover:bg-franky-indigo transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen"
             >
               {isButtonDisabled ? (
                 <span className="flex items-center justify-center">
@@ -685,12 +685,12 @@ function SuccessModal({
             <div>
               <p className="text-gray-400 text-sm font-sen">Agent Address</p>
               <div className="flex items-center mt-1">
-                <p className="text-franky-cyan font-medium break-all font-sen">
+                <p className="text-franky-blue font-medium break-all font-sen">
                   {agentAddress}
                 </p>
                 <button
                   onClick={() => navigator.clipboard.writeText(agentAddress)}
-                  className="ml-2 text-gray-400 hover:text-franky-cyan transition-colors"
+                  className="ml-2 text-gray-400 hover:text-franky-blue transition-colors"
                 >
                   <FiCopy size={16} />
                 </button>
@@ -702,12 +702,12 @@ function SuccessModal({
             <div>
               <p className="text-gray-400 text-sm font-sen">API Key</p>
               <div className="flex items-center mt-1">
-                <p className="text-franky-cyan font-medium break-all font-sen">
+                <p className="text-franky-blue font-medium break-all font-sen">
                   {apiKey}
                 </p>
                 <button
                   onClick={() => navigator.clipboard.writeText(apiKey)}
-                  className="ml-2 text-gray-400 hover:text-franky-cyan transition-colors"
+                  className="ml-2 text-gray-400 hover:text-franky-blue transition-colors"
                 >
                   <FiCopy size={16} />
                 </button>
@@ -722,7 +722,7 @@ function SuccessModal({
         <div className="mt-6 flex gap-4">
           <button
             onClick={handleBackToHome}
-            className="flex-1 py-2 rounded-lg bg-franky-cyan text-black font-medium hover:bg-franky-cyan/90 transition-colors font-sen"
+            className="flex-1 py-2 rounded-lg bg-franky-blue text-white font-medium hover:bg-franky-indigo transition-colors font-sen"
           >
             Back to Home
           </button>
@@ -1186,7 +1186,7 @@ function CreateAgentContent({
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center">
-                <FiSmartphone className="text-franky-cyan mr-2" />
+                <FiSmartphone className="text-franky-blue mr-2" />
                 <span className="text-gray-300 font-sen">
                   {deviceInfo.deviceModel &&
                   deviceInfo.deviceModel.trim().length > 0
@@ -1195,13 +1195,13 @@ function CreateAgentContent({
                 </span>
               </div>
               <div className="flex items-center">
-                <FiServer className="text-franky-cyan mr-2" />
+                <FiServer className="text-franky-blue mr-2" />
                 <span className="text-gray-300 font-sen">
                   Status: {deviceInfo.agentCount == 0 ? "Available" : "In Use"}
                 </span>
               </div>
               <div className="flex items-center">
-                <FiLink className="text-franky-cyan mr-2" />
+                <FiLink className="text-franky-blue mr-2" />
                 <span className="text-gray-300 text-sm font-sen">
                   {deviceInfo.ngrokUrl}
                 </span>
@@ -1210,7 +1210,7 @@ function CreateAgentContent({
                 <span className="text-sm text-gray-400 font-sen">
                   Device Address:{" "}
                 </span>
-                <span className="text-sm text-franky-cyan ml-2 font-sen">
+                <span className="text-sm text-franky-blue ml-2 font-sen">
                   {`${deviceInfo.id.slice(0, 6)}...${deviceInfo.id.slice(-4)}`}
                 </span>
               </div>
@@ -1241,18 +1241,18 @@ function CreateAgentContent({
                   placeholder="my-agent-name"
                   className={`input-cyber w-full font-sen ${
                     isNameAvailable
-                      ? "border-franky-cyan-30 focus:border-franky-cyan"
+                      ? "border-franky-blue-30 focus:border-franky-blue"
                       : nameError
                       ? "border-red-500/30 focus:border-red-500"
-                      : "border-franky-cyan-30 focus:border-franky-cyan"
+                      : "border-franky-blue-30 focus:border-franky-blue"
                   }`}
                 />
                 {agentName && (
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     {isCheckingName ? (
-                      <div className="animate-spin h-5 w-5 border-2 border-franky-cyan border-t-transparent rounded-full" />
+                      <div className="animate-spin h-5 w-5 border-2 border-franky-blue border-t-transparent rounded-full" />
                     ) : isNameAvailable ? (
-                      <FiCheck className="text-franky-cyan" />
+                      <FiCheck className="text-franky-blue" />
                     ) : (
                       <FiX className="text-red-500" />
                     )}
@@ -1265,8 +1265,8 @@ function CreateAgentContent({
                 </p>
               )}
               {agentName && !nameError && (
-                <p className="mt-1 text-sm text-franky-cyan font-sen">
-                  {`${agentName}.frankyagent.xyz will be your agent's ENS name`}
+                <p className="mt-1 text-sm text-franky-blue font-sen">
+                  {`${agentName}.megha network will be your agent's ENS name`}
                 </p>
               )}
             </div>
@@ -1295,7 +1295,7 @@ function CreateAgentContent({
                 type="checkbox"
                 checked={isPublic}
                 onChange={(e) => setIsPublic(e.target.checked)}
-                className="mr-2 accent-franky-cyan"
+                className="mr-2 accent-franky-blue"
               />
               <label className="text-gray-300 text-sm font-sen">
                 Make this agent public (anyone can use it)
@@ -1305,13 +1305,13 @@ function CreateAgentContent({
         </motion.div>
 
         {accountId && (
-          <div className="mb-6 p-3 rounded-lg bg-franky-cyan-10 border border-franky-cyan-30">
+          <div className="mb-6 p-3 rounded-lg bg-franky-blue-10 border border-franky-blue-30">
             <div className="flex items-center">
-              <div className="flex justify-center items-center h-8 w-8 rounded-full bg-franky-cyan-20 mr-3">
-                <FiCheck className="text-franky-cyan" />
+              <div className="flex justify-center items-center h-8 w-8 rounded-full bg-franky-blue-20 mr-3">
+                <FiCheck className="text-franky-blue" />
               </div>
               <div>
-                <p className="text-franky-cyan font-medium font-sen">
+                <p className="text-franky-blue font-medium font-sen">
                   Wallet connected
                 </p>
                 <p className="text-xs text-gray-400 font-sen">
@@ -1337,7 +1337,7 @@ function CreateAgentContent({
               transition={{ delay: 0.4 }}
             >
               {/* <div className="card-cyber mb-6">
-                <h2 className="text-xl font-semibold text-franky-cyan mb-4 font-sen">
+                <h2 className="text-xl font-semibold text-franky-blue mb-4 font-sen">
                   Available Tools
                 </h2>
                 <ConstructionZone
@@ -1376,13 +1376,13 @@ function CreateAgentContent({
           <div className="grid grid-cols-1 lg:grid-cols-8 gap-8">
             <div className="lg:col-span-4 h-[600px] card-cyber flex items-center justify-center">
               <div className="animate-pulse flex flex-col items-center">
-                <div className="h-10 w-10 border-2 border-t-franky-cyan border-franky-cyan-30 rounded-full animate-spin mb-3"></div>
+                <div className="h-10 w-10 border-2 border-t-franky-blue border-franky-blue-30 rounded-full animate-spin mb-3"></div>
                 <p className="text-gray-400 font-sen">Loading...</p>
               </div>
             </div>
             <div className="lg:col-span-4 h-[600px] card-cyber flex items-center justify-center">
               <div className="animate-pulse flex flex-col items-center">
-                <div className="h-10 w-10 border-2 border-t-franky-cyan border-franky-cyan-30 rounded-full animate-spin mb-3"></div>
+                <div className="h-10 w-10 border-2 border-t-franky-blue border-franky-blue-30 rounded-full animate-spin mb-3"></div>
                 <p className="text-gray-400 font-sen">Loading builder...</p>
               </div>
             </div>
@@ -1397,7 +1397,7 @@ function CreateAgentContent({
           transition={{ delay: 0.3 }}
         >
           <div className="card-cyber">
-            <h2 className="text-xl font-semibold text-franky-cyan mb-4 font-sen">
+            <h2 className="text-xl font-semibold text-franky-blue mb-4 font-sen">
               Agent Avatar
             </h2>
 
@@ -1411,9 +1411,9 @@ function CreateAgentContent({
                       onChange={handleAvatarChange}
                       className="hidden"
                     />
-                    <div className="flex items-center justify-center w-full p-4 border-2 border-dashed border-franky-cyan-30 rounded-lg hover:border-franky-cyan-60 transition-colors cursor-pointer">
+                    <div className="flex items-center justify-center w-full p-4 border-2 border-dashed border-franky-blue-30 rounded-lg hover:border-franky-blue-60 transition-colors cursor-pointer">
                       <div className="text-center">
-                        <FiImage className="mx-auto h-8 w-8 text-franky-cyan-60 mb-2" />
+                        <FiImage className="mx-auto h-8 w-8 text-franky-blue-60 mb-2" />
                         <p className="text-sm text-gray-300 font-sen">
                           {avatarFile
                             ? avatarFile.name
@@ -1441,7 +1441,7 @@ function CreateAgentContent({
               className={`px-8 py-4 rounded-lg transition-all duration-300 glow-cyan backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed font-sen font-medium
                 ${
                   uploadUrl
-                    ? "bg-franky-cyan-30 border border-franky-cyan text-white"
+                    ? "bg-franky-blue-30 border border-franky-blue text-white"
                     : "btn-cyber hover:glow-franky"
                 } 
                 ${isUploading ? "animate-pulse" : ""}`}
@@ -1470,7 +1470,7 @@ function CreateAgentContent({
             </p>
           )}
           {uploadUrl && !agentCreated && (
-            <p className="mt-3 text-sm text-franky-cyan font-sen">
+            <p className="mt-3 text-sm text-franky-blue font-sen">
               Character data has been successfully uploaded! Click to create
               your agent.
             </p>
@@ -1509,7 +1509,7 @@ function LoadingFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="animate-pulse text-gray-300 flex flex-col items-center">
-        <div className="h-12 w-12 mb-4 border-4 border-t-franky-cyan border-gray-700 rounded-full animate-spin"></div>
+        <div className="h-12 w-12 mb-4 border-4 border-t-franky-blue border-gray-700 rounded-full animate-spin"></div>
         <p className="font-sen">Loading agent builder...</p>
       </div>
     </div>

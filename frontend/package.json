@@ -45,6 +45,7 @@
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
+    "simplex-noise": "^4.0.3",
     "sonic-boom": "^4.2.0",
     "sonner": "^2.0.3",
     "stream": "^0.0.3",

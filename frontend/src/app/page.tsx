@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ChatInterface from "@/components/chat/ChatInterface";
+import { WavyBackground } from "@/components/ui/wavy-background";
 
 // Simple glow button
 const GlowButton = ({
@@ -60,7 +61,7 @@ const OptionCard = ({
       transition={{ duration: 0.3 }}
       onClick={onClick}
     >
-      <div className="text-4xl flex w-full justify-center mb-4 text-franky-cyan group-hover:text-franky-orange transition-colors duration-300 animate-glow">
+      <div className="text-4xl flex w-full justify-center mb-4 text-franky-blue group-hover:text-franky-purple transition-colors duration-300 animate-glow">
         {icon}
       </div>
       <h3 className="text-xl font-bold mb-2 gradient-franky-text font-sen">
@@ -88,48 +89,35 @@ export default function Home() {
   }
 
   return (
-    <section className="flex-1 flex flex-col h-screen items-center justify-center px-4 relative">
-      <div className="container mx-auto text-center">
+    <WavyBackground 
+      className="max-w-4xl mx-auto"
+      colors={["#8b5cf6", "#60a5fa", "#4f46e5", "#7c3aed", "#a855f7"]}
+      waveWidth={50}
+      backgroundFill="black"
+      blur={10}
+      speed="fast"
+      waveOpacity={0.5}
+    >
+      <div className="container mx-auto text-center flex flex-col items-center justify-center min-h-screen px-4">
         {!getStarted && !isChatOpen ? (
-          <div>
-            <p className="text-lg md:text-xl mb-3 text-gray-400 max-w-3xl mx-auto font-desc">
+          <div className="w-full max-w-6xl">
+            <p className="text-xl md:text-2xl lg:text-3xl mb-4 text-gray-400 max-w-4xl mx-auto font-jetbrains">
               Introducing
             </p>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 gradient-franky-text font-logo">
-              FRANKY AGENTS
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 text-white font-orbitron">
+              MEGHA NETWORK
             </h1>
-            <p className="text-xl md:text-2xl mb-10 text-gray-300 max-w-3xl mx-auto font-desc leading-relaxed">
+            <p className="text-2xl md:text-3xl lg:text-4xl mb-12 text-gray-300 max-w-4xl mx-auto font-space-grotesk leading-relaxed">
               Recycle your old mobile devices into{" "}
-              <span className="text-franky-cyan">AI agents</span> and earn{" "}
-              <span className="text-franky-orange">$ETH</span>.
+              <span className="text-franky-blue">AI agent hosts</span> and earn{" "}
+              <span className="text-franky-purple">$USDC</span>.
             </p>
 
-            <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8">
+            <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8 mt-8">
               <GlowButton onClick={() => setGetStarted(true)}>
                 Get Started
               </GlowButton>
             </div>
-
-            {/* Feature highlights */}
-            {/* <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex justify-center space-x-8 mt-12 text-sm text-gray-400 font-sen"
-            >
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-franky-cyan rounded-full animate-glow"></div>
-                <span>Eco-Friendly</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-franky-orange rounded-full animate-glow"></div>
-                <span>Profitable</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-franky-yellow rounded-full animate-glow"></div>
-                <span>Decentralized</span>
-              </div>
-            </motion.div> */}
           </div>
         ) : !isChatOpen ? (
           <motion.div
@@ -153,7 +141,7 @@ export default function Home() {
                   letterSpacing: "0.2em",
                 }}
               >
-                frankyagent.xyz
+                megha network
               </span>
             </div>
 
@@ -256,7 +244,7 @@ export default function Home() {
             {/* Back button */}
             <div className="mt-12 flex flex-col md:flex-row justify-center gap-6">
               <motion.button
-                className="py-3 px-6 text-franky-cyan hover:text-white border border-franky-cyan-30 rounded-lg transition-all duration-300 hover:bg-franky-cyan-10 font-sen"
+                className="py-3 px-6 text-franky-purple hover:text-white border border-franky-purple-30 rounded-lg transition-all duration-300 hover:bg-franky-purple font-sen"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setGetStarted(false)}
@@ -272,6 +260,6 @@ export default function Home() {
           />
         )}
       </div>
-    </section>
+    </WavyBackground>
   );
 }

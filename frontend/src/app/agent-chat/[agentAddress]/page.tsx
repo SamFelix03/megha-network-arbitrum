@@ -122,7 +122,7 @@ const ApprovalRequestModal = ({
             className="card-cyber max-w-md w-full glow-cyan"
           >
             <div className="text-center">
-              <FiCreditCard className="w-12 h-12 text-franky-cyan mx-auto mb-4" />
+              <FiCreditCard className="w-12 h-12 text-franky-blue mx-auto mb-4" />
               <h2 className="text-xl font-bold gradient-franky-text font-sen mb-4">
                 Payment Setup Required
               </h2>
@@ -134,7 +134,7 @@ const ApprovalRequestModal = ({
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 font-sen text-sm">Approval Amount:</span>
-                  <span className="text-franky-cyan font-bold font-sen">{APPROVAL_AMOUNT} USDC</span>
+                  <span className="text-franky-blue font-bold font-sen">{APPROVAL_AMOUNT} USDC</span>
                 </div>
               </div>
 
@@ -153,7 +153,7 @@ const ApprovalRequestModal = ({
                 <button
                   onClick={onApprove}
                   disabled={isLoading || parseFloat(usdcBalance) < parseFloat(APPROVAL_AMOUNT)}
-                  className="flex-1 py-3 px-4 bg-franky-cyan text-black rounded-lg hover:bg-franky-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen font-bold"
+                  className="flex-1 py-3 px-4 bg-franky-purple text-white rounded-lg hover:bg-franky-indigo transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen font-bold"
                 >
                   {isLoading ? 'Approving...' : `Approve ${APPROVAL_AMOUNT} USDC`}
                 </button>
@@ -201,7 +201,7 @@ const CostSummaryModal = ({
             className="card-cyber max-w-md w-full glow-cyan"
           >
             <div className="text-center">
-              <FiDollarSign className="w-12 h-12 text-franky-orange mx-auto mb-4" />
+              <FiDollarSign className="w-12 h-12 text-franky-purple mx-auto mb-4" />
               <h2 className="text-xl font-bold gradient-franky-text font-sen mb-4">
                 Chat Session Summary
               </h2>
@@ -214,7 +214,7 @@ const CostSummaryModal = ({
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-400 font-sen text-sm">Total Spent:</span>
-                    <span className="text-franky-orange font-bold font-sen">{paymentData.totalSpent} USDC</span>
+                    <span className="text-franky-purple font-bold font-sen">{paymentData.totalSpent} USDC</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 font-sen text-sm">Cost per Message:</span>
@@ -229,7 +229,7 @@ const CostSummaryModal = ({
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 font-sen text-sm">Remaining Allowance:</span>
-                    <span className="text-franky-cyan font-bold font-sen">{remainingAllowance} USDC</span>
+                    <span className="text-franky-blue font-bold font-sen">{remainingAllowance} USDC</span>
                   </div>
                 </div>
               </div>
@@ -256,7 +256,7 @@ const CostSummaryModal = ({
                 </button>
                 <button
                   onClick={onConfirmExit}
-                  className="flex-1 py-3 px-4 bg-franky-orange text-white rounded-lg hover:bg-franky-orange/90 transition-colors font-sen font-bold"
+                  className="flex-1 py-3 px-4 bg-franky-purple text-white rounded-lg hover:bg-franky-purple/90 transition-colors font-sen font-bold"
                 >
                   Exit Chat
                 </button>
@@ -307,7 +307,7 @@ const AgentProfileModal = ({
             {/* Header */}
             <div className="flex items-start gap-3 mb-4 pr-6">
               {agent.imageUrl ? (
-                <div className="w-14 h-14 rounded-full overflow-hidden border border-franky-cyan-30 flex-shrink-0">
+                <div className="w-14 h-14 rounded-full overflow-hidden border border-franky-blue-30 flex-shrink-0">
                   <img
                     src={agent.imageUrl}
                     alt={agent.name}
@@ -315,7 +315,7 @@ const AgentProfileModal = ({
                   />
                 </div>
               ) : (
-                <div className="flex justify-center items-center w-14 h-14 rounded-full bg-franky-cyan-20 text-franky-cyan animate-glow flex-shrink-0">
+                <div className="flex justify-center items-center w-14 h-14 rounded-full bg-franky-blue-20 text-franky-blue animate-glow flex-shrink-0">
                   <FiUserCheck className="text-xl" />
                 </div>
               )}
@@ -332,8 +332,8 @@ const AgentProfileModal = ({
             {/* Agent Details */}
             <div className="space-y-3 mb-4">
               {/* Agent Info */}
-              <div className="p-3 rounded-lg bg-black/30 border border-franky-cyan-20">
-                <h3 className="text-sm font-semibold text-franky-cyan mb-2 font-sen">
+              <div className="p-3 rounded-lg bg-black/30 border border-franky-blue-20">
+                <h3 className="text-sm font-semibold text-franky-blue mb-2 font-sen">
                   Agent Information
                 </h3>
                 
@@ -341,10 +341,10 @@ const AgentProfileModal = ({
                   <div className="flex justify-between items-start gap-2">
                     <span className="text-gray-400 font-sen">Agent ID:</span>
                     <div className="flex items-center gap-1">
-                      <span className="text-franky-cyan font-mono text-xs break-all">{agent.uuid.slice(0, 12)}...</span>
+                      <span className="text-franky-blue font-mono text-xs break-all">{agent.uuid.slice(0, 12)}...</span>
                       <button
                         onClick={() => copyToClipboard(agent.uuid)}
-                        className="text-gray-400 hover:text-franky-cyan transition-colors"
+                        className="text-gray-400 hover:text-franky-blue transition-colors"
                       >
                         <FiCopy className="w-3 h-3" />
                       </button>
@@ -375,23 +375,23 @@ const AgentProfileModal = ({
               </div>
 
               {/* Capabilities */}
-              <div className="p-3 rounded-lg bg-black/30 border border-franky-cyan-20">
-                <h3 className="text-sm font-semibold text-franky-cyan mb-2 font-sen">
+              <div className="p-3 rounded-lg bg-black/30 border border-franky-blue-20">
+                <h3 className="text-sm font-semibold text-franky-blue mb-2 font-sen">
                   Agent Capabilities ({agent.tools.length})
                 </h3>
                 
                 <div className="grid grid-cols-1 gap-1">
                   {agent.tools.map((tool, index) => (
-                    <div key={index} className="flex items-center p-2 rounded bg-franky-cyan-10 border border-franky-cyan-20">
-                      <div className="w-4 h-4 bg-franky-cyan rounded-full mr-2 flex items-center justify-center flex-shrink-0">
+                    <div key={index} className="flex items-center p-2 rounded bg-franky-blue-10 border border-franky-blue-20">
+                      <div className="w-4 h-4 bg-franky-blue rounded-full mr-2 flex items-center justify-center flex-shrink-0">
                         <span className="text-black text-xs font-bold">⚡</span>
                       </div>
-                      <span className="text-franky-cyan font-sen text-xs font-medium">{tool}</span>
+                      <span className="text-franky-blue font-sen text-xs font-medium">{tool}</span>
                     </div>
                   ))}
                 </div>
                 
-                <div className="mt-2 p-2 rounded bg-black/30 border border-franky-cyan">
+                <div className="mt-2 p-2 rounded bg-black/30 border border-franky-blue">
                   <p className="text-gray-400 font-sen text-xs italic">
                     This agent can perform {agent.tools.length} specialized blockchain analysis tasks
                   </p>
@@ -399,18 +399,18 @@ const AgentProfileModal = ({
               </div>
 
               {/* Owner Info */}
-              <div className="p-3 rounded-lg bg-black/30 border border-franky-cyan-20">
-                <h3 className="text-sm font-semibold text-franky-cyan mb-2 font-sen">
+              <div className="p-3 rounded-lg bg-black/30 border border-franky-blue-20">
+                <h3 className="text-sm font-semibold text-franky-blue mb-2 font-sen">
                   Creator Details
                 </h3>
                 
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 font-sen text-xs">Creator Address:</span>
                   <div className="flex items-center gap-1">
-                    <span className="text-franky-cyan font-mono text-xs">{agent.ownerAddress.slice(0, 8)}...{agent.ownerAddress.slice(-6)}</span>
+                    <span className="text-franky-blue font-mono text-xs">{agent.ownerAddress.slice(0, 8)}...{agent.ownerAddress.slice(-6)}</span>
                     <button
                       onClick={() => copyToClipboard(agent.ownerAddress)}
-                      className="text-gray-400 hover:text-franky-cyan transition-colors"
+                      className="text-gray-400 hover:text-franky-blue transition-colors"
                     >
                       <FiCopy className="w-3 h-3" />
                     </button>
@@ -473,9 +473,9 @@ const DeviceDetailsModal = ({
             </h3>
 
             {/* Hosting fee display */}
-            <div className="p-3 rounded-lg bg-franky-cyan-10 border border-franky-cyan-30 mb-4">
+            <div className="p-3 rounded-lg bg-franky-blue-10 border border-franky-blue-30 mb-4">
               <div className="flex items-center justify-between">
-                <span className="text-franky-cyan text-sm font-medium font-sen">Fee per Message</span>
+                <span className="text-franky-blue text-sm font-medium font-sen">Fee per Message</span>
                 <span className="text-white text-xl font-bold font-sen">{parseFloat(device.hostingFee).toFixed(2)} USDC</span>
               </div>
               <p className="text-xs text-gray-400 mt-1 font-sen">
@@ -485,10 +485,10 @@ const DeviceDetailsModal = ({
 
             {/* Device details in accordion style */}
             <div className="space-y-2 mb-4">
-              <details className="group rounded-lg bg-black/50 border border-franky-cyan-20 overflow-hidden">
+              <details className="group rounded-lg bg-black/50 border border-franky-blue-20 overflow-hidden">
                 <summary className="flex cursor-pointer list-none items-center justify-between p-2 font-medium font-sen">
                   <div className="flex items-center">
-                    <span className="text-franky-cyan mr-2">📱</span>
+                    <span className="text-franky-blue mr-2">📱</span>
                     <span>Device Specs</span>
                   </div>
                   <span className="transition group-open:rotate-180">
@@ -498,33 +498,33 @@ const DeviceDetailsModal = ({
                   </span>
                 </summary>
                 <div className="p-2 pt-0 text-xs space-y-1">
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">Model</span>
-                    <span className="text-franky-cyan font-sen">{device.deviceModel}</span>
+                    <span className="text-franky-blue font-sen">{device.deviceModel}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">RAM</span>
-                    <span className="text-franky-cyan font-sen">{device.ram}</span>
+                    <span className="text-franky-blue font-sen">{device.ram}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">Storage</span>
-                    <span className="text-franky-cyan font-sen">{device.storageCapacity}</span>
+                    <span className="text-franky-blue font-sen">{device.storageCapacity}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">CPU</span>
-                    <span className="text-franky-cyan font-sen">{device.cpu}</span>
+                    <span className="text-franky-blue font-sen">{device.cpu}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">OS</span>
-                    <span className="text-franky-cyan font-sen">{device.os}</span>
+                    <span className="text-franky-blue font-sen">{device.os}</span>
                   </div>
                 </div>
               </details>
 
-              <details className="group rounded-lg bg-black/50 border border-franky-cyan-20 overflow-hidden">
+              <details className="group rounded-lg bg-black/50 border border-franky-blue-20 overflow-hidden">
                 <summary className="flex cursor-pointer list-none items-center justify-between p-2 font-medium font-sen">
                   <div className="flex items-center">
-                    <span className="text-franky-cyan mr-2">🔗</span>
+                    <span className="text-franky-blue mr-2">🔗</span>
                     <span>Connection Details</span>
                   </div>
                   <span className="transition group-open:rotate-180">
@@ -534,19 +534,19 @@ const DeviceDetailsModal = ({
                   </span>
                 </summary>
                 <div className="p-2 pt-0 text-xs space-y-1">
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">Device Address</span>
-                    <span className="text-franky-cyan text-xs break-all font-sen">
+                    <span className="text-franky-blue text-xs break-all font-sen">
                       {device.walletAddress.toLowerCase().substring(0, 8)}...{device.walletAddress.toLowerCase().substring(device.walletAddress.toLowerCase().length - 8)}
                     </span>
                   </div>
-                  <div className="flex justify-between py-1 border-t border-franky-cyan-20">
+                  <div className="flex justify-between py-1 border-t border-franky-blue-20">
                     <span className="text-gray-400 font-sen">Link</span>
                     <a 
                       href={device.ngrokLink} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-franky-cyan text-xs underline hover:text-white transition-colors break-all max-w-[200px] truncate font-sen"
+                      className="text-franky-blue text-xs underline hover:text-white transition-colors break-all max-w-[200px] truncate font-sen"
                     >
                       {device.ngrokLink}
                     </a>
@@ -994,8 +994,8 @@ export default function AgentChatPage() {
     if (!toolResponse || typeof toolResponse !== 'object') return null;
 
     return (
-      <div className="mt-3 p-3 bg-franky-cyan-10 border border-franky-cyan-20 rounded-lg">
-        <h4 className="text-franky-cyan text-sm font-bold mb-2 font-sen">Tool Response:</h4>
+      <div className="mt-3 p-3 bg-franky-blue-10 border border-franky-blue-20 rounded-lg">
+        <h4 className="text-franky-blue text-sm font-bold mb-2 font-sen">Tool Response:</h4>
         <div className="space-y-1">
           {Object.entries(toolResponse).map(([key, value]) => (
             <div key={key} className="flex justify-between items-start gap-2 text-xs">
@@ -1017,7 +1017,7 @@ export default function AgentChatPage() {
           <p className="text-red-400 font-sen mb-4">{error}</p>
           <button
             onClick={() => router.push("/agent-marketplace")}
-            className="px-6 py-2 bg-franky-cyan-20 text-franky-cyan rounded-lg hover:bg-franky-cyan-30 transition-colors font-sen"
+            className="px-6 py-2 bg-franky-purple-20 text-franky-purple rounded-lg hover:bg-franky-purple hover:text-white transition-colors font-sen"
           >
             Back to Marketplace
           </button>
@@ -1034,12 +1034,12 @@ export default function AgentChatPage() {
       <div className="h-screen pt-20 flex flex-col relative overflow-hidden">
         <div className="container mx-auto px-4 flex-1 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between py-4 border-b border-franky-cyan-20 flex-shrink-0">
+        <div className="flex items-center justify-between py-4 border-b border-franky-blue-20 flex-shrink-0">
           <div 
             className="flex items-center gap-3 cursor-pointer hover:bg-gray-800/30 rounded-lg p-2 transition-colors"
             onClick={() => setShowProfileModal(true)}
           >
-            <div className="w-10 h-10 bg-franky-cyan-20 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-franky-blue-20 rounded-full flex items-center justify-center">
               {agent?.imageUrl ? (
                 <img
                   src={agent.imageUrl}
@@ -1047,7 +1047,7 @@ export default function AgentChatPage() {
                   className="w-full h-full object-cover rounded-full"
                 />
               ) : (
-                <FiCpu className="text-franky-cyan" />
+                <FiCpu className="text-franky-blue" />
               )}
             </div>
             <div>
@@ -1065,7 +1065,7 @@ export default function AgentChatPage() {
           {device && paymentReady && (
             <div className="text-center">
               <div className="text-xs text-gray-400 font-sen">Remaining Balance</div>
-              <div className="text-lg font-bold text-franky-cyan font-sen">{parseFloat(currentAllowance).toFixed(2)} USDC</div>
+              <div className="text-lg font-bold text-franky-blue font-sen">{parseFloat(currentAllowance).toFixed(2)} USDC</div>
               <div className="text-xs text-gray-500 font-sen">
                 ~{Math.floor(parseFloat(currentAllowance) / parseFloat(HOSTING_FEE))} messages
               </div>
@@ -1083,14 +1083,14 @@ export default function AgentChatPage() {
             {/* Device Details Container - Top Right */}
             {device ? (
               <div 
-                className="bg-gray-800/50 border border-franky-cyan-20 rounded-lg p-3 cursor-pointer hover:bg-gray-800/70 transition-colors"
+                className="bg-gray-800/50 border border-franky-blue-20 rounded-lg p-3 cursor-pointer hover:bg-gray-800/70 transition-colors"
                 onClick={() => setShowDeviceModal(true)}
                 title="View device details"
               >
                 <div className="text-sm font-bold text-white font-sen mb-1">
                   {device.deviceModel}
                 </div>
-                <div className="text-xs text-franky-cyan font-sen">
+                <div className="text-xs text-franky-blue font-sen">
                   RAM: {device.ram}
                 </div>
               </div>
@@ -1130,8 +1130,8 @@ export default function AgentChatPage() {
                   className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   {!message.isUser && (
-                    <div className="w-8 h-8 bg-franky-cyan-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <FiCpu className="text-franky-cyan text-sm" />
+                    <div className="w-8 h-8 bg-franky-blue-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <FiCpu className="text-franky-blue text-sm" />
                     </div>
                   )}
                   
@@ -1139,7 +1139,7 @@ export default function AgentChatPage() {
                     <div
                       className={`p-3 rounded-lg ${
                         message.isUser
-                          ? 'bg-franky-cyan text-black'
+                          ? 'bg-franky-blue text-black'
                           : 'bg-gray-800 text-white border border-gray-700'
                       }`}
                     >
@@ -1166,14 +1166,14 @@ export default function AgentChatPage() {
                   transition={{ duration: 0.3 }}
                   className="flex gap-3 justify-start"
                 >
-                  <div className="w-8 h-8 bg-franky-cyan-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <FiCpu className="text-franky-cyan text-sm" />
+                  <div className="w-8 h-8 bg-franky-blue-20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <FiCpu className="text-franky-blue text-sm" />
                   </div>
                   <div className="bg-gray-800 border border-gray-700 rounded-lg p-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                      <div className="w-2 h-2 bg-franky-cyan rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                      <div className="w-2 h-2 bg-franky-blue rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-franky-blue rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-franky-blue rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                       <span className="text-gray-400 text-sm font-sen ml-2">AI is thinking...</span>
                     </div>
                   </div>
@@ -1194,7 +1194,7 @@ export default function AgentChatPage() {
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.2 }}
                 onClick={scrollToBottom}
-                className="absolute bottom-4 right-4 w-10 h-10 bg-franky-cyan text-black rounded-full flex items-center justify-center shadow-lg hover:bg-franky-cyan/90 transition-colors z-10"
+                className="absolute bottom-4 right-4 w-10 h-10 bg-franky-purple text-white rounded-full flex items-center justify-center shadow-lg hover:bg-franky-indigo transition-colors z-10"
                 title="Scroll to bottom"
               >
                 <FiArrowDown className="w-5 h-5" />
@@ -1204,7 +1204,7 @@ export default function AgentChatPage() {
         </div>
 
         {/* Input */}
-        <div className="border-t border-franky-cyan-20 pt-4 pb-4 flex-shrink-0">
+        <div className="border-t border-franky-blue-20 pt-4 pb-4 flex-shrink-0">
           <div className="flex gap-3">
             <input
               type="text"
@@ -1212,13 +1212,13 @@ export default function AgentChatPage() {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={paymentReady ? "Send message" : "Complete payment setup to chat"}
-              className="flex-1 p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-franky-cyan font-sen disabled:opacity-50"
+              className="flex-1 p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-franky-blue font-sen disabled:opacity-50"
               disabled={loading || !paymentReady}
             />
             <button
               onClick={sendMessage}
               disabled={loading || !inputMessage.trim() || !paymentReady}
-              className="px-4 py-3 bg-franky-cyan text-black rounded-lg hover:bg-franky-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-3 bg-franky-purple text-white rounded-lg hover:bg-franky-indigo transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FiSend className="w-5 h-5" />
             </button>

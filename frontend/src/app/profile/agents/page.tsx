@@ -121,7 +121,7 @@ export default function AgentsPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Link href="/profile" className="inline-flex items-center text-franky-cyan/80 hover:text-franky-cyan transition-colors font-sen">
+            <Link href="/profile" className="inline-flex items-center text-franky-blue/80 hover:text-franky-blue transition-colors font-sen">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
                 <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -138,7 +138,7 @@ export default function AgentsPage() {
 
         {accountId && loading && (
           <div className="text-center py-20 text-white/70">
-            <div className="w-12 h-12 border-4 border-franky-cyan/20 border-t-franky-cyan rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-12 h-12 border-4 border-franky-blue/20 border-t-franky-blue rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-xl font-sen">Loading your agents...</p>
           </div>
         )}
@@ -149,7 +149,7 @@ export default function AgentsPage() {
             <p className="text-sm mt-2 font-sen">{error}</p>
             <button
               onClick={fetchAgents}
-              className="mt-4 px-4 py-2 bg-franky-cyan-20 text-franky-cyan rounded-lg hover:bg-franky-cyan-30 transition-colors font-sen"
+              className="mt-4 px-4 py-2 bg-franky-purple-20 text-franky-purple rounded-lg hover:bg-franky-purple hover:text-white transition-colors font-sen"
             >
               Try Again
             </button>
@@ -166,7 +166,7 @@ export default function AgentsPage() {
                   </p>
                   <Link href="/create-agent">
                     <motion.button
-                      className="px-6 py-2 rounded-none bg-franky-cyan-20 border border-franky-cyan-50 text-franky-cyan hover:bg-franky-cyan-30 transition-colors font-sen"
+                      className="px-6 py-2 rounded-none bg-franky-purple-20 border border-franky-purple-50 text-franky-purple hover:bg-franky-purple hover:text-white transition-colors font-sen"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -193,7 +193,7 @@ export default function AgentsPage() {
                       {/* Header */}
                       <div className="flex items-start gap-3 mb-4">
                         {agent.imageUrl ? (
-                          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-franky-cyan-30 flex-shrink-0">
+                          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-franky-blue-30 flex-shrink-0">
                             <img
                               src={agent.imageUrl}
                               alt={agent.name}
@@ -206,7 +206,7 @@ export default function AgentsPage() {
                             />
                           </div>
                         ) : (
-                          <div className="flex justify-center items-center w-16 h-16 rounded-full bg-franky-cyan-20 text-franky-cyan animate-glow group-hover:text-franky-orange transition-colors flex-shrink-0">
+                          <div className="flex justify-center items-center w-16 h-16 rounded-full bg-franky-blue-20 text-franky-blue animate-glow group-hover:text-franky-purple transition-colors flex-shrink-0">
                             <FiUserCheck className="text-2xl" />
                           </div>
                         )}
@@ -223,7 +223,7 @@ export default function AgentsPage() {
                       {/* Capabilities Preview */}
                       <div className="mb-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-franky-cyan text-sm">⚡</span>
+                          <span className="text-franky-blue text-sm">⚡</span>
                           <span className="text-gray-300 text-sm font-sen">
                             {agent.tools.length} Capabilities
                           </span>
@@ -232,7 +232,7 @@ export default function AgentsPage() {
                           {agent.tools.slice(0, 2).map((tool, index) => (
                             <span
                               key={index}
-                              className="bg-franky-cyan-10 text-franky-cyan px-2 py-1 rounded-full text-xs font-sen border border-franky-cyan-20"
+                              className="bg-franky-blue-10 text-franky-blue px-2 py-1 rounded-full text-xs font-sen border border-franky-blue-20"
                             >
                               {tool.split(' ').slice(0, 2).join(' ')}
                             </span>
@@ -249,10 +249,10 @@ export default function AgentsPage() {
                       <div className="flex-grow"></div>
 
                       {/* Footer */}
-                      <div className="pt-3 border-t border-franky-cyan-20">
+                      <div className="pt-3 border-t border-franky-blue-20">
                         <div className="flex items-center justify-between text-xs text-gray-400 font-sen">
                           <span>Creator</span>
-                          <span className="text-franky-cyan font-mono">
+                          <span className="text-franky-blue font-mono">
                             {`${agent.ownerAddress.slice(0, 6)}...${agent.ownerAddress.slice(-4)}`}
                           </span>
                         </div>
@@ -260,12 +260,12 @@ export default function AgentsPage() {
 
                       {/* Action Button */}
                       <motion.div
-                        className="mt-3 p-3 bg-franky-cyan-10 hover:bg-franky-cyan-20 transition-colors rounded-lg border border-franky-cyan-20"
+                        className="mt-3 p-3 bg-franky-blue-10 hover:bg-franky-blue-20 transition-colors rounded-lg border border-franky-blue-20"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
                         <div className="flex items-center justify-center gap-2">
-                          <span className="text-franky-cyan font-sen font-medium">View Details</span>
+                          <span className="text-franky-blue font-sen font-medium">View Details</span>
                         </div>
                       </motion.div>
                     </motion.div>
@@ -305,7 +305,7 @@ export default function AgentsPage() {
                 {/* Header */}
                 <div className="flex items-start gap-3 mb-4 pr-6">
                   {selectedAgent.imageUrl ? (
-                    <div className="w-14 h-14 rounded-full overflow-hidden border border-franky-cyan-30 flex-shrink-0">
+                    <div className="w-14 h-14 rounded-full overflow-hidden border border-franky-blue-30 flex-shrink-0">
                       <img
                         src={selectedAgent.imageUrl}
                         alt={selectedAgent.name}
@@ -313,7 +313,7 @@ export default function AgentsPage() {
                       />
                     </div>
                   ) : (
-                    <div className="flex justify-center items-center w-14 h-14 rounded-full bg-franky-cyan-20 text-franky-cyan animate-glow flex-shrink-0">
+                    <div className="flex justify-center items-center w-14 h-14 rounded-full bg-franky-blue-20 text-franky-blue animate-glow flex-shrink-0">
                       <FiUserCheck className="text-xl" />
                     </div>
                   )}
@@ -330,8 +330,8 @@ export default function AgentsPage() {
                 {/* Agent Details */}
                 <div className="space-y-3 mb-4">
                   {/* Agent Info */}
-                  <div className="p-3 rounded-lg bg-black/30 border border-franky-cyan-20">
-                    <h3 className="text-sm font-semibold text-franky-cyan mb-2 font-sen">
+                  <div className="p-3 rounded-lg bg-black/30 border border-franky-blue-20">
+                    <h3 className="text-sm font-semibold text-franky-blue mb-2 font-sen">
                       Agent Information
                     </h3>
                     
@@ -339,10 +339,10 @@ export default function AgentsPage() {
                       <div className="flex justify-between items-start gap-2">
                         <span className="text-gray-400 font-sen">Agent ID:</span>
                         <div className="flex items-center gap-1">
-                          <span className="text-franky-cyan font-mono text-xs break-all">{selectedAgent.uuid.slice(0, 12)}...</span>
+                          <span className="text-franky-blue font-mono text-xs break-all">{selectedAgent.uuid.slice(0, 12)}...</span>
                           <button
                             onClick={() => navigator.clipboard.writeText(selectedAgent.uuid)}
-                            className="text-gray-400 hover:text-franky-cyan transition-colors"
+                            className="text-gray-400 hover:text-franky-blue transition-colors"
                           >
                             <FiCopy className="w-3 h-3" />
                           </button>
@@ -373,23 +373,23 @@ export default function AgentsPage() {
                   </div>
 
                   {/* Capabilities */}
-                  <div className="p-3 rounded-lg bg-black/30 border border-franky-cyan-20">
-                    <h3 className="text-sm font-semibold text-franky-cyan mb-2 font-sen">
+                  <div className="p-3 rounded-lg bg-black/30 border border-franky-blue-20">
+                    <h3 className="text-sm font-semibold text-franky-blue mb-2 font-sen">
                       Agent Capabilities ({selectedAgent.tools.length})
                     </h3>
                     
                     <div className="grid grid-cols-1 gap-1">
                       {selectedAgent.tools.map((tool, index) => (
-                        <div key={index} className="flex items-center p-2 rounded bg-franky-cyan-10 border border-franky-cyan-20">
-                          <div className="w-4 h-4 bg-franky-cyan rounded-full mr-2 flex items-center justify-center flex-shrink-0">
+                        <div key={index} className="flex items-center p-2 rounded bg-franky-blue-10 border border-franky-blue-20">
+                          <div className="w-4 h-4 bg-franky-blue rounded-full mr-2 flex items-center justify-center flex-shrink-0">
                             <span className="text-black text-xs font-bold">⚡</span>
                           </div>
-                          <span className="text-franky-cyan font-sen text-xs font-medium">{tool}</span>
+                          <span className="text-franky-blue font-sen text-xs font-medium">{tool}</span>
                         </div>
                       ))}
                     </div>
                     
-                    <div className="mt-2 p-2 rounded bg-black/30 border border-franky-cyan">
+                    <div className="mt-2 p-2 rounded bg-black/30 border border-franky-blue">
                       <p className="text-gray-400 font-sen text-xs italic">
                         This agent can perform {selectedAgent.tools.length} specialized blockchain analysis tasks
                       </p>
@@ -397,18 +397,18 @@ export default function AgentsPage() {
                   </div>
 
                   {/* Creator Info */}
-                  <div className="p-3 rounded-lg bg-black/30 border border-franky-cyan-20">
-                    <h3 className="text-sm font-semibold text-franky-cyan mb-2 font-sen">
+                  <div className="p-3 rounded-lg bg-black/30 border border-franky-blue-20">
+                    <h3 className="text-sm font-semibold text-franky-blue mb-2 font-sen">
                       Creator Details
                     </h3>
                     
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400 font-sen text-xs">Creator Address:</span>
                       <div className="flex items-center gap-1">
-                        <span className="text-franky-cyan font-mono text-xs">{selectedAgent.ownerAddress.slice(0, 8)}...{selectedAgent.ownerAddress.slice(-6)}</span>
+                        <span className="text-franky-blue font-mono text-xs">{selectedAgent.ownerAddress.slice(0, 8)}...{selectedAgent.ownerAddress.slice(-6)}</span>
                         <button
                           onClick={() => navigator.clipboard.writeText(selectedAgent.ownerAddress)}
-                          className="text-gray-400 hover:text-franky-cyan transition-colors"
+                          className="text-gray-400 hover:text-franky-blue transition-colors"
                         >
                           <FiCopy className="w-3 h-3" />
                         </button>

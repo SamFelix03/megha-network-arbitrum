@@ -10,7 +10,7 @@ export function WalletButton() {
         return (
             <motion.button 
                 disabled
-                className="px-6 py-3 rounded-lg bg-franky-cyan-30 text-franky-cyan border border-franky-cyan-30 font-sen"
+                className="px-6 py-3 rounded-lg bg-franky-blue-30 text-franky-blue border border-franky-blue-30 font-sen"
                 animate={{ opacity: [1, 0.5, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
             >
@@ -24,7 +24,7 @@ export function WalletButton() {
             <div className="flex flex-col items-end space-y-2">
                 <div className="text-right">
                     <div className="text-sm text-gray-400 font-sen">Account</div>
-                    <div className="text-franky-cyan font-mono text-sm">
+                    <div className="text-franky-blue font-mono text-sm">
                         {accountId.slice(0, 6)}...{accountId.slice(-4)}
                     </div>
                 </div>
@@ -43,7 +43,7 @@ export function WalletButton() {
     return (
         <motion.button 
             onClick={connect}
-            className="px-6 py-3 rounded-lg bg-franky-orange/20 text-franky-orange border border-franky-orange/30 hover:bg-franky-orange/30 transition-all duration-300 font-sen glow-franky"
+            className="px-6 py-3 rounded-lg bg-franky-purple/20 text-franky-purple border border-franky-purple/30 hover:bg-franky-purple/30 transition-all duration-300 font-sen glow-franky"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
         >

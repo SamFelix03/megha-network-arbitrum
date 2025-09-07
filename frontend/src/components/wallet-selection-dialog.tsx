@@ -34,11 +34,11 @@ export const WalletSelectionDialog = (props: WalletSelectionDialogProps) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-md w-full rounded-xl card-cyber p-6 glow-cyan"
+              className="relative max-w-md w-full rounded-xl card-cyber p-6 glow-blue"
             >
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 text-gray-400 hover:text-franky-orange h-8 w-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-franky-orange/20 transition-all duration-300"
+                className="absolute top-4 right-4 text-gray-400 hover:text-franky-purple h-8 w-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-franky-purple/20 transition-all duration-300"
                 aria-label="Close modal"
               >
                 <svg
@@ -71,8 +71,8 @@ export const WalletSelectionDialog = (props: WalletSelectionDialogProps) => {
                   onMouseLeave={() => setHoveredWallet(null)}
                   className={`w-full flex items-center justify-start p-4 rounded-lg border transition-all duration-300 font-sen ${
                     hoveredWallet === "metamask"
-                      ? "border-franky-orange bg-franky-orange-10 glow-franky"
-                      : "border-franky-orange-30 bg-black/50"
+                      ? "border-franky-purple bg-franky-purple-10 glow-franky"
+                      : "border-franky-purple-30 bg-black/50"
                   }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -89,7 +89,7 @@ export const WalletSelectionDialog = (props: WalletSelectionDialogProps) => {
                       <span
                         className={`text-lg font-medium transition-colors ${
                           hoveredWallet === "metamask"
-                            ? "text-franky-orange"
+                            ? "text-franky-purple"
                             : "text-white"
                         }`}
                       >
@@ -108,11 +108,11 @@ export const WalletSelectionDialog = (props: WalletSelectionDialogProps) => {
                   Choose a wallet to connect to Franky Agents
                 </p>
                 <div className="flex justify-center space-x-4 text-xs">
-                  <span className="text-franky-cyan">Secure</span>
+                  <span className="text-franky-blue">Secure</span>
                   <span className="text-gray-500">•</span>
-                  <span className="text-franky-orange">Fast</span>
+                  <span className="text-franky-purple">Fast</span>
                   <span className="text-gray-500">•</span>
-                  <span className="text-franky-yellow">Reliable</span>
+                  <span className="text-franky-indigo">Reliable</span>
                 </div>
               </div>
             </motion.div>
