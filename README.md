@@ -14,7 +14,7 @@
 
 ## 📋 Table of Contents
 
-1. [The Problem We're Solving](https://github.com/SamFelix03/megha-network-arbitrum/edit/main/README.md#the-problem-were-solving)
+1. [The Problem We're Solving](https://github.com/SamFelix03/megha-network-arbitrum/main/README.md#the-problem-were-solving)
 2. [Business Model & Value Proposition](#-business-model--value-proposition)
 3. [Why Arbitrum?](#-why-arbitrum)
 4. [The Role of Blockchain](#-the-role-of-blockchain)
@@ -24,7 +24,7 @@
 8. [Architecture Overview](#-architecture-overview)
 9. [Smart Contracts](#-smart-contracts)
 10. [Roadmap](#-roadmap)
-11. [Future Scope: Device Swarm Technology](https://github.com/SamFelix03/megha-network-arbitrum/edit/main/README.md#future-scope-device-swarm-technology)
+11. [Future Scope: Device Swarm Technology](https://github.com/SamFelix03/megha-network-arbitrum/main/README.md#future-scope-device-swarm-technology)
 
 ---
 
