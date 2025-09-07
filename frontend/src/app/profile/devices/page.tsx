@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { createPublicClient, http } from 'viem'
 import { arbitrumSepolia } from 'viem/chains'
-import { FRANKY_ADDRESS, FRANKY_ABI } from '@/lib/constants'
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '@/lib/constants'
 import { useWallet } from '@/providers/WalletProvider'
 import { FiCpu, FiHardDrive, FiServer, FiLink, FiSmartphone, FiHash } from "react-icons/fi"
 
@@ -67,8 +67,8 @@ export default function DevicesPage() {
 
       // Call getDevicesByOwner function
       const devicesByOwner = await publicClient.readContract({
-        address: FRANKY_ADDRESS as `0x${string}`,
-        abi: FRANKY_ABI,
+        address: CONTRACT_ADDRESS as `0x${string}`,
+        abi: CONTRACT_ABI,
         functionName: "getDevicesByOwner",
         args: [walletAddress as `0x${string}`],
       }) as Device[];
@@ -91,7 +91,7 @@ export default function DevicesPage() {
         <div className="container mx-auto px-4 pb-16">
           <div className="text-center mb-16">
             <motion.h1
-              className="text-4xl md:text-5xl font-bold gradient-franky-text font-sen mb-4"
+              className="text-4xl md:text-5xl font-bold font-orbitron font-logo text-franky-blue mb-4"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -112,7 +112,7 @@ export default function DevicesPage() {
       <div className="container mx-auto px-4 pb-16">
         <div className="text-center">
           <motion.h1
-            className="text-4xl md:text-5xl font-bold gradient-franky-text font-sen mb-4"
+            className="text-4xl md:text-5xl font-bold font-orbitron font-logo text-franky-blue mb-4"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}

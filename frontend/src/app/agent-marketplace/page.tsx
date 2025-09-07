@@ -17,7 +17,7 @@ import {
 import { useWallet } from "@/providers/WalletProvider";
 import { createPublicClient, http } from "viem";
 import { arbitrumSepolia } from "viem/chains";
-import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/constants";
 
 // Define agent interface to match the Registry contract
 type Agent = {
@@ -403,8 +403,8 @@ export default function AgentMarketplacePage() {
 
       // Call getAllAgents function
       const allAgents = await publicClient.readContract({
-        address: FRANKY_ADDRESS as `0x${string}`,
-        abi: FRANKY_ABI,
+        address: CONTRACT_ADDRESS as `0x${string}`,
+        abi: CONTRACT_ABI,
         functionName: "getAllAgents",
       }) as Agent[];
 
@@ -463,7 +463,7 @@ export default function AgentMarketplacePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-8 gradient-franky-text font-logo">
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 font-orbitron font-logo text-franky-blue">
               Agent Marketplace
             </h1>
             <p className="text-xl mb-6 text-gray-400 max-w-4xl mx-auto font-desc">

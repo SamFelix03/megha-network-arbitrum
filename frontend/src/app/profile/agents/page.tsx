@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { formatEther, createPublicClient, http } from 'viem'
 import { arbitrumSepolia } from 'viem/chains'
-import { FRANKY_ADDRESS, FRANKY_ABI } from '@/lib/constants'
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '@/lib/constants'
 import { useWallet } from '@/providers/WalletProvider'
 import { FiCpu, FiHash, FiDollarSign, FiUser, FiUserCheck, FiX, FiCopy, FiCheck } from "react-icons/fi"
 
@@ -64,8 +64,8 @@ export default function AgentsPage() {
 
       // Call getAgentsByOwner function
       const agentsByOwner = await publicClient.readContract({
-        address: FRANKY_ADDRESS as `0x${string}`,
-        abi: FRANKY_ABI,
+        address: CONTRACT_ADDRESS as `0x${string}`,
+        abi: CONTRACT_ABI,
         functionName: "getAgentsByOwner",
         args: [accountId as `0x${string}`],
       }) as Agent[];
@@ -87,7 +87,7 @@ export default function AgentsPage() {
         <div className="container mx-auto px-4 pb-16">
           <div className="text-center mb-16">
             <motion.h1
-              className="text-4xl md:text-5xl font-bold gradient-franky-text font-sen mb-4"
+              className="text-4xl md:text-5xl font-bold font-orbitron font-logo text-franky-blue mb-4"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -108,7 +108,7 @@ export default function AgentsPage() {
       <div className="container mx-auto px-4 pb-16">
         <div className="text-center mb-16">
           <motion.h1
-            className="text-4xl md:text-5xl font-bold gradient-franky-text font-sen mb-4"
+            className="text-4xl md:text-5xl font-bold font-orbitron font-logo text-franky-blue mb-4"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { useWallet } from "@/providers/WalletProvider";
 import { createWalletClient, custom } from "viem";
 import { arbitrumSepolia } from "viem/chains";
-import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/constants";
 import { v4 as uuidv4 } from 'uuid';
 
 interface Tool {
@@ -597,8 +597,8 @@ export default function CreateAgent() {
 
       // Call createAgent function on Registry contract
       const txHash = await walletClient.writeContract({
-        address: FRANKY_ADDRESS as `0x${string}`,
-        abi: FRANKY_ABI,
+        address: CONTRACT_ADDRESS as `0x${string}`,
+        abi: CONTRACT_ABI,
         functionName: "createAgent",
         args: [
           uuid, // _uuid
@@ -653,7 +653,7 @@ export default function CreateAgent() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10"
         >
-          <h1 className="text-4xl font-bold gradient-franky-text mb-4 font-logo">
+          <h1 className="text-4xl font-bold font-orbitron mb-4 font-logo text-franky-blue">
             Create Your AI Agent
           </h1>
           <p className="text-gray-400 text-lg font-sen max-w-2xl mx-auto">
@@ -738,7 +738,7 @@ export default function CreateAgent() {
             <motion.button
               onClick={handleCreateAgent}
               disabled={isCreating || !accountId}
-              className="w-full max-w-md py-4 bg-franky-purple text-black rounded-lg font-bold text-lg hover:bg-franky-purple/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen"
+              className="w-full max-w-md py-4 bg-franky-blue text-black rounded-lg font-bold text-lg hover:bg-franky-purple/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

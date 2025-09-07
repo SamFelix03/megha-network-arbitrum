@@ -20,19 +20,19 @@ NC='\033[0m' # No Color
 
 # Function to display status updates
 log_status() {
-  echo -e "${BLUE}[FRANKY]${NC} $1"
+  echo -e "${BLUE}[MEGHA NETWORK]${NC} $1"
 }
 
 log_success() {
-  echo -e "${GREEN}[FRANKY]${NC} $1"
+  echo -e "${GREEN}[MEGHA NETWORK]${NC} $1"
 }
 
 log_error() {
-  echo -e "${RED}[FRANKY ERROR]${NC} $1"
+  echo -e "${RED}[MEGHA NETWORK ERROR]${NC} $1"
 }
 
 log_warning() {
-  echo -e "${YELLOW}[FRANKY WARNING]${NC} $1"
+  echo -e "${YELLOW}[MEGHA NETWORK WARNING]${NC} $1"
 }
 
 # Function to check if a command exists
@@ -270,7 +270,7 @@ create_evm_wallet() {
         
         // Save wallet info to text file (simple format for device storage)
         const walletText = [
-          '=== FRANKY DEVICE WALLET ===',
+          '=== MEGHA NETWORK DEVICE WALLET ===',
           \`Address: \${wallet.address}\`,
           \`Private Key: \${wallet.privateKey}\`,
           \`Created: \${new Date().toISOString()}\`,
@@ -559,7 +559,7 @@ wait_for_registration() {
 
 # Function to start the main server
 start_main_server() {
-  log_status "Starting the Franky Agent main server..."
+  log_status "Starting the Megha Network Mobile Server..."
   
   # Set up a trap to kill all background processes on exit
   cleanup() {
@@ -572,7 +572,7 @@ start_main_server() {
       kill $SERVER_PID 2>/dev/null
       log_status "Stopped main server (PID: $SERVER_PID)"
     fi
-    log_success "Franky Agent stopped."
+    log_success "Megha Network Mobile Server stopped."
     exit 0
   }
   
@@ -609,7 +609,7 @@ start_main_server() {
   echo "📱 Registration:   $BASE_URL/deploy-device"
   echo "-----------------------------------------"
   
-  log_success "Franky Agent is now running! Press Ctrl+C to stop."
+  log_success "Megha Network Mobile Server is now running! Press Ctrl+C to stop."
   
   # Wait for the server process
   wait $SERVER_PID
@@ -618,7 +618,7 @@ start_main_server() {
 # Main function
 main() {
   echo -e "${GREEN}"
-  echo "Starting Franky Agent Setup..."
+  echo "Starting Megha Network Mobile Server Setup..."
   echo "This script will:"
   echo "1. Install dependencies and check Ollama"
   echo "2. Create an EVM wallet for your device"

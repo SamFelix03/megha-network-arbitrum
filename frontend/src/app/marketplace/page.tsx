@@ -14,7 +14,7 @@ import {
 } from "react-icons/fi";
 import { formatUnits, createPublicClient, http } from "viem";
 import { arbitrumSepolia } from "viem/chains";
-import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/constants";
 
 // Define device interface to match Registry contract
 interface Device {
@@ -256,8 +256,8 @@ export default function MarketplacePage() {
 
         // Call getAllDevices function
         const allDevices = await publicClient.readContract({
-          address: FRANKY_ADDRESS as `0x${string}`,
-          abi: FRANKY_ABI,
+          address: CONTRACT_ADDRESS as `0x${string}`,
+          abi: CONTRACT_ABI,
           functionName: "getAllDevices",
         }) as Device[];
 

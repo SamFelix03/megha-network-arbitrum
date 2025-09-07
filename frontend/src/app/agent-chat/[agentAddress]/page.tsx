@@ -7,7 +7,7 @@ import { FiSend, FiX, FiUser, FiCpu, FiUserCheck, FiCopy, FiChevronDown, FiArrow
 import { useWallet } from "@/providers/WalletProvider";
 import { createPublicClient, http, createWalletClient, custom, parseUnits, formatUnits } from "viem";
 import { arbitrumSepolia } from "viem/chains";
-import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/constants";
 
 // USDC contract configuration
 const USDC_CONTRACT_ADDRESS = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
@@ -814,8 +814,8 @@ export default function AgentChatPage() {
       });
 
       const agentData = await publicClient.readContract({
-        address: FRANKY_ADDRESS as `0x${string}`,
-        abi: FRANKY_ABI,
+        address: CONTRACT_ADDRESS as `0x${string}`,
+        abi: CONTRACT_ABI,
         functionName: "getAgentByUUID",
         args: [uuid],
       }) as Agent;

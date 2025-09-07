@@ -8,7 +8,7 @@ import GlowButton from "@/components/ui/GlowButton"
 import { toast } from "sonner"
 import { createWalletClient, custom, parseUnits } from "viem"
 import { arbitrumSepolia } from "viem/chains"
-import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants"
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/constants"
 
 export const DeviceVerification = () => {
     const [showDeviceModal, setShowDeviceModal] = useState(false)
@@ -290,8 +290,8 @@ export const DeviceVerification = () => {
                                                         
                                                         // Call registerDevice function with Registry contract parameters
                                                         const txHash = await walletClient.writeContract({
-                                                            address: FRANKY_ADDRESS as `0x${string}`,
-                                                            abi: FRANKY_ABI,
+                                                            address: CONTRACT_ADDRESS as `0x${string}`,
+                                                            abi: CONTRACT_ABI,
                                                             functionName: 'registerDevice',
                                                             args: [
                                                                 deviceDetails.deviceModel, // _deviceModel

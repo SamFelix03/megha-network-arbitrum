@@ -154,7 +154,7 @@ export default function DeployDevice() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-8 gradient-franky-text font-logo">
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 font-orbitron font-logo text-franky-blue">
               Deploy Your Device
             </h1>
             <p className="text-xl mb-12 text-gray-400 max-w-4xl mx-auto font-desc">
@@ -190,7 +190,7 @@ export default function DeployDevice() {
             </div>
             <div className="mt-4 p-4 bg-franky-indigo-20 border border-stone-800 rounded-lg">
               <p className="text-franky-indigo font-sen">
-                <strong>Important:</strong> Make sure the qwen2.5:3b model is
+                <strong>Important:</strong> Make sure the nemotron-mini:latest model is
                 installed on your device before proceeding. This is required for
                 Franky to function properly.
               </p>

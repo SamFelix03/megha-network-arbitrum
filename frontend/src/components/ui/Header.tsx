@@ -103,7 +103,7 @@ export default function Header() {
                   letterSpacing: "0.1em",
                 }}
               >
-                megha network
+                Megha Network
               </span>
             </motion.div>
           </Link>

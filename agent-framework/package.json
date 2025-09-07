@@ -1,7 +1,7 @@
 {
-  "name": "franky-agent-framework",
+  "name": "megha-network-moble-server",
   "version": "1.0.0",
-  "description": "Franky AI Agent Framework for mobile devices",
+  "description": "Megha Network Mobile Server for hosting AI Agents in mobile",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
@@ -31,7 +31,7 @@
     "wallet",
     "crypto"
   ],
-  "author": "Franky AI",
+  "author": "megha network",
   "license": "MIT",
   "repository": {
     "type": "git",

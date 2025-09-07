@@ -85,7 +85,7 @@ const DeployDeviceInfo = () => {
   return (
     <div className="mt-4 space-y-4">
       <p className="text-gray-400 mb-4 font-sen">
-        Here's how you can deploy your mobile device to earn $HBAR by hosting AI
+        Here's how you can deploy your mobile device to earn $USDC by hosting AI
         agents:
       </p>
 
@@ -112,7 +112,7 @@ const DeployDeviceInfo = () => {
         </div>
         <div className="mt-4 p-4 bg-franky-indigo-20 border border-franky-indigo-30 rounded-lg">
           <p className="text-franky-indigo font-sen">
-            <strong>Important:</strong> Make sure the qwen2.5:3b model is
+            <strong>Important:</strong> Make sure the nemotron-mini:latest model is
             installed on your device before proceeding. This is required for
             Franky to function properly.
           </p>
@@ -224,7 +224,7 @@ export default function ChatInterface({
         setTimeout(() => {
           const assistantMessage: Message = {
             id: uuidv4(),
-            content: "Here's how to deploy your device with Franky:",
+            content: "Here's how to deploy your device with Megha Network:",
             role: "assistant",
             timestamp: new Date(),
             showDeployDeviceInfo: true,

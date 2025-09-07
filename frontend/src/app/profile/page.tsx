@@ -5,14 +5,60 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useWallet } from "@/providers/WalletProvider";
+import { createPublicClient, http, formatUnits } from "viem";
+import { arbitrumSepolia } from "viem/chains";
+
+// USDC contract configuration
+const USDC_CONTRACT_ADDRESS = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
+const USDC_DECIMALS = 6;
+
+// USDC ABI (simplified for balance check)
+const USDC_ABI = [
+  {
+    "constant": true,
+    "inputs": [{"name": "_owner", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"name": "balance", "type": "uint256"}],
+    "type": "function"
+  }
+] as const;
 export default function DashboardPage() {
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { accountId, balance, disconnect } = useWallet();
+  const [usdcBalance, setUsdcBalance] = useState<string | null>(null);
+  const { accountId, disconnect } = useWallet();
+
+  // Fetch USDC balance
+  const fetchUSDCBalance = async () => {
+    if (!accountId) return;
+    
+    try {
+      const publicClient = createPublicClient({
+        chain: arbitrumSepolia,
+        transport: http(),
+      });
+      
+      const balance = await publicClient.readContract({
+        address: USDC_CONTRACT_ADDRESS as `0x${string}`,
+        abi: USDC_ABI,
+        functionName: 'balanceOf',
+        args: [accountId as `0x${string}`],
+      }) as bigint;
+      
+      const formattedBalance = formatUnits(balance, USDC_DECIMALS);
+      setUsdcBalance(formattedBalance);
+    } catch (error) {
+      console.error('Error fetching USDC balance:', error);
+      setUsdcBalance(null);
+    }
+  };
 
   useEffect(() => {
     if (accountId) {
       setIsLoading(false);
+      fetchUSDCBalance();
+    } else {
+      setUsdcBalance(null);
     }
   }, [accountId]);
 
@@ -27,7 +73,7 @@ export default function DashboardPage() {
       <div className="pt-24 min-h-screen bg-cyber">
         <div className="container mx-auto px-4 pb-16">
           <motion.h1
-            className="text-3xl md:text-4xl font-bold mb-10 text-center gradient-franky-text font-logo"
+            className="text-3xl md:text-4xl font-bold mb-10 text-center font-orbitron font-logo text-franky-blue"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -46,7 +92,7 @@ export default function DashboardPage() {
     <div className="pt-24 min-h-screen bg-cyber">
       <div className="container mx-auto px-4 pb-16">
         <motion.h1
-          className="text-3xl md:text-4xl font-bold mb-10 text-center gradient-franky-text font-logo"
+          className="text-3xl md:text-4xl font-bold mb-10 text-center font-orbitron font-logo text-franky-blue"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -137,20 +183,22 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex justify-center space-x-12 items-center">
-              {balance && (
+              {usdcBalance && (
                 <div className="flex items-center gap-2 my-auto h-full pb-6">
-                  <Image
-                    src="/hedera.png"
-                    alt="Token Logo"
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/usdc.png"
+                      alt="USDC"
+                      width={20}
+                      height={20}
+                      className="rounded-full"
+                    />
+                  </div>
                   <span className="text-franky-blue text-xl font-medium font-sen">
-                    {parseFloat(balance).toFixed(3)}
+                    {parseFloat(usdcBalance).toFixed(2)}
                   </span>
                   <span className="text-franky-blue/70 text-xl font-sen">
-                    ETH
+                    USDC
                   </span>
                 </div>
               )}

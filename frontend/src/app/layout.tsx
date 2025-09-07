@@ -4,7 +4,7 @@ import Providers from "@/components/providers";
 import Layout from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner"
 export const metadata: Metadata = {
-  title: "FRANKY",
+  title: "Megha Network",
   description: "Create custom AI agents with your spare mobile",
 };
 

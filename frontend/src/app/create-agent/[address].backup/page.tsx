@@ -588,7 +588,7 @@ function ConfirmationModal({
             <div className="bg-black/50 rounded-lg p-3 space-y-2">
               <p className="text-white font-sen">
                 <span className="text-gray-400">Per API Call Fee:</span>{" "}
-                {perApiCallFee} HBAR
+                {perApiCallFee} USDC
               </p>
               <p className="text-white font-sen">
                 <span className="text-gray-400">Visibility:</span>{" "}
@@ -1276,7 +1276,7 @@ function CreateAgentContent({
                 htmlFor="per-api-call-fee"
                 className="block mb-2 text-gray-300 font-sen"
               >
-                Per API Call Fee (HBAR)
+                Per API Call Fee (USDC)
               </label>
               <input
                 id="per-api-call-fee"
