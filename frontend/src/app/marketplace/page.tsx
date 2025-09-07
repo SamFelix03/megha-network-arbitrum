@@ -12,7 +12,7 @@ import {
   FiSmartphone,
   FiHash,
 } from "react-icons/fi";
-import { formatEther, createPublicClient, http } from "viem";
+import { formatUnits, createPublicClient, http } from "viem";
 import { arbitrumSepolia } from "viem/chains";
 import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
 
@@ -182,8 +182,8 @@ const DeviceCard = ({
           <span>
             Hosting Fee:{" "}
             <span className="text-franky-cyan font-medium">
-              {device.hostingFee && parseInt(device.hostingFee) > 0
-                ? `${formatEther(BigInt(device.hostingFee))} ETH`
+              {device.hostingFee && parseFloat(device.hostingFee) > 0
+                ? `${parseFloat(device.hostingFee).toFixed(2)} USDC`
                 : "Free"}
             </span>
           </span>
@@ -324,7 +324,7 @@ export default function MarketplacePage() {
             </p>
             {!agentUuid && (
               <p className="text-lg mb-12 text-franky-cyan max-w-4xl mx-auto font-sen">
-                Each device shows its hosting fee in $HBAR tokens - this is what
+                Each device shows its hosting fee in USDC tokens - this is what
                 you'll pay to deploy your agent to the device.
               </p>
             )}
@@ -393,7 +393,7 @@ export default function MarketplacePage() {
               Start Earning Money Now!
             </h2>
             <p className="text-gray-400 mb-6 font-sen">
-              Deploy your idle mobile devices and earn HBAR by providing
+              Deploy your idle mobile devices and earn USDC by providing
               computing resources for AI agents.
             </p>
             <Link href="/deploy-device">

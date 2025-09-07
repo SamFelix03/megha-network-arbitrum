@@ -15,7 +15,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { useWallet } from "@/providers/WalletProvider";
-import { formatEther, createPublicClient, http } from "viem";
+import { createPublicClient, http } from "viem";
 import { arbitrumSepolia } from "viem/chains";
 import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
 

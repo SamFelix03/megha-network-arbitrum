@@ -7,19 +7,64 @@ import { useWallet } from "@/providers/WalletProvider";
 import { useRef, useState, useEffect } from "react";
 import { LogOut, User, UserCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { createPublicClient, http, formatUnits } from "viem";
+import { arbitrumSepolia } from "viem/chains";
+
+// USDC contract configuration
+const USDC_CONTRACT_ADDRESS = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
+const USDC_DECIMALS = 6;
+
+// USDC ABI (simplified for balance check)
+const USDC_ABI = [
+  {
+    "constant": true,
+    "inputs": [{"name": "_owner", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"name": "balance", "type": "uint256"}],
+    "type": "function"
+  }
+] as const;
 
 export default function Header() {
-  const { accountId, disconnect, balance, fetchBalance } = useWallet();
+  const { accountId, disconnect } = useWallet();
   const [showLogout, setShowLogout] = useState(false);
+  const [usdcBalance, setUsdcBalance] = useState<string | null>(null);
   const logoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const userProfileRef = useRef(null);
   const router = useRouter();
 
-  useEffect(() => {
-    if (accountId && fetchBalance) {
-      fetchBalance();
+  // Fetch USDC balance
+  const fetchUSDCBalance = async () => {
+    if (!accountId) return;
+    
+    try {
+      const publicClient = createPublicClient({
+        chain: arbitrumSepolia,
+        transport: http(),
+      });
+      
+      const balance = await publicClient.readContract({
+        address: USDC_CONTRACT_ADDRESS as `0x${string}`,
+        abi: USDC_ABI,
+        functionName: 'balanceOf',
+        args: [accountId as `0x${string}`],
+      }) as bigint;
+      
+      const formattedBalance = formatUnits(balance, USDC_DECIMALS);
+      setUsdcBalance(formattedBalance);
+    } catch (error) {
+      console.error('Error fetching USDC balance:', error);
+      setUsdcBalance(null);
     }
-  }, [accountId, fetchBalance]);
+  };
+
+  useEffect(() => {
+    if (accountId) {
+      fetchUSDCBalance();
+    } else {
+      setUsdcBalance(null);
+    }
+  }, [accountId]);
 
   const handleMouseEnter = () => {
     if (logoutTimeoutRef.current) {
@@ -33,8 +78,6 @@ export default function Header() {
       setShowLogout(false);
     }, 500);
   };
-
-  // Removed balance fetching functionality
 
   return (
     <>
@@ -68,7 +111,7 @@ export default function Header() {
           {accountId && (
             <div className="flex items-center gap-4">
               {/* Balance Display */}
-              {balance && (
+              {usdcBalance && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -76,19 +119,19 @@ export default function Header() {
                   className="flex items-center"
                 >
                   <div className="flex items-center gap-2 card-cyber py-2 px-3 rounded-none">
-                    {/* Arbitrum Logo */}
+                    {/* USDC Logo */}
                     <Image
-                      src="/arbitrum.png"
-                      alt="Arbitrum Logo"
+                      src="/usdc.png"
+                      alt="USDC Logo"
                       width={20}
                       height={20}
                       className="mr-1"
                     />
                     <span className="text-franky-cyan font-medium font-sen">
-                      {parseFloat(balance).toFixed(4)}
+                      {parseFloat(usdcBalance).toFixed(2)}
                     </span>
                     <span className="text-franky-cyan/70 font-sen text-sm">
-                      ETH
+                      USDC
                     </span>
                   </div>
                 </motion.div>

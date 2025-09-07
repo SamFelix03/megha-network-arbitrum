@@ -10,7 +10,7 @@ import {
   FiKey,
   FiLock,
 } from "react-icons/fi";
-import { formatEther } from "viem";
+import { parseUnits } from "viem";
 
 interface Device {
   id: string;
@@ -223,8 +223,8 @@ export default function DeviceSelector() {
                 <FiDollarSign className="text-[#00FF88]" />
                 <span>Hosting Fee:</span>
                 <span className="text-[#00FF88]">
-                  {parseInt(selectedDevice.hostingFee) > 0
-                    ? `${formatEther(BigInt(selectedDevice.hostingFee))} ETH`
+                  {parseFloat(selectedDevice.hostingFee) > 0
+                    ? `${parseFloat(selectedDevice.hostingFee).toFixed(2)} USDC`
                     : "Free"}
                 </span>
               </div>

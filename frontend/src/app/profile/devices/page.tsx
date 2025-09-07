@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { formatEther, createPublicClient, http } from 'viem'
+import { createPublicClient, http } from 'viem'
 import { arbitrumSepolia } from 'viem/chains'
 import { FRANKY_ADDRESS, FRANKY_ABI } from '@/lib/constants'
 import { useWallet } from '@/providers/WalletProvider'
@@ -257,8 +257,8 @@ export default function DevicesPage() {
                           <span>
                             Hosting Fee:{" "}
                             <span className="text-franky-cyan font-medium">
-                              {device.hostingFee && parseInt(device.hostingFee) > 0
-                                ? `${formatEther(BigInt(device.hostingFee))} ETH`
+                              {device.hostingFee && parseFloat(device.hostingFee) > 0
+                                ? `${parseFloat(device.hostingFee).toFixed(2)} USDC`
                                 : "Free"}
                             </span>
                           </span>

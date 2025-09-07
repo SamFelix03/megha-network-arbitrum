@@ -476,7 +476,7 @@ const DeviceDetailsModal = ({
             <div className="p-3 rounded-lg bg-franky-cyan-10 border border-franky-cyan-30 mb-4">
               <div className="flex items-center justify-between">
                 <span className="text-franky-cyan text-sm font-medium font-sen">Fee per Message</span>
-                <span className="text-white text-xl font-bold font-sen">{device.hostingFee} ETH</span>
+                <span className="text-white text-xl font-bold font-sen">{parseFloat(device.hostingFee).toFixed(2)} USDC</span>
               </div>
               <p className="text-xs text-gray-400 mt-1 font-sen">
                 Payment per API call for agents hosted on this device

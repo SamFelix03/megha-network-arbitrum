@@ -575,7 +575,7 @@ function ConfirmationModal({
                 </p>
                 <p className="text-white font-sen">
                   <span className="text-gray-400">Hosting Fee:</span>{" "}
-                  {formatEther(BigInt(deviceInfo.hostingFee))} ETH
+                  {parseFloat(deviceInfo.hostingFee).toFixed(2)} USDC
                 </p>
               </div>
             </div>

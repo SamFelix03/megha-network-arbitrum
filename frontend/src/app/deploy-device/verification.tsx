@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { FiCheck } from "react-icons/fi"
 import GlowButton from "@/components/ui/GlowButton"
 import { toast } from "sonner"
-import { createWalletClient, custom, parseEther } from "viem"
+import { createWalletClient, custom, parseUnits } from "viem"
 import { arbitrumSepolia } from "viem/chains"
 import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants"
 
@@ -144,7 +144,7 @@ export const DeviceVerification = () => {
                         {/* Integrated hosting fee input section */}
                         <div className="p-4 rounded-lg bg-franky-cyan-10 border border-franky-cyan-30 mb-4">
                             <label htmlFor="hostingFee" className="block text-franky-cyan text-sm font-medium mb-2 font-sen">
-                                API Fee (ETH)
+                                API Fee (USDC)
                             </label>
                             <div className="relative">
                                 <input
@@ -157,7 +157,7 @@ export const DeviceVerification = () => {
                                     autoFocus
                                 />
                                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <span className="text-franky-cyan font-sen">ETH</span>
+                                    <span className="text-franky-cyan font-sen">USDC</span>
                                 </div>
                             </div>
 
