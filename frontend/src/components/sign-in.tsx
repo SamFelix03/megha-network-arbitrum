@@ -80,9 +80,9 @@ export default function SignIn({
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 text-white font-orbitron">
             MEGHA NETWORK
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl mb-12 text-gray-300 max-w-4xl mx-auto font-space-grotesk leading-relaxed">
+          <p className="text-xl md:text-2xl lg:text-2xl mb-12 text-gray-300 max-w-4xl mx-auto font-space-grotesk leading-relaxed">
             Recycle your old mobile devices into{" "}
-            <span className="text-franky-blue">AI agents</span> and earn{" "}
+            <span className="text-franky-blue">AI agent hosts</span> and earn{" "}
             <span className="text-franky-purple">$USDC</span>.
           </p>
 
