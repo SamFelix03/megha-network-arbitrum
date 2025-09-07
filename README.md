@@ -14,7 +14,7 @@
 
 ## 📋 Table of Contents
 
-1. [The Problem We're Solving](#-the-problem-were-solving)
+1. [The Problem We're Solving](https://github.com/SamFelix03/megha-network-arbitrum/edit/main/README.md#the-problem-were-solving)
 2. [Business Model & Value Proposition](#-business-model--value-proposition)
 3. [Why Arbitrum?](#-why-arbitrum)
 4. [The Role of Blockchain](#-the-role-of-blockchain)
@@ -24,7 +24,7 @@
 8. [Architecture Overview](#-architecture-overview)
 9. [Smart Contracts](#-smart-contracts)
 10. [Roadmap](#-roadmap)
-11. [Future Scope: Device Swarm Technology](#-future-scope-device-swarm-technology)
+11. [Future Scope: Device Swarm Technology](https://github.com/SamFelix03/megha-network-arbitrum/edit/main/README.md#future-scope-device-swarm-technology)
 
 ---
 
@@ -141,6 +141,15 @@ We chose **Arbitrum Sepolia** as our blockchain foundation for several critical 
 ---
 
 ## 🔧 Technical Implementation
+
+### **How It Works**
+
+<img width="984" height="554" alt="Screenshot 2025-09-07 at 10 08 38 PM" src="https://github.com/user-attachments/assets/4a5d4bbe-4176-409f-b91c-500034065600" />
+
+<img width="984" height="545" alt="Screenshot 2025-09-07 at 10 08 54 PM" src="https://github.com/user-attachments/assets/eb190ef5-fe9b-44c2-9367-ef698271899a" />
+
+<img width="984" height="550" alt="Screenshot 2025-09-07 at 10 09 04 PM" src="https://github.com/user-attachments/assets/63149fa2-d7b4-43b0-a4b2-247361168c06" />
+
 
 ### **System Architecture Overview**
 
