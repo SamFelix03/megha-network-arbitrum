@@ -244,4 +244,20 @@ contract Registry {
         }
         return result;
     }
+
+    // New function: Allow device wallet to update its own ngrok link (non-breaking addition)
+    function updateDeviceNgrokLink(string memory _newNgrokLink) public {
+        // Find device where msg.sender is the device wallet address
+        for (uint256 i = 0; i < deviceCount; i++) {
+            if (devices[i].walletAddress == msg.sender) {
+                // Update only the ngrok link, keeping all other data unchanged
+                devices[i].ngrokLink = _newNgrokLink;
+                
+                // Emit existing event (non-breaking)
+                emit DeviceUpdated(i, devices[i].deviceModel);
+                return;
+            }
+        }
+        revert("Device not found or unauthorized");
+    }
 }

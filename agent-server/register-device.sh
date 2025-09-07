@@ -526,6 +526,135 @@ check_registry_registration() {
   return $?
 }
 
+# Function to update ngrok link if device is already registered
+update_device_ngrok_link() {
+  log_status "Device already registered! Checking if ngrok link needs updating..."
+  
+  # Create a Node.js script to check current ngrok link and update if different
+  node -e "
+    const { ethers } = require('ethers');
+    const fs = require('fs');
+    
+    const REGISTRY_ABI = [
+      {
+        'inputs': [],
+        'name': 'getAllDevices',
+        'outputs': [
+          {
+            'components': [
+              { 'internalType': 'string', 'name': 'deviceModel', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'ram', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'cpu', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'storageCapacity', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'os', 'type': 'string' },
+              { 'internalType': 'address', 'name': 'walletAddress', 'type': 'address' },
+              { 'internalType': 'address', 'name': 'ownerAddress', 'type': 'address' },
+              { 'internalType': 'string', 'name': 'timestamp', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'ngrokLink', 'type': 'string' },
+              { 'internalType': 'string', 'name': 'hostingFee', 'type': 'string' }
+            ],
+            'internalType': 'struct Registry.Device[]',
+            'name': '',
+            'type': 'tuple[]'
+          }
+        ],
+        'stateMutability': 'view',
+        'type': 'function'
+      },
+      {
+        'inputs': [{'internalType': 'string', 'name': '_newNgrokLink', 'type': 'string'}],
+        'name': 'updateDeviceNgrokLink',
+        'outputs': [],
+        'stateMutability': 'nonpayable',
+        'type': 'function'
+      }
+    ];
+    
+    async function updateNgrokLink() {
+      try {
+        console.log('Checking current device registration...');
+        const provider = new ethers.providers.JsonRpcProvider('$RPC_URL');
+        const contract = new ethers.Contract('$REGISTRY_CONTRACT', REGISTRY_ABI, provider);
+        
+        // Get all devices to find our device
+        const devices = await contract.getAllDevices();
+        const ourAddress = '$WALLET_ADDRESS'.toLowerCase();
+        
+        const ourDevice = devices.find(device => 
+          device.walletAddress.toLowerCase() === ourAddress
+        );
+        
+        if (!ourDevice) {
+          console.log('ERROR: Device not found in contract');
+          process.exit(1);
+        }
+        
+        const currentNgrokLink = ourDevice.ngrokLink;
+        const newNgrokLink = '$NGROK_URL';
+        
+        console.log('Current ngrok link in contract:', currentNgrokLink);
+        console.log('New ngrok link from local server:', newNgrokLink);
+        
+        if (currentNgrokLink === newNgrokLink) {
+          console.log('SUCCESS: Ngrok link is already up to date!');
+          process.exit(0);
+        }
+        
+        console.log('Ngrok link differs. Updating contract...');
+        
+        // Load device private key from device_details.json
+        const deviceDetails = JSON.parse(fs.readFileSync('$DEVICE_DETAILS_FILE', 'utf8'));
+        const devicePrivateKey = deviceDetails.privateKey;
+        
+        // Create wallet from device private key
+        const deviceWallet = new ethers.Wallet(devicePrivateKey, provider);
+        
+        // Create contract instance with the device wallet
+        const contractWithSigner = contract.connect(deviceWallet);
+        
+        // Update the ngrok link
+        console.log('Sending transaction to update ngrok link...');
+        const tx = await contractWithSigner.updateDeviceNgrokLink(newNgrokLink);
+        
+        console.log('Transaction sent:', tx.hash);
+        console.log('Waiting for confirmation...');
+        
+        const receipt = await tx.wait();
+        console.log('SUCCESS: Ngrok link updated! Block:', receipt.blockNumber);
+        
+      } catch (error) {
+        console.error('ERROR updating ngrok link:', error.message);
+        process.exit(1);
+      }
+    }
+    
+    updateNgrokLink();
+  "
+  
+  return $?
+}
+
+# Function to check and handle device registration status
+check_and_handle_registration() {
+  log_status "Checking device registration status..."
+  
+  if check_registry_registration; then
+    log_success "Device is already registered!"
+    
+    # Try to update ngrok link if needed
+    if update_device_ngrok_link; then
+      log_success "Device is ready with current ngrok link!"
+      return 0
+    else
+      log_error "Failed to update ngrok link. Please check logs."
+      return 1
+    fi
+  else
+    log_status "Device not registered yet."
+    return 1
+  fi
+}
+
 # Function to wait for device registration
 wait_for_registration() {
   log_status "Waiting for device registration in registry contract..."
@@ -623,9 +752,8 @@ main() {
   echo "1. Install dependencies and check Ollama"
   echo "2. Create an EVM wallet for your device"
   echo "3. Gather device metadata"
-  echo "4. Generate registration QR code"
-  echo "5. Wait for device registration in contract"
-  echo "6. Start the main server only after registration"
+  echo "4. Check device registration and handle ngrok updates"
+  echo "5. Generate QR code if not registered or start server if registered"
   echo -e "${NC}"
   
   # Step 1: Install dependencies
@@ -643,14 +771,23 @@ main() {
   # Step 5: Gather device metadata (now includes ngrok URL and wallet address)
   gather_device_metadata
   
-  # Step 6: Create and display QR code
-  create_and_display_qr_code
-  
-  # Step 7: Wait for device registration in registry contract
-  wait_for_registration
-  
-  # Step 8: Start the main server only after confirmed registration
-  start_main_server
+  # Step 6: Check if device is already registered and handle registration
+  if check_and_handle_registration; then
+    log_success "Device is already registered and ready!"
+    # Device is registered, ngrok link is up to date, proceed to server
+    start_main_server
+  else
+    log_status "Device not registered yet, showing QR code for registration..."
+    
+    # Step 7: Create and display QR code for new registration
+    create_and_display_qr_code
+    
+    # Step 8: Wait for device registration in registry contract
+    wait_for_registration
+    
+    # Step 9: Start the main server only after confirmed registration
+    start_main_server
+  fi
 }
 
 # Run the main function
