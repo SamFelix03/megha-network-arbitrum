@@ -186,7 +186,7 @@ export default function Home() {
               />
               <OptionCard
                 title="Chat with AI Agents"
-                description="Access and use AI agents in the Franky Ecosystem. Pay per API call using ETH."
+                description="Access and use AI agents in the Megha Network. Pay per API call using ETH."
                 icon={
                   <svg
                     width="64"
