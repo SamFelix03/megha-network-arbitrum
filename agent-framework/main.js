@@ -1,3 +1,6 @@
+// Load environment variables from .env file
+require('dotenv').config();
+
 const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
@@ -14,6 +17,69 @@ const REGISTRY_CONTRACT = "0xE25e41F820d4AA90Ad0C49001ecb143DD5B46Ea7";
 const RPC_URL = "https://sepolia-rollup.arbitrum.io/rpc";
 const REGISTRY_ABI = [{"inputs":[{"internalType":"string","name":"_uuid","type":"string"}],"name":"getAgentByUUID","outputs":[{"components":[{"internalType":"string","name":"uuid","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"description","type":"string"},{"internalType":"string","name":"personality","type":"string"},{"internalType":"string","name":"scenario","type":"string"},{"internalType":"string","name":"messageExample","type":"string"},{"internalType":"string[]","name":"tools","type":"string[]"},{"internalType":"string","name":"imageUrl","type":"string"},{"internalType":"address","name":"ownerAddress","type":"address"}],"internalType":"struct Registry.Agent","name":"","type":"tuple"}],"stateMutability":"view","type":"function"}];
 
+// USDC payment configuration
+const USDC_CONTRACT_ADDRESS = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
+const USDC_DECIMALS = 6;
+const HOSTING_FEE = "0.01"; // 0.01 USDC per message
+
+// Device wallet configuration (this would be the actual device owner's wallet)
+// For now, using a mock private key - in production, this should be securely stored
+// Device private key configuration - MUST use .env file
+if (!process.env.DEVICE_PRIVATE_KEY) {
+  console.error('❌ DEVICE_PRIVATE_KEY environment variable is required!');
+  console.error('📝 Please create a .env file with your device private key');
+  process.exit(1);
+}
+
+const DEVICE_PRIVATE_KEY = process.env.DEVICE_PRIVATE_KEY;
+console.log('✅ Using DEVICE_PRIVATE_KEY from .env file');
+
+// Device wallet address will be fetched from the contract based on the device index
+// This is just a fallback - the real address comes from the frontend
+const FALLBACK_DEVICE_WALLET = "0x2514844f312c02ae3c9d4feb40db4ec8830b6844";
+
+// ERC20 ABI for USDC token
+const ERC20_ABI = [
+  {
+    "constant": true,
+    "inputs": [{"name": "_owner", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"name": "balance", "type": "uint256"}],
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {"name": "_spender", "type": "address"},
+      {"name": "_value", "type": "uint256"}
+    ],
+    "name": "approve",
+    "outputs": [{"name": "", "type": "bool"}],
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {"name": "_owner", "type": "address"},
+      {"name": "_spender", "type": "address"}
+    ],
+    "name": "allowance",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {"name": "_from", "type": "address"},
+      {"name": "_to", "type": "address"},
+      {"name": "_value", "type": "uint256"}
+    ],
+    "name": "transferFrom",
+    "outputs": [{"name": "", "type": "bool"}],
+    "type": "function"
+  }
+];
+
 // Load character data (fallback)
 let characterData = null;
 try {
@@ -21,6 +87,102 @@ try {
   console.log('✅ Fallback character data loaded:', characterData.name);
 } catch (error) {
   console.log('⚠️ No fallback character data found, will use registry or default system prompt');
+}
+
+// Payment processing function
+async function processPayment(userAddress, deviceWalletAddress, hostingFee) {
+  try {
+    console.log('💰 Processing payment:', {
+      userAddress,
+      deviceWalletAddress,
+      hostingFee
+    });
+
+    const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+    const usdcContract = new ethers.Contract(USDC_CONTRACT_ADDRESS, ERC20_ABI, provider);
+
+    // Check if user has sufficient allowance
+    const allowance = await usdcContract.allowance(userAddress, deviceWalletAddress);
+    const allowanceFormatted = ethers.utils.formatUnits(allowance, USDC_DECIMALS);
+    
+    console.log('Current allowance:', allowanceFormatted, 'USDC');
+
+    const feeInWei = ethers.utils.parseUnits(hostingFee, USDC_DECIMALS);
+    
+    if (allowance.lt(feeInWei)) {
+      throw new Error(`Insufficient allowance. Need ${hostingFee} USDC, have ${allowanceFormatted} USDC`);
+    }
+
+    // Check if user has sufficient balance
+    const balance = await usdcContract.balanceOf(userAddress);
+    const balanceFormatted = ethers.utils.formatUnits(balance, USDC_DECIMALS);
+    
+    console.log('User USDC balance:', balanceFormatted, 'USDC');
+
+    if (balance.lt(feeInWei)) {
+      throw new Error(`Insufficient balance. Need ${hostingFee} USDC, have ${balanceFormatted} USDC`);
+    }
+
+    // Execute real USDC transfer
+    console.log('🔐 Executing real USDC transfer...');
+    
+    // Validate private key
+    if (!DEVICE_PRIVATE_KEY) {
+      throw new Error('Device private key not configured.');
+    }
+    
+    console.log('🔑 Using device private key:', DEVICE_PRIVATE_KEY.substring(0, 10) + '...');
+    
+    // Create wallet from private key
+    let deviceWallet;
+    try {
+      deviceWallet = new ethers.Wallet(DEVICE_PRIVATE_KEY, provider);
+      console.log('✅ Device wallet created successfully');
+    } catch (walletError) {
+      throw new Error(`Failed to create device wallet: ${walletError.message}`);
+    }
+    
+    const usdcContractWithSigner = usdcContract.connect(deviceWallet);
+
+    // Execute transferFrom transaction
+    const tx = await usdcContractWithSigner.transferFrom(userAddress, deviceWalletAddress, feeInWei);
+    
+    console.log('📝 Transaction sent:', {
+      hash: tx.hash,
+      from: userAddress,
+      to: deviceWalletAddress,
+      amount: hostingFee,
+      amountWei: feeInWei.toString()
+    });
+
+    // Wait for transaction confirmation
+    console.log('⏳ Waiting for transaction confirmation...');
+    const receipt = await tx.wait();
+    
+    console.log('✅ Transaction confirmed:', {
+      hash: tx.hash,
+      blockNumber: receipt.blockNumber,
+      gasUsed: receipt.gasUsed.toString(),
+      status: receipt.status
+    });
+
+    return {
+      success: true,
+      message: `Payment of ${hostingFee} USDC processed successfully`,
+      allowance: allowanceFormatted,
+      balance: balanceFormatted,
+      txHash: tx.hash,
+      blockNumber: receipt.blockNumber,
+      gasUsed: receipt.gasUsed.toString()
+    };
+
+  } catch (error) {
+    console.error('❌ Payment processing error:', error.message);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
 }
 
 // Function to fetch character data from registry contract with caching
@@ -893,10 +1055,46 @@ app.get('/health', (req, res) => {
 // Chat endpoint
 app.post('/chat', async (req, res) => {
   try {
-    const { message, sessionId = 'default', uuid } = req.body;
+    const { message, sessionId = 'default', uuid, userAddress, hostingFee, deviceWalletAddress } = req.body;
     
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // Process payment if payment info is provided
+    let paymentResult = null;
+    if (userAddress && hostingFee) {
+      console.log('💳 Payment info received:', { userAddress, hostingFee, deviceWalletAddress });
+      
+      // Use the device wallet address from the frontend (from the contract)
+      const targetDeviceWallet = deviceWalletAddress || FALLBACK_DEVICE_WALLET;
+      
+      console.log('🎯 Target device wallet:', targetDeviceWallet);
+      console.log('👤 User wallet:', userAddress);
+      
+      paymentResult = await processPayment(userAddress, targetDeviceWallet, hostingFee);
+      
+      if (!paymentResult.success) {
+        return res.status(402).json({ 
+          error: 'Payment failed', 
+          details: paymentResult.error,
+          paymentRequired: true
+        });
+      }
+      
+      // Log the complete transaction hash
+      if (paymentResult.txHash) {
+        console.log('🔗 COMPLETE TRANSACTION HASH:', paymentResult.txHash);
+        console.log('📊 Transaction Details:', {
+          hash: paymentResult.txHash,
+          blockNumber: paymentResult.blockNumber,
+          gasUsed: paymentResult.gasUsed,
+          from: userAddress,
+          to: targetDeviceWallet
+        });
+      }
+      
+      console.log('✅ Payment processed successfully');
     }
     
     // Fetch character data if UUID is provided
@@ -911,6 +1109,12 @@ app.post('/chat', async (req, res) => {
     }
     
     const result = await chatWithFunctionCalling(message, sessionId, dynamicCharacterData);
+    
+    // Add payment info to response
+    if (paymentResult) {
+      result.payment = paymentResult;
+    }
+    
     res.json(result);
     
   } catch (error) {
