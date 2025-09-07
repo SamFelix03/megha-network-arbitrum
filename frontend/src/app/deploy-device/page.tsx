@@ -202,7 +202,7 @@ export default function DeployDevice() {
               Use the following curl command to download, install and run
               Franky:
             </p>
-            <CodeBlock code="pkg update && pkg install nodejs libqrencode termux-api jq curl && git clone https://github.com/gabrielantonyxaviour/franky-agent-framework.git && cd franky-agent-framework && chmod +x franky && ./franky start" />
+            <CodeBlock code="pkg update && pkg install nodejs libqrencode termux-api jq curl && git clone https://github.com/SamFelix03/megha-network-arbitrum.git && cd megha-network-arbitrum/agent-server && chmod +x register-device.sh && ./register-device.sh" />
             <p className="mt-4">
               This script will download all necessary files to run Franky on
               your device.
