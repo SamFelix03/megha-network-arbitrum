@@ -1,6 +1,3 @@
-// Load environment variables from .env file
-require('dotenv').config();
-
 const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
@@ -21,22 +18,6 @@ const REGISTRY_ABI = [{"inputs":[{"internalType":"string","name":"_uuid","type":
 const USDC_CONTRACT_ADDRESS = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
 const USDC_DECIMALS = 6;
 const HOSTING_FEE = "0.01"; // 0.01 USDC per message
-
-// Device wallet configuration (this would be the actual device owner's wallet)
-// For now, using a mock private key - in production, this should be securely stored
-// Device private key configuration - MUST use .env file
-if (!process.env.DEVICE_PRIVATE_KEY) {
-  console.error('❌ DEVICE_PRIVATE_KEY environment variable is required!');
-  console.error('📝 Please create a .env file with your device private key');
-  process.exit(1);
-}
-
-const DEVICE_PRIVATE_KEY = process.env.DEVICE_PRIVATE_KEY;
-console.log('✅ Using DEVICE_PRIVATE_KEY from .env file');
-
-// Device wallet address will be fetched from the contract based on the device index
-// This is just a fallback - the real address comes from the frontend
-const FALLBACK_DEVICE_WALLET = "0x2514844f312c02ae3c9d4feb40db4ec8830b6844";
 
 // ERC20 ABI for USDC token
 const ERC20_ABI = [
@@ -79,6 +60,20 @@ const ERC20_ABI = [
     "type": "function"
   }
 ];
+
+// Load device details and private key
+let deviceDetails = null;
+let devicePrivateKey = null;
+try {
+  deviceDetails = JSON.parse(fs.readFileSync('./device_details.json', 'utf8'));
+  devicePrivateKey = deviceDetails.privateKey;
+  console.log('✅ Device details loaded:', deviceDetails.address);
+  console.log('🔑 Device private key loaded from device_details.json');
+} catch (error) {
+  console.error('❌ Failed to load device details:', error.message);
+  console.error('📝 Make sure device_details.json exists with privateKey field');
+  process.exit(1);
+}
 
 // Load character data (fallback)
 let characterData = null;
@@ -127,17 +122,18 @@ async function processPayment(userAddress, deviceWalletAddress, hostingFee) {
     console.log('🔐 Executing real USDC transfer...');
     
     // Validate private key
-    if (!DEVICE_PRIVATE_KEY) {
-      throw new Error('Device private key not configured.');
+    if (!devicePrivateKey) {
+      throw new Error('Device private key not loaded from device_details.json');
     }
     
-    console.log('🔑 Using device private key:', DEVICE_PRIVATE_KEY.substring(0, 10) + '...');
+    console.log('🔑 Using device private key:', devicePrivateKey.substring(0, 10) + '...');
     
     // Create wallet from private key
     let deviceWallet;
     try {
-      deviceWallet = new ethers.Wallet(DEVICE_PRIVATE_KEY, provider);
+      deviceWallet = new ethers.Wallet(devicePrivateKey, provider);
       console.log('✅ Device wallet created successfully');
+      console.log('📍 Device wallet address:', deviceWallet.address);
     } catch (walletError) {
       throw new Error(`Failed to create device wallet: ${walletError.message}`);
     }
@@ -1067,7 +1063,7 @@ app.post('/chat', async (req, res) => {
       console.log('💳 Payment info received:', { userAddress, hostingFee, deviceWalletAddress });
       
       // Use the device wallet address from the frontend (from the contract)
-      const targetDeviceWallet = deviceWalletAddress || FALLBACK_DEVICE_WALLET;
+      const targetDeviceWallet = deviceWalletAddress || deviceDetails?.address;
       
       console.log('🎯 Target device wallet:', targetDeviceWallet);
       console.log('👤 User wallet:', userAddress);

@@ -3,11 +3,56 @@
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiSend, FiX, FiUser, FiCpu, FiUserCheck, FiCopy, FiChevronDown, FiArrowDown } from "react-icons/fi";
+import { FiSend, FiX, FiUser, FiCpu, FiUserCheck, FiCopy, FiChevronDown, FiArrowDown, FiDollarSign, FiCreditCard } from "react-icons/fi";
 import { useWallet } from "@/providers/WalletProvider";
-import { createPublicClient, http } from "viem";
+import { createPublicClient, http, createWalletClient, custom, parseUnits, formatUnits } from "viem";
 import { arbitrumSepolia } from "viem/chains";
 import { FRANKY_ADDRESS, FRANKY_ABI } from "@/lib/constants";
+
+// USDC contract configuration
+const USDC_CONTRACT_ADDRESS = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
+const USDC_DECIMALS = 6;
+const HOSTING_FEE = "0.01"; // 0.01 USDC per message
+const APPROVAL_THRESHOLD = "5"; // 5 USDC threshold
+const APPROVAL_AMOUNT = "10"; // 10 USDC approval amount
+
+// USDC ABI (simplified)
+const USDC_ABI = [
+  {
+    "constant": true,
+    "inputs": [{"name": "_owner", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"name": "balance", "type": "uint256"}],
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {"name": "_owner", "type": "address"},
+      {"name": "_spender", "type": "address"}
+    ],
+    "name": "allowance",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {"name": "_spender", "type": "address"},
+      {"name": "_value", "type": "uint256"}
+    ],
+    "name": "approve",
+    "outputs": [{"name": "", "type": "bool"}],
+    "type": "function"
+  }
+] as const;
+
+// Extend Window interface for ethereum
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 // Message interface
 interface Message {
@@ -42,6 +87,187 @@ interface DeviceDetails {
   walletAddress: string;
   hostingFee: string;
 }
+
+// Payment interfaces
+interface PaymentData {
+  totalSpent: string;
+  messagesSent: number;
+  transactionHashes: string[];
+}
+
+// Approval Request Modal Component
+const ApprovalRequestModal = ({
+  isOpen,
+  onClose,
+  onApprove,
+  usdcBalance,
+  isLoading,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onApprove: () => void;
+  usdcBalance: string;
+  isLoading: boolean;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-cyber">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="card-cyber max-w-md w-full glow-cyan"
+          >
+            <div className="text-center">
+              <FiCreditCard className="w-12 h-12 text-franky-cyan mx-auto mb-4" />
+              <h2 className="text-xl font-bold gradient-franky-text font-sen mb-4">
+                Payment Setup Required
+              </h2>
+              
+              <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-gray-400 font-sen text-sm">Your USDC Balance:</span>
+                  <span className="text-white font-bold font-sen">{usdcBalance} USDC</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400 font-sen text-sm">Approval Amount:</span>
+                  <span className="text-franky-cyan font-bold font-sen">{APPROVAL_AMOUNT} USDC</span>
+                </div>
+              </div>
+
+              <p className="text-gray-300 text-sm font-sen mb-6 leading-relaxed">
+                To start chatting, you need to approve {APPROVAL_AMOUNT} USDC for the device wallet. 
+                Each message costs {HOSTING_FEE} USDC, giving you up to {Math.floor(parseFloat(APPROVAL_AMOUNT) / parseFloat(HOSTING_FEE))} messages.
+              </p>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={onClose}
+                  className="flex-1 py-3 px-4 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors font-sen"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={onApprove}
+                  disabled={isLoading || parseFloat(usdcBalance) < parseFloat(APPROVAL_AMOUNT)}
+                  className="flex-1 py-3 px-4 bg-franky-cyan text-black rounded-lg hover:bg-franky-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sen font-bold"
+                >
+                  {isLoading ? 'Approving...' : `Approve ${APPROVAL_AMOUNT} USDC`}
+                </button>
+              </div>
+
+              {parseFloat(usdcBalance) < parseFloat(APPROVAL_AMOUNT) && (
+                <p className="text-red-400 text-xs font-sen mt-3">
+                  Insufficient USDC balance. You need at least {APPROVAL_AMOUNT} USDC.
+                </p>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+// Cost Summary Modal Component
+const CostSummaryModal = ({
+  isOpen,
+  onClose,
+  onConfirmExit,
+  paymentData,
+  usdcBalance,
+  remainingAllowance,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirmExit: () => void;
+  paymentData: PaymentData;
+  usdcBalance: string;
+  remainingAllowance: string;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-cyber">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="card-cyber max-w-md w-full glow-cyan"
+          >
+            <div className="text-center">
+              <FiDollarSign className="w-12 h-12 text-franky-orange mx-auto mb-4" />
+              <h2 className="text-xl font-bold gradient-franky-text font-sen mb-4">
+                Chat Session Summary
+              </h2>
+              
+              <div className="space-y-3 mb-6">
+                <div className="bg-gray-800/50 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-400 font-sen text-sm">Messages Sent:</span>
+                    <span className="text-white font-bold font-sen">{paymentData.messagesSent}</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-400 font-sen text-sm">Total Spent:</span>
+                    <span className="text-franky-orange font-bold font-sen">{paymentData.totalSpent} USDC</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-sen text-sm">Cost per Message:</span>
+                    <span className="text-gray-300 font-sen text-sm">{HOSTING_FEE} USDC</span>
+                  </div>
+                </div>
+
+                <div className="bg-gray-800/30 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-400 font-sen text-sm">USDC Balance:</span>
+                    <span className="text-white font-bold font-sen">{usdcBalance} USDC</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-sen text-sm">Remaining Allowance:</span>
+                    <span className="text-franky-cyan font-bold font-sen">{remainingAllowance} USDC</span>
+                  </div>
+                </div>
+              </div>
+
+              {paymentData.transactionHashes.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-gray-300 mb-2 font-sen">Transaction History</h3>
+                  <div className="max-h-20 overflow-y-auto space-y-1">
+                    {paymentData.transactionHashes.map((hash, index) => (
+                      <div key={index} className="text-xs text-gray-400 font-mono truncate">
+                        {hash}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={onClose}
+                  className="flex-1 py-3 px-4 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors font-sen"
+                >
+                  Continue Chatting
+                </button>
+                <button
+                  onClick={onConfirmExit}
+                  className="flex-1 py-3 px-4 bg-franky-orange text-white rounded-lg hover:bg-franky-orange/90 transition-colors font-sen font-bold"
+                >
+                  Exit Chat
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 // Agent Profile Modal Component
 const AgentProfileModal = ({
@@ -364,6 +590,19 @@ export default function AgentChatPage() {
   const [showDeviceModal, setShowDeviceModal] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
+  // Payment-related state
+  const [usdcBalance, setUsdcBalance] = useState("0");
+  const [currentAllowance, setCurrentAllowance] = useState("0");
+  const [showApprovalModal, setShowApprovalModal] = useState(false);
+  const [showCostSummaryModal, setShowCostSummaryModal] = useState(false);
+  const [approvalLoading, setApprovalLoading] = useState(false);
+  const [paymentReady, setPaymentReady] = useState(false);
+  const [paymentData, setPaymentData] = useState<PaymentData>({
+    totalSpent: "0",
+    messagesSent: 0,
+    transactionHashes: []
+  });
+
   const agentUuid = params?.agentAddress as string; // This is actually the UUID
   const deviceNgrok = searchParams?.get('deviceNgrok');
   
@@ -374,6 +613,124 @@ export default function AgentChatPage() {
   // Function to scroll to bottom of chat
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Payment system functions
+  const checkUSDCBalance = async () => {
+    if (!accountId) return;
+    
+    try {
+      const publicClient = createPublicClient({
+        chain: arbitrumSepolia,
+        transport: http(),
+      });
+
+      const balance = await publicClient.readContract({
+        address: USDC_CONTRACT_ADDRESS as `0x${string}`,
+        abi: USDC_ABI,
+        functionName: 'balanceOf',
+        args: [accountId as `0x${string}`],
+      }) as bigint;
+
+      const formattedBalance = formatUnits(balance, USDC_DECIMALS);
+      setUsdcBalance(formattedBalance);
+      return formattedBalance;
+    } catch (error) {
+      console.error('Error checking USDC balance:', error);
+      return "0";
+    }
+  };
+
+  const checkAllowance = async () => {
+    if (!accountId || !device?.walletAddress) return;
+    
+    try {
+      const publicClient = createPublicClient({
+        chain: arbitrumSepolia,
+        transport: http(),
+      });
+
+      const allowance = await publicClient.readContract({
+        address: USDC_CONTRACT_ADDRESS as `0x${string}`,
+        abi: USDC_ABI,
+        functionName: 'allowance',
+        args: [accountId as `0x${string}`, device.walletAddress as `0x${string}`],
+      }) as bigint;
+
+      const formattedAllowance = formatUnits(allowance, USDC_DECIMALS);
+      setCurrentAllowance(formattedAllowance);
+      return formattedAllowance;
+    } catch (error) {
+      console.error('Error checking allowance:', error);
+      return "0";
+    }
+  };
+
+  const requestApproval = async () => {
+    if (!accountId || !device?.walletAddress || !window.ethereum) return;
+    
+    try {
+      setApprovalLoading(true);
+      
+      // Create wallet client like in create-agent page
+      const walletClient = createWalletClient({
+        chain: arbitrumSepolia,
+        transport: custom(window.ethereum),
+      });
+      
+      const approvalAmount = parseUnits(APPROVAL_AMOUNT, USDC_DECIMALS);
+      
+      const hash = await walletClient.writeContract({
+        address: USDC_CONTRACT_ADDRESS as `0x${string}`,
+        abi: USDC_ABI,
+        functionName: 'approve',
+        args: [device.walletAddress as `0x${string}`, approvalAmount],
+        account: accountId as `0x${string}`,
+      });
+
+      // Wait for transaction confirmation
+      const publicClient = createPublicClient({
+        chain: arbitrumSepolia,
+        transport: http(),
+      });
+      
+      await publicClient.waitForTransactionReceipt({ hash });
+      
+      // Update allowance after approval
+      await checkAllowance();
+      setShowApprovalModal(false);
+      setPaymentReady(true);
+      
+    } catch (error) {
+      console.error('Error requesting approval:', error);
+      setError('Failed to approve USDC spending. Please try again.');
+    } finally {
+      setApprovalLoading(false);
+    }
+  };
+
+  const initializePaymentSystem = async () => {
+    if (!accountId || !device?.walletAddress) return;
+    
+    try {
+      // Check USDC balance and allowance
+      const [balance, allowance] = await Promise.all([
+        checkUSDCBalance(),
+        checkAllowance()
+      ]);
+
+      console.log('Payment initialization:', { balance, allowance, threshold: APPROVAL_THRESHOLD });
+
+      // If allowance is less than threshold, request approval
+      if (parseFloat(allowance || "0") < parseFloat(APPROVAL_THRESHOLD)) {
+        setShowApprovalModal(true);
+      } else {
+        setPaymentReady(true);
+      }
+    } catch (error) {
+      console.error('Error initializing payment system:', error);
+      setError('Failed to initialize payment system');
+    }
   };
 
   // Check if user has scrolled up to show scroll-to-bottom button
@@ -507,6 +864,13 @@ export default function AgentChatPage() {
     }]);
   }, [agentUuid, accountId, router, deviceNgrok, searchParams]);
 
+  // Initialize payment system when device details are loaded
+  useEffect(() => {
+    if (device && accountId) {
+      initializePaymentSystem();
+    }
+  }, [device, accountId]);
+
   // Update the first message when agent data loads
   useEffect(() => {
     if (agent && agent.messageExample && messages.length > 0) {
@@ -519,7 +883,14 @@ export default function AgentChatPage() {
   }, [agent, messages.length]);
 
   const sendMessage = async () => {
-    if (!inputMessage.trim() || loading || !deviceNgrok) return;
+    if (!inputMessage.trim() || loading || !deviceNgrok || !paymentReady) return;
+
+    // Check if user has sufficient allowance
+    const currentAllowanceFloat = parseFloat(currentAllowance);
+    if (currentAllowanceFloat < parseFloat(HOSTING_FEE)) {
+      setError(`Insufficient allowance. You need at least ${HOSTING_FEE} USDC to send a message.`);
+      return;
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -533,7 +904,7 @@ export default function AgentChatPage() {
     setLoading(true);
 
     try {
-      // Send request to device ngrok endpoint
+      // Send request to device ngrok endpoint with payment info
       const response = await fetch(`${deviceNgrok}/chat`, {
         method: 'POST',
         headers: {
@@ -542,8 +913,17 @@ export default function AgentChatPage() {
         body: JSON.stringify({
           uuid: agentUuid,
           message: inputMessage,
+          userAddress: accountId,
+          hostingFee: HOSTING_FEE,
+          deviceWalletAddress: device?.walletAddress,
         }),
       });
+
+      if (response.status === 402) {
+        // Payment failed
+        const errorData = await response.json();
+        throw new Error(`Payment failed: ${errorData.details}`);
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -551,6 +931,19 @@ export default function AgentChatPage() {
 
       const data = await response.json();
       console.log('Agent response:', data);
+
+      // Track payment
+      if (data.payment && data.payment.success) {
+        setPaymentData(prev => ({
+          totalSpent: (parseFloat(prev.totalSpent) + parseFloat(HOSTING_FEE)).toString(),
+          messagesSent: prev.messagesSent + 1,
+          transactionHashes: data.payment.txHash ? [...prev.transactionHashes, data.payment.txHash] : prev.transactionHashes
+        }));
+
+        // Update current allowance
+        const newAllowance = (parseFloat(currentAllowance) - parseFloat(HOSTING_FEE)).toString();
+        setCurrentAllowance(newAllowance);
+      }
 
       // Create bot response message
       const botMessage: Message = {
@@ -566,7 +959,7 @@ export default function AgentChatPage() {
       console.error('Chat error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "Sorry, I encountered an error processing your request. Please try again.",
+        content: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'}`,
         isUser: false,
         timestamp: new Date(),
       };
@@ -584,6 +977,16 @@ export default function AgentChatPage() {
   };
 
   const handleCloseChat = () => {
+    // Show cost summary modal if user has sent messages
+    if (paymentData.messagesSent > 0) {
+      setShowCostSummaryModal(true);
+    } else {
+      router.push("/agent-marketplace");
+    }
+  };
+
+  const confirmExit = () => {
+    setShowCostSummaryModal(false);
     router.push("/agent-marketplace");
   };
 
@@ -658,11 +1061,21 @@ export default function AgentChatPage() {
             </div>
           </div>
           
-          {/* Hosting Fee Display - Top Center */}
-          {device && (
+          {/* Payment Status Display - Top Center */}
+          {device && paymentReady && (
             <div className="text-center">
-              <div className="text-xs text-gray-400 font-sen">Fee per Message</div>
-              <div className="text-xl font-bold text-franky-cyan font-sen">{device.hostingFee} ETH</div>
+              <div className="text-xs text-gray-400 font-sen">Remaining Balance</div>
+              <div className="text-lg font-bold text-franky-cyan font-sen">{parseFloat(currentAllowance).toFixed(2)} USDC</div>
+              <div className="text-xs text-gray-500 font-sen">
+                ~{Math.floor(parseFloat(currentAllowance) / parseFloat(HOSTING_FEE))} messages
+              </div>
+            </div>
+          )}
+          
+          {!paymentReady && device && (
+            <div className="text-center">
+              <div className="text-xs text-yellow-400 font-sen">Payment Setup Required</div>
+              <div className="text-sm font-bold text-yellow-400 font-sen">Approval Needed</div>
             </div>
           )}
           
@@ -798,13 +1211,13 @@ export default function AgentChatPage() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Send message"
-              className="flex-1 p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-franky-cyan font-sen"
-              disabled={loading}
+              placeholder={paymentReady ? "Send message" : "Complete payment setup to chat"}
+              className="flex-1 p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-franky-cyan font-sen disabled:opacity-50"
+              disabled={loading || !paymentReady}
             />
             <button
               onClick={sendMessage}
-              disabled={loading || !inputMessage.trim()}
+              disabled={loading || !inputMessage.trim() || !paymentReady}
               className="px-4 py-3 bg-franky-cyan text-black rounded-lg hover:bg-franky-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FiSend className="w-5 h-5" />
@@ -826,6 +1239,25 @@ export default function AgentChatPage() {
         device={device}
         isOpen={showDeviceModal}
         onClose={() => setShowDeviceModal(false)}
+      />
+
+      {/* Approval Request Modal */}
+      <ApprovalRequestModal
+        isOpen={showApprovalModal}
+        onClose={() => router.push("/agent-marketplace")}
+        onApprove={requestApproval}
+        usdcBalance={usdcBalance}
+        isLoading={approvalLoading}
+      />
+
+      {/* Cost Summary Modal */}
+      <CostSummaryModal
+        isOpen={showCostSummaryModal}
+        onClose={() => setShowCostSummaryModal(false)}
+        onConfirmExit={confirmExit}
+        paymentData={paymentData}
+        usdcBalance={usdcBalance}
+        remainingAllowance={currentAllowance}
       />
     </>
   );
