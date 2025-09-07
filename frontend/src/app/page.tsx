@@ -108,8 +108,8 @@ export default function Home() {
               MEGHA NETWORK
             </h1>
             <p className="text-xl md:text-2xl lg:text-2xl mb-12 text-gray-300 max-w-4xl mx-auto font-space-grotesk leading-relaxed">
-            Recycle old mobiles for{" "}
-              <span className="text-franky-blue">local AI inference</span> and earn{" "}
+              Recycle your old mobile devices into{" "}
+              <span className="text-franky-blue">AI agent hosts</span> and earn{" "}
               <span className="text-franky-purple">$USDC</span>.
             </p>
 
